@@ -1,16 +1,22 @@
-# moto
+# Moto 基
 
-A new Flutter project.
+Une app Flutter de suivi d'habitudes avec un système de progression unique.
 
-## Getting Started
+## Concept
 
-This project is a starting point for a Flutter application.
+Chaque habitude se construit carré par carré :
+- 1×1 (1 jour)
+- 2×2 (4 jours)
+- 3×3 (9 jours)
+- ...
 
-A few resources to get you started if this is your first Flutter project:
+Les carrés complétés deviennent des trophées. Rate un jour, perds une case.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Dart
+
+## Nom
+
+**Moto** (基/元) — "la base", "l'origine" en japonais.
