@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/habit.dart';
 
 void main() {
   runApp(const MotoApp());
@@ -21,8 +22,33 @@ class MotoApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final List<Habit> _habits = [
+    Habit(id: '1', name: 'Méditation', streak: 5),
+    Habit(id: '2', name: 'Lecture', streak: 14),
+    Habit(id: '3', name: 'Pas de réseaux sociaux', isQuitting: true, streak: 3),
+  ];
+
+  void _incrementStreak(String id) {
+    setState(() {
+      final habit = _habits.firstWhere((h) => h.id == id);
+      habit.streak++;
+    });
+  }
+
+  void _decrementStreak(String id) {
+    setState(() {
+      final habit = _habits.firstWhere((h) => h.id == id);
+      if (habit.streak > 0) habit.streak--;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +59,6 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               const Text(
                 'Moto',
                 style: TextStyle(
@@ -51,17 +76,22 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              
-              // Liste des habitudes (placeholder pour l'instant)
-              HabitCard(name: 'Méditation', streak: 0),
-              const SizedBox(height: 12),
-              HabitCard(name: 'Lecture', streak: 1),
-              const SizedBox(height: 12),
-              HabitCard(name: 'Sport', streak: 4),
-              const SizedBox(height: 12),
-              HabitCard(name: 'Code', streak: 9),
-              const SizedBox(height: 12),
-              HabitCard(name: 'Tmtc', streak: 56),
+
+              // Liste des habitudes
+              Expanded(
+                child: ListView.separated(
+                  itemCount: _habits.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final habit = _habits[index];
+                    return HabitCard(
+                      habit: habit,
+                      onIncrement: () => _incrementStreak(habit.id),
+                      onDecrement: () => _decrementStreak(habit.id),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -71,13 +101,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class HabitCard extends StatelessWidget {
-  final String name;
-  final int streak;
+  final Habit habit;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
 
   const HabitCard({
     super.key,
-    required this.name,
-    required this.streak,
+    required this.habit,
+    required this.onIncrement,
+    required this.onDecrement,
   });
 
   @override
@@ -88,32 +120,92 @@ class HabitCard extends StatelessWidget {
         color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        if (habit.isQuitting)
+                          Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.red[900],
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: const Text(
+                              'STOP',
+                              style: TextStyle(fontSize: 10, color: Colors.white),
+                            ),
+                          ),
+                        Flexible(
+                          child: Text(
+                            habit.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${habit.streak} cases',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                '$streak jours',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey[500],
+              HabitProgress(streak: habit.streak),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: onDecrement,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.red[900]?.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Center(
+                      child: Text('Raté', style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: GestureDetector(
+                  onTap: onIncrement,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.green[700],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Center(
+                      child: Text('Fait !', style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          // Placeholder pour le carré
-          HabitProgress(streak: streak),
         ],
       ),
     );
@@ -144,9 +236,7 @@ class _HabitProgressState extends State<HabitProgress> {
   void _updateScrollState() {
     if (!_scrollController.hasClients) return;
     setState(() {
-      // reverse: true donc la logique est inversée
-      _canScrollLeft = _scrollController.position.pixels < 
-          _scrollController.position.maxScrollExtent - 1;
+      _canScrollLeft = _scrollController.position.pixels < _scrollController.position.maxScrollExtent - 1;
       _canScrollRight = _scrollController.position.pixels > 1;
     });
   }
@@ -235,7 +325,6 @@ class CompletedSquare extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Le dernier complété = 75%, les autres dégressifs jusqu'à 30%
     final double ratio = 0.3 + (level / completedLevels) * 0.45;
     final double size = 44 * ratio;
 
