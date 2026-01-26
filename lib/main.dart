@@ -227,6 +227,13 @@ class _HabitProgressState extends State<HabitProgress> {
   bool _canScrollRight = false;
 
   @override
+  void didUpdateWidget(HabitProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.streak != widget.streak) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _updateScrollState());
+    }
+  }
+  @override
   void initState() {
     super.initState();
     _scrollController.addListener(_updateScrollState);
