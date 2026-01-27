@@ -45,16 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       final habit = _habits.firstWhere((h) => h.id == id);
 
-      // Calcule le début du carré en cours
-      int level = 1;
-      int total = 0;
-      while (total + level * level < habit.streak) {
-        total += level * level;
-        level++;
-      }
+      switch (habit.penaltyMode) {
+        case PenaltyMode.zen:
+          // Perd 1 case
+          if (habit.streak > 0) habit.streak--;
+          break;
 
-      // Retourne au début du carré en cours
-      habit.streak = total;
+        case PenaltyMode.standard:
+          // Retour au début du carré en cours
+          int level = 1;
+          int total = 0;
+          while (total + level * level < habit.streak) {
+            total += level * level;
+            level++;
+          }
+          habit.streak = total;
+          break;
+
+        case PenaltyMode.hardcore:
+          // Retour à zéro total
+          habit.streak = 0;
+          break;
+      }
     });
     _saveHabits();
   }
