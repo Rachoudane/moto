@@ -52,14 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
           break;
 
         case PenaltyMode.standard:
-          // Retour au début du carré en cours
+          // Retour au début du carré en cours (mais pas en dessous)
           int level = 1;
           int total = 0;
-          while (total + level * level < habit.streak) {
+          while (total + level * level <= habit.streak) {
             total += level * level;
             level++;
           }
-          habit.streak = total;
+          // Seulement si on a progressé dans le carré
+          if (habit.streak > total) {
+            habit.streak = total;
+          }
           break;
 
         case PenaltyMode.hardcore:
