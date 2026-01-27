@@ -47,8 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
       switch (habit.penaltyMode) {
         case PenaltyMode.zen:
+          int level = 1;
+          int total = 0;
+          while (total + level * level <= habit.streak) {
+            total += level * level;
+            level++;
+          }
           // Perd 1 case
-          if (habit.streak > 0) habit.streak--;
+          if (habit.streak > total) {
+            habit.streak--;
+          }
           break;
 
         case PenaltyMode.standard:
