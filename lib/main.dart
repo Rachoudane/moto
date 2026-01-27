@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/habit.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MotoApp());
@@ -30,17 +32,42 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Habit> _habits = [
-    Habit(id: '1', name: 'Méditation', streak: 5),
-    Habit(id: '2', name: 'Lecture', streak: 14),
-    Habit(id: '3', name: 'Pas de réseaux sociaux', isQuitting: true, streak: 3),
-  ];
+List<Habit> _habits = [];
+bool _isLoading = true;
+
+@override
+void initState() {
+  super.initState();
+  _loadHabits();
+}
+
+Future<void> _loadHabits() async {
+  final prefs = await SharedPreferences.getInstance();
+  final String? habitsJson = prefs.getString('habits');
+  
+  if (habitsJson != null) {
+    final List<dynamic> decoded = jsonDecode(habitsJson);
+    setState(() {
+      _habits = decoded.map((h) => Habit.fromJson(h)).toList();
+      _isLoading = false;
+    });
+  } else {
+    setState(() => _isLoading = false);
+  }
+}
+
+Future<void> _saveHabits() async {
+  final prefs = await SharedPreferences.getInstance();
+  final String encoded = jsonEncode(_habits.map((h) => h.toJson()).toList());
+  await prefs.setString('habits', encoded);
+}
 
   void _incrementStreak(String id) {
     setState(() {
       final habit = _habits.firstWhere((h) => h.id == id);
       habit.streak++;
     });
+    _saveHabits();
   }
 
   void _decrementStreak(String id) {
@@ -48,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final habit = _habits.firstWhere((h) => h.id == id);
       if (habit.streak > 0) habit.streak--;
     });
+    _saveHabits();
   }
 
   void _addHabit(String name, bool isQuitting) {
@@ -58,12 +86,14 @@ class _HomeScreenState extends State<HomeScreen> {
       isQuitting: isQuitting,
     ));
   });
+  _saveHabits();
 }
 
 void _deleteHabit(String id) {
   setState(() {
     _habits.removeWhere((h) => h.id == id);
   });
+  _saveHabits();
 }
 
 void _showAddHabitDialog() {
@@ -197,7 +227,9 @@ void _showAddHabitDialog() {
         child: const Icon(Icons.add, color: Colors.black),
       ),
       body: SafeArea(
-        child: Padding(
+        child: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
