@@ -44,7 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void _decrementStreak(String id) {
     setState(() {
       final habit = _habits.firstWhere((h) => h.id == id);
-      if (habit.streak > 0) habit.streak--;
+
+      // Calcule le début du carré en cours
+      int level = 1;
+      int total = 0;
+      while (total + level * level < habit.streak) {
+        total += level * level;
+        level++;
+      }
+
+      // Retourne au début du carré en cours
+      habit.streak = total;
     });
     _saveHabits();
   }
