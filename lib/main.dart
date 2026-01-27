@@ -263,6 +263,35 @@ class HabitCard extends StatelessWidget {
     return Dismissible(
       key: Key(habit.id),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) async {
+        return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: const Color(0xFF1A1A1A),
+            title: const Text(
+              'Supprimer cette habitude ?',
+              style: TextStyle(color: Colors.white),
+            ),
+            content: Text(
+              'Tu vas perdre ta progression de ${habit.streak} cases.',
+              style: TextStyle(color: Colors.grey[400]),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Annuler'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(
+                  'Supprimer',
+                  style: TextStyle(color: Colors.red[400]),
+                ),
+              ),
+            ],
+          ),
+        ) ?? false;
+      },
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
