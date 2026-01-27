@@ -231,6 +231,7 @@ void _showAddHabitDialog() {
                       habit: habit,
                       onIncrement: () => _incrementStreak(habit.id),
                       onDecrement: () => _decrementStreak(habit.id),
+                      onDelete: () => _deleteHabit(habit.id),
                     );
                   },
                 ),
@@ -247,22 +248,37 @@ class HabitCard extends StatelessWidget {
   final Habit habit;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
+  final VoidCallback onDelete;
 
   const HabitCard({
     super.key,
     required this.habit,
     required this.onIncrement,
     required this.onDecrement,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(12),
+    return Dismissible(
+      key: Key(habit.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        decoration: BoxDecoration(
+          color: Colors.red[900],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: const Icon(Icons.delete, color: Colors.white),
       ),
+      onDismissed: (_) => onDelete(),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.circular(12),
+        ),
       child: Column(
         children: [
           Row(
@@ -351,9 +367,11 @@ class HabitCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
+
 
 class HabitProgress extends StatefulWidget {
   final int streak;
