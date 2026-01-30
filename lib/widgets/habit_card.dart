@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/habit.dart';
+import '../screens/habit_detail_screen.dart';
 import 'habit_progress.dart';
 
 class HabitCard extends StatelessWidget {
@@ -71,13 +72,22 @@ class HabitCard extends StatelessWidget {
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       onDismissed: (_) => onDelete(),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HabitDetailScreen(habit: habit),
+            ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A1A),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
           children: [
             // Top: name + progress
             Row(
@@ -165,6 +175,7 @@ class HabitCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }
