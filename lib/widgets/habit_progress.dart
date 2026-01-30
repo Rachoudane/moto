@@ -21,8 +21,10 @@ class _HabitProgressState extends State<HabitProgress> {
   bool _destroyingSquares = false;
   CellChangeType _changeType = CellChangeType.none;
 
-  // For delayed completion: show the last cell pulse before the square bounce
-  int? _delayedStreak;
+  // Override display to show full square before completion transition
+  int? _overrideLevel;
+  int? _overrideProgress;
+  int? _overrideCompleted;
 
   @override
   void initState() {
@@ -36,17 +38,17 @@ class _HabitProgressState extends State<HabitProgress> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.streak == widget.streak) return;
 
-    final oldProgress = _getProgressFor(oldWidget.streak);
-    final newProgress = _getProgressFor(widget.streak);
-    final oldCompleted = oldProgress.$3;
-    final newCompleted = newProgress.$3;
+    final (oldLevel, oldProg, oldCompleted) = _getProgressFor(oldWidget.streak);
+    final (_, _, newCompleted) = _getProgressFor(widget.streak);
 
     if (widget.streak > oldWidget.streak) {
       // === GAIN ===
       if (newCompleted > oldCompleted) {
-        // Square just completed! Show last cell pulse first, then square bounce
+        // Square just completed! Show the square fully filled first, then bounce
         setState(() {
-          _delayedStreak = oldWidget.streak; // keep old state temporarily
+          _overrideLevel = oldLevel;
+          _overrideProgress = oldLevel * oldLevel; // all cells filled
+          _overrideCompleted = oldCompleted;
           _changeType = CellChangeType.gain;
         });
 
@@ -54,7 +56,9 @@ class _HabitProgressState extends State<HabitProgress> {
         Future.delayed(const Duration(milliseconds: 350), () {
           if (!mounted) return;
           setState(() {
-            _delayedStreak = null; // now show actual streak
+            _overrideLevel = null;
+            _overrideProgress = null;
+            _overrideCompleted = null;
             _justCompleted = true;
             _changeType = CellChangeType.none;
           });
@@ -66,7 +70,9 @@ class _HabitProgressState extends State<HabitProgress> {
       } else {
         setState(() {
           _changeType = CellChangeType.gain;
-          _delayedStreak = null;
+          _overrideLevel = null;
+          _overrideProgress = null;
+          _overrideCompleted = null;
         });
         Future.delayed(const Duration(milliseconds: 450), () {
           if (mounted) setState(() => _changeType = CellChangeType.none);
@@ -88,7 +94,9 @@ class _HabitProgressState extends State<HabitProgress> {
         setState(() {
           _destroyingSquares = true;
           _changeType = lossType;
-          _delayedStreak = null;
+          _overrideLevel = null;
+          _overrideProgress = null;
+          _overrideCompleted = null;
         });
         Future.delayed(const Duration(milliseconds: 550), () {
           if (mounted) setState(() => _destroyingSquares = false);
@@ -96,7 +104,9 @@ class _HabitProgressState extends State<HabitProgress> {
       } else {
         setState(() {
           _changeType = lossType;
-          _delayedStreak = null;
+          _overrideLevel = null;
+          _overrideProgress = null;
+          _overrideCompleted = null;
         });
       }
 
@@ -136,9 +146,12 @@ class _HabitProgressState extends State<HabitProgress> {
 
   @override
   Widget build(BuildContext context) {
-    final displayStreak = _delayedStreak ?? widget.streak;
-    final (currentLevel, progress, completedLevels) =
-        _getProgressFor(displayStreak);
+    final (calcLevel, calcProgress, calcCompleted) =
+        _getProgressFor(widget.streak);
+
+    final currentLevel = _overrideLevel ?? calcLevel;
+    final progress = _overrideProgress ?? calcProgress;
+    final completedLevels = _overrideCompleted ?? calcCompleted;
 
     return SizedBox(
       width: 180,
