@@ -15,7 +15,14 @@ class _HabitProgressState extends State<HabitProgress> {
   final ScrollController _scrollController = ScrollController();
   bool _canScrollLeft = false;
   bool _canScrollRight = false;
+
+  // Animation states
   bool _justCompleted = false;
+  bool _destroyingSquares = false;
+  CellChangeType _changeType = CellChangeType.none;
+
+  // For delayed completion: show the last cell pulse before the square bounce
+  int? _delayedStreak;
 
   @override
   void initState() {
@@ -27,19 +34,78 @@ class _HabitProgressState extends State<HabitProgress> {
   @override
   void didUpdateWidget(HabitProgress oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.streak != widget.streak) {
-      final (_, _, oldCompleted) = _getProgressFor(oldWidget.streak);
-      final (_, _, newCompleted) = getProgress();
+    if (oldWidget.streak == widget.streak) return;
 
+    final oldProgress = _getProgressFor(oldWidget.streak);
+    final newProgress = _getProgressFor(widget.streak);
+    final oldCompleted = oldProgress.$3;
+    final newCompleted = newProgress.$3;
+
+    if (widget.streak > oldWidget.streak) {
+      // === GAIN ===
       if (newCompleted > oldCompleted) {
-        setState(() => _justCompleted = true);
-        Future.delayed(const Duration(milliseconds: 700), () {
-          if (mounted) setState(() => _justCompleted = false);
+        // Square just completed! Show last cell pulse first, then square bounce
+        setState(() {
+          _delayedStreak = oldWidget.streak; // keep old state temporarily
+          _changeType = CellChangeType.gain;
+        });
+
+        // After the cell pulse, switch to completed state with bounce
+        Future.delayed(const Duration(milliseconds: 350), () {
+          if (!mounted) return;
+          setState(() {
+            _delayedStreak = null; // now show actual streak
+            _justCompleted = true;
+            _changeType = CellChangeType.none;
+          });
+
+          Future.delayed(const Duration(milliseconds: 700), () {
+            if (mounted) setState(() => _justCompleted = false);
+          });
+        });
+      } else {
+        setState(() {
+          _changeType = CellChangeType.gain;
+          _delayedStreak = null;
+        });
+        Future.delayed(const Duration(milliseconds: 450), () {
+          if (mounted) setState(() => _changeType = CellChangeType.none);
+        });
+      }
+    } else {
+      // === LOSS ===
+      CellChangeType lossType;
+      if (widget.streak == 0 && oldWidget.streak > 0) {
+        lossType = CellChangeType.lossAll;
+      } else if (newCompleted < oldCompleted) {
+        lossType = CellChangeType.lossSquare;
+      } else {
+        lossType = CellChangeType.lossOne;
+      }
+
+      // If we lost completed squares, animate their destruction
+      if (newCompleted < oldCompleted) {
+        setState(() {
+          _destroyingSquares = true;
+          _changeType = lossType;
+          _delayedStreak = null;
+        });
+        Future.delayed(const Duration(milliseconds: 550), () {
+          if (mounted) setState(() => _destroyingSquares = false);
+        });
+      } else {
+        setState(() {
+          _changeType = lossType;
+          _delayedStreak = null;
         });
       }
 
-      WidgetsBinding.instance.addPostFrameCallback((_) => _updateScrollState());
+      Future.delayed(const Duration(milliseconds: 550), () {
+        if (mounted) setState(() => _changeType = CellChangeType.none);
+      });
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateScrollState());
   }
 
   (int level, int progress, int completedLevels) _getProgressFor(int streak) {
@@ -56,7 +122,8 @@ class _HabitProgressState extends State<HabitProgress> {
   void _updateScrollState() {
     if (!_scrollController.hasClients) return;
     setState(() {
-      _canScrollLeft = _scrollController.position.pixels < _scrollController.position.maxScrollExtent - 1;
+      _canScrollLeft = _scrollController.position.pixels <
+          _scrollController.position.maxScrollExtent - 1;
       _canScrollRight = _scrollController.position.pixels > 1;
     });
   }
@@ -67,13 +134,11 @@ class _HabitProgressState extends State<HabitProgress> {
     super.dispose();
   }
 
-  (int level, int progress, int completedLevels) getProgress() {
-    return _getProgressFor(widget.streak);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final (currentLevel, progress, completedLevels) = getProgress();
+    final displayStreak = _delayedStreak ?? widget.streak;
+    final (currentLevel, progress, completedLevels) =
+        _getProgressFor(displayStreak);
 
     return SizedBox(
       width: 180,
@@ -113,6 +178,8 @@ class _HabitProgressState extends State<HabitProgress> {
                             level: i,
                             completedLevels: completedLevels,
                             animate: _justCompleted && i == completedLevels,
+                            animateDestroy:
+                                _destroyingSquares && i == completedLevels,
                           ),
                         ),
                     ],
@@ -120,7 +187,11 @@ class _HabitProgressState extends State<HabitProgress> {
                 ),
               ),
             ),
-          CurrentSquare(level: currentLevel, progress: progress),
+          CurrentSquare(
+            level: currentLevel,
+            progress: progress,
+            changeType: _changeType,
+          ),
         ],
       ),
     );

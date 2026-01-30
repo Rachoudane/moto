@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
+enum CellChangeType { none, gain, lossOne, lossSquare, lossAll }
+
 class CurrentSquare extends StatefulWidget {
   final int level;
   final int progress;
+  final CellChangeType changeType;
 
   const CurrentSquare({
     super.key,
     required this.level,
     required this.progress,
+    this.changeType = CellChangeType.none,
   });
 
   @override
@@ -15,95 +19,147 @@ class CurrentSquare extends StatefulWidget {
 }
 
 class _CurrentSquareState extends State<CurrentSquare>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _glowAnimation;
+    with TickerProviderStateMixin {
+  late AnimationController _gainController;
+  late Animation<double> _gainScale;
+  late Animation<double> _gainGlow;
+
+  late AnimationController _lossController;
+  late Animation<double> _lossShake;
+  late Animation<double> _lossFlash;
+
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+
+    // Gain animation
+    _gainController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
-    _scaleAnimation = TweenSequence<double>([
+    _gainScale = TweenSequence<double>([
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.4), weight: 40),
       TweenSequenceItem(tween: Tween(begin: 1.4, end: 0.9), weight: 30),
       TweenSequenceItem(tween: Tween(begin: 0.9, end: 1.0), weight: 30),
-    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _glowAnimation = TweenSequence<double>([
+    ]).animate(CurvedAnimation(parent: _gainController, curve: Curves.easeOut));
+    _gainGlow = TweenSequence<double>([
       TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 40),
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 60),
-    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    ]).animate(CurvedAnimation(parent: _gainController, curve: Curves.easeOut));
+
+    // Loss animation
+    _lossController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _lossShake = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 3.0), weight: 15),
+      TweenSequenceItem(tween: Tween(begin: 3.0, end: -3.0), weight: 15),
+      TweenSequenceItem(tween: Tween(begin: -3.0, end: 2.0), weight: 15),
+      TweenSequenceItem(tween: Tween(begin: 2.0, end: -2.0), weight: 15),
+      TweenSequenceItem(tween: Tween(begin: -2.0, end: 1.0), weight: 15),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 25),
+    ]).animate(CurvedAnimation(parent: _lossController, curve: Curves.easeOut));
+    _lossFlash = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 20),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 30),
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 0.5), weight: 20),
+      TweenSequenceItem(tween: Tween(begin: 0.5, end: 0.0), weight: 30),
+    ]).animate(CurvedAnimation(parent: _lossController, curve: Curves.easeOut));
   }
 
   @override
   void didUpdateWidget(CurrentSquare oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.progress > oldWidget.progress && widget.progress > 0) {
-      _controller.forward(from: 0);
+
+    if (widget.changeType == CellChangeType.gain && widget.progress > 0) {
+      _gainController.forward(from: 0);
+    } else if (widget.changeType == CellChangeType.lossOne ||
+        widget.changeType == CellChangeType.lossSquare ||
+        widget.changeType == CellChangeType.lossAll) {
+      _lossController.forward(from: 0);
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _gainController.dispose();
+    _lossController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 44,
-      height: 44,
-      child: GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: widget.level,
-          crossAxisSpacing: 2,
-          mainAxisSpacing: 2,
-        ),
-        itemCount: widget.level * widget.level,
-        itemBuilder: (context, index) {
-          final bool isFilled = index < widget.progress;
-          final bool isLastFilled = index == widget.progress - 1 && widget.progress > 0;
+    return AnimatedBuilder(
+      animation: Listenable.merge([_gainController, _lossController]),
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(_lossShake.value, 0),
+          child: SizedBox(
+            width: 44,
+            height: 44,
+            child: GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: widget.level,
+                crossAxisSpacing: 2,
+                mainAxisSpacing: 2,
+              ),
+              itemCount: widget.level * widget.level,
+              itemBuilder: (context, index) {
+                final bool isFilled = index < widget.progress;
+                final bool isLastFilled =
+                    index == widget.progress - 1 && widget.progress > 0;
 
-          Widget cell = Container(
-            decoration: BoxDecoration(
-              color: isFilled ? Colors.green[500] : Colors.grey[800],
-              borderRadius: BorderRadius.circular(2),
-            ),
-          );
+                // Red flash overlay on loss
+                Color cellColor;
+                if (isFilled) {
+                  cellColor = Color.lerp(
+                    Colors.green[500]!,
+                    Colors.red[500]!,
+                    _lossFlash.value * 0.5,
+                  )!;
+                } else {
+                  cellColor = Color.lerp(
+                    Colors.grey[800]!,
+                    Colors.red[900]!,
+                    _lossFlash.value * 0.3,
+                  )!;
+                }
 
-          if (isLastFilled) {
-            return AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green[500],
-                      borderRadius: BorderRadius.circular(2),
-                      boxShadow: _glowAnimation.value > 0
-                          ? [
-                              BoxShadow(
-                                color: Colors.green.withValues(alpha: 0.6 * _glowAnimation.value),
-                                blurRadius: 6 * _glowAnimation.value,
-                                spreadRadius: 1 * _glowAnimation.value,
-                              ),
-                            ]
-                          : null,
+                if (isLastFilled) {
+                  return Transform.scale(
+                    scale: _gainScale.value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: cellColor,
+                        borderRadius: BorderRadius.circular(2),
+                        boxShadow: _gainGlow.value > 0
+                            ? [
+                                BoxShadow(
+                                  color: Colors.green.withValues(
+                                      alpha: 0.6 * _gainGlow.value),
+                                  blurRadius: 6 * _gainGlow.value,
+                                  spreadRadius: 1 * _gainGlow.value,
+                                ),
+                              ]
+                            : null,
+                      ),
                     ),
+                  );
+                }
+
+                return Container(
+                  decoration: BoxDecoration(
+                    color: cellColor,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 );
               },
-            );
-          }
-
-          return cell;
-        },
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
