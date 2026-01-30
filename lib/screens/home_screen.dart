@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 20,
                 right: 20,
                 top: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 20,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -367,6 +367,9 @@ class _HomeScreenState extends State<HomeScreen> {
               // Liste des habitudes
               Expanded(
                 child: ListView.separated(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewPadding.bottom + 80,
+                  ),
                   itemCount: _habits.length,
                   separatorBuilder: (context, index) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
