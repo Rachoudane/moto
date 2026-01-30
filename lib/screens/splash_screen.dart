@@ -11,8 +11,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _opacity;
+  late Animation<double> _fadeIn;
   late Animation<double> _scale;
+  late Animation<double> _taglineFade;
+  late List<Animation<double>> _cellAnimations;
 
   static const Color primaryGreen = Color(0xFF4CAF50);
   static const Color darkGreen = Color(0xFF2E7D32);
@@ -29,19 +31,38 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 2000),
     );
 
-    _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _fadeIn = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.65, curve: Curves.easeInOut),
+        curve: const Interval(0.0, 0.5, curve: Curves.easeInOut),
       ),
     );
 
     _scale = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.65, curve: Curves.easeInOut),
+        curve: const Interval(0.0, 0.5, curve: Curves.easeInOut),
       ),
     );
+
+    _taglineFade = Tween<double>(begin: 0.0, end: 0.6).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: const Interval(0.4, 0.8, curve: Curves.easeIn),
+      ),
+    );
+
+    // Pre-build cell animations with safe intervals
+    _cellAnimations = List.generate(9, (index) {
+      final start = index * 0.05; // 0.0 to 0.40
+      final end = (start + 0.4).clamp(0.0, 1.0); // 0.4 to 0.80
+      return Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: Interval(start, end, curve: Curves.easeOut),
+        ),
+      );
+    });
 
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) _controller.forward();
@@ -71,7 +92,8 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox.expand(
+        child: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -88,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen>
                 const Spacer(),
 
                 FadeTransition(
-                  opacity: _opacity,
+                  opacity: _fadeIn,
                   child: ScaleTransition(
                     scale: _scale,
                     child: Container(
@@ -97,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen>
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: primaryGreen.withValues(alpha: 0.4),
+                            color: primaryGreen.withValues(alpha: 0.4 * _fadeIn.value),
                             blurRadius: 30,
                             spreadRadius: 5,
                           ),
@@ -111,7 +133,7 @@ class _SplashScreenState extends State<SplashScreen>
                 const SizedBox(height: 40),
 
                 FadeTransition(
-                  opacity: _opacity,
+                  opacity: _fadeIn,
                   child: const Text(
                     'Moto',
                     style: TextStyle(
@@ -126,7 +148,7 @@ class _SplashScreenState extends State<SplashScreen>
                 const SizedBox(height: 8),
 
                 FadeTransition(
-                  opacity: _opacity,
+                  opacity: _fadeIn,
                   child: Text(
                     '元',
                     style: TextStyle(
@@ -139,7 +161,7 @@ class _SplashScreenState extends State<SplashScreen>
                 const SizedBox(height: 20),
 
                 FadeTransition(
-                  opacity: _opacity,
+                  opacity: _fadeIn,
                   child: Container(
                     width: 60,
                     height: 3,
@@ -155,12 +177,7 @@ class _SplashScreenState extends State<SplashScreen>
                 const Spacer(),
 
                 FadeTransition(
-                  opacity: Tween<double>(begin: 0.0, end: 0.6).animate(
-                    CurvedAnimation(
-                      parent: _controller,
-                      curve: const Interval(0.5, 1.0, curve: Curves.easeIn),
-                    ),
-                  ),
+                  opacity: _taglineFade,
                   child: Text(
                     'Construis ta base',
                     style: TextStyle(
@@ -177,32 +194,23 @@ class _SplashScreenState extends State<SplashScreen>
           },
         ),
       ),
+      ),
     );
   }
 
   Widget _buildLogo() {
-    return GridView.builder(
+    return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 6,
-        mainAxisSpacing: 6,
-      ),
-      itemCount: 9,
-      itemBuilder: (context, index) {
-        final delay = index * 0.08;
-        final itemAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(
-            parent: _controller,
-            curve: Interval(delay, 0.6 + delay, curve: Curves.easeOut),
-          ),
-        );
-
+      padding: EdgeInsets.zero,
+      crossAxisCount: 3,
+      crossAxisSpacing: 6,
+      mainAxisSpacing: 6,
+      children: List.generate(9, (index) {
         return AnimatedBuilder(
-          animation: itemAnimation,
+          animation: _cellAnimations[index],
           builder: (context, child) {
             return Transform.scale(
-              scale: itemAnimation.value,
+              scale: _cellAnimations[index].value,
               child: Container(
                 decoration: BoxDecoration(
                   color: index < 7 ? primaryGreen : cardBg,
@@ -215,7 +223,7 @@ class _SplashScreenState extends State<SplashScreen>
             );
           },
         );
-      },
+      }),
     );
   }
 }
