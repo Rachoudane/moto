@@ -336,7 +336,11 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddHabitDialog,
         backgroundColor: Colors.white,
-        child: const Icon(Icons.add, color: Colors.black),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: const Icon(Icons.add, color: Colors.black, size: 28),
       ),
       body: SafeArea(
         child: _isLoading
@@ -346,43 +350,90 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Moto',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.ideographic,
+                children: [
+                  const Text(
+                    '元',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white24,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Moto',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Text(
                 'Construis ta base',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey[500],
+                  color: Colors.grey[600],
+                  letterSpacing: 0.5,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 28),
 
               // Liste des habitudes
               Expanded(
-                child: ListView.separated(
-                  padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewPadding.bottom + 80,
-                  ),
-                  itemCount: _habits.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final habit = _habits[index];
-                    return HabitCard(
-                      habit: habit,
-                      onIncrement: () => _incrementStreak(habit.id),
-                      onDecrement: () => _decrementStreak(habit.id),
-                      onDelete: () => _deleteHabit(habit.id),
-                      onUpdate: _updateHabit,
-                    );
-                  },
-                ),
+                child: _habits.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '元',
+                            style: TextStyle(
+                              fontSize: 64,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Commence par une habitude',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Tape + pour en ajouter une',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewPadding.bottom + 80,
+                      ),
+                      itemCount: _habits.length,
+                      separatorBuilder: (context, index) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final habit = _habits[index];
+                        return HabitCard(
+                          habit: habit,
+                          onIncrement: () => _incrementStreak(habit.id),
+                          onDecrement: () => _decrementStreak(habit.id),
+                          onDelete: () => _deleteHabit(habit.id),
+                          onUpdate: _updateHabit,
+                        );
+                      },
+                    ),
               ),
             ],
           ),

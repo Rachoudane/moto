@@ -285,7 +285,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit, color: Colors.white),
+            icon: Icon(Icons.edit_outlined, color: Colors.grey[400]),
             onPressed: _showEditDialog,
           ),
         ],
@@ -349,6 +349,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.05),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

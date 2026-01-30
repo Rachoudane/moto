@@ -91,6 +91,9 @@ class HabitCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1A1A1A),
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.05),
+            ),
           ),
           child: Column(
           children: [
@@ -146,32 +149,34 @@ class HabitCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: onDecrement,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.red[900]?.withValues(alpha: 0.3),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text('Raté', style: TextStyle(color: Colors.white)),
+                  child: Material(
+                    color: Colors.red[900]?.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(8),
+                    child: InkWell(
+                      onTap: onDecrement,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: const Center(
+                          child: Text('Raté', style: TextStyle(color: Colors.white)),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: onIncrement,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.green[700],
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Center(
-                        child: Text('Fait !', style: TextStyle(color: Colors.white)),
+                  child: Material(
+                    color: Colors.green[700]!,
+                    borderRadius: BorderRadius.circular(8),
+                    child: InkWell(
+                      onTap: onIncrement,
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: const Center(
+                          child: Text('Fait !', style: TextStyle(color: Colors.white)),
+                        ),
                       ),
                     ),
                   ),
