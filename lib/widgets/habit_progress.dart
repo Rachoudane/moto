@@ -15,19 +15,42 @@ class _HabitProgressState extends State<HabitProgress> {
   final ScrollController _scrollController = ScrollController();
   bool _canScrollLeft = false;
   bool _canScrollRight = false;
+  bool _justCompleted = false;
 
-  @override
-  void didUpdateWidget(HabitProgress oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.streak != widget.streak) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _updateScrollState());
-    }
-  }
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_updateScrollState);
     WidgetsBinding.instance.addPostFrameCallback((_) => _updateScrollState());
+  }
+
+  @override
+  void didUpdateWidget(HabitProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.streak != widget.streak) {
+      final (_, _, oldCompleted) = _getProgressFor(oldWidget.streak);
+      final (_, _, newCompleted) = getProgress();
+
+      if (newCompleted > oldCompleted) {
+        setState(() => _justCompleted = true);
+        Future.delayed(const Duration(milliseconds: 700), () {
+          if (mounted) setState(() => _justCompleted = false);
+        });
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) => _updateScrollState());
+    }
+  }
+
+  (int level, int progress, int completedLevels) _getProgressFor(int streak) {
+    if (streak <= 0) return (1, 0, 0);
+    int level = 1;
+    int remaining = streak;
+    while (remaining >= level * level) {
+      remaining -= level * level;
+      level++;
+    }
+    return (level, remaining, level - 1);
   }
 
   void _updateScrollState() {
@@ -45,17 +68,7 @@ class _HabitProgressState extends State<HabitProgress> {
   }
 
   (int level, int progress, int completedLevels) getProgress() {
-    if (widget.streak <= 0) return (1, 0, 0);
-
-    int level = 1;
-    int remaining = widget.streak;
-
-    while (remaining >= level * level) {
-      remaining -= level * level;
-      level++;
-    }
-
-    return (level, remaining, level - 1);
+    return _getProgressFor(widget.streak);
   }
 
   @override
@@ -96,7 +109,11 @@ class _HabitProgressState extends State<HabitProgress> {
                       for (int i = 1; i <= completedLevels; i++)
                         Padding(
                           padding: const EdgeInsets.only(right: 4),
-                          child: CompletedSquare(level: i, completedLevels: completedLevels),
+                          child: CompletedSquare(
+                            level: i,
+                            completedLevels: completedLevels,
+                            animate: _justCompleted && i == completedLevels,
+                          ),
                         ),
                     ],
                   ),
