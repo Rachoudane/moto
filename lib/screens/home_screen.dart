@@ -101,6 +101,11 @@ class _HomeScreenState extends State<HomeScreen> {
     _saveHabits();
   }
 
+  void _updateHabit() {
+    setState(() {});
+    _saveHabits();
+  }
+
   void _showAddHabitDialog() {
     String name = '';
     bool isQuitting = false;
@@ -371,6 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onIncrement: () => _incrementStreak(habit.id),
                       onDecrement: () => _decrementStreak(habit.id),
                       onDelete: () => _deleteHabit(habit.id),
+                      onUpdate: _updateHabit,
                     );
                   },
                 ),

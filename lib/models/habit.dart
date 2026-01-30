@@ -6,9 +6,9 @@ enum PenaltyMode {
 
 class Habit {
   final String id;
-  final String name;
-  final bool isQuitting;
-  final PenaltyMode penaltyMode;
+  String name;
+  bool isQuitting;
+  PenaltyMode penaltyMode;
   int streak;
 
   Habit({

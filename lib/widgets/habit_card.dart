@@ -8,6 +8,7 @@ class HabitCard extends StatelessWidget {
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
   final VoidCallback onDelete;
+  final VoidCallback onUpdate;
 
   const HabitCard({
     super.key,
@@ -15,6 +16,7 @@ class HabitCard extends StatelessWidget {
     required this.onIncrement,
     required this.onDecrement,
     required this.onDelete,
+    required this.onUpdate,
   });
 
   String _getModeEmoji(PenaltyMode mode) {
@@ -77,7 +79,10 @@ class HabitCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HabitDetailScreen(habit: habit),
+              builder: (context) => HabitDetailScreen(
+                habit: habit,
+                onUpdate: onUpdate,
+              ),
             ),
           );
         },
