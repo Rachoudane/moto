@@ -447,6 +447,12 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             const SizedBox(height: 12),
             HabitCalendar(habit: widget.habit),
             const SizedBox(height: 32),
+            _buildStatCard(
+              title: l10n.penaltyMode,
+              value: _getModeName(l10n, widget.habit.penaltyMode),
+              subtitle: _getModeDescription(l10n, widget.habit.penaltyMode),
+            ),
+            const SizedBox(height: 32),
             Text(
               l10n.statistics,
               style: GoogleFonts.inter(
@@ -530,12 +536,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 12),
-            _buildStatCard(
-              title: l10n.penaltyMode,
-              value: _getModeName(l10n, widget.habit.penaltyMode),
-              subtitle: _getModeDescription(l10n, widget.habit.penaltyMode),
             ),
             SizedBox(height: MediaQuery.of(context).viewPadding.bottom + 16),
           ],
