@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
+import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
 
 class HabitDetailScreen extends StatefulWidget {
@@ -316,7 +317,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,7 +342,18 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 child: HabitProgress(streak: widget.habit.streak),
               ),
             ),
-            const SizedBox(height: 52),
+            const SizedBox(height: 32),
+            Text(
+              l10n.history,
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: textPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            HabitCalendar(habit: widget.habit),
+            const SizedBox(height: 24),
             _buildStatCard(
               title: l10n.currentProgress,
               value: '$progress / $totalForNext',
@@ -359,6 +371,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               value: _getModeName(l10n, widget.habit.penaltyMode),
               subtitle: _getModeDescription(l10n, widget.habit.penaltyMode),
             ),
+            SizedBox(height: MediaQuery.of(context).viewPadding.bottom + 16),
           ],
         ),
       ),

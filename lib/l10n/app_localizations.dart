@@ -303,6 +303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'STOP'**
   String get stop;
+
+  /// No description provided for @history.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
 }
 
 class _AppLocalizationsDelegate

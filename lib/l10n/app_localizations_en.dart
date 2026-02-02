@@ -115,4 +115,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stop => 'STOP';
+
+  @override
+  String get history => 'History';
 }

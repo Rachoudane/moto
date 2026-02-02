@@ -4,6 +4,12 @@ enum PenaltyMode {
   hardcore, // Retour à zéro total
 }
 
+enum DayStatus {
+  validated,
+  skipped,
+  pending,
+}
+
 class Habit {
   final String id;
   String name;
@@ -11,6 +17,7 @@ class Habit {
   PenaltyMode penaltyMode;
   int streak;
   DateTime? lastValidatedDate;
+  Map<String, DayStatus> history;
 
   Habit({
     required this.id,
@@ -19,7 +26,8 @@ class Habit {
     this.penaltyMode = PenaltyMode.standard,
     this.streak = 0,
     this.lastValidatedDate,
-  });
+    Map<String, DayStatus>? history,
+  }) : history = history ?? {};
 
   bool get isValidatedToday {
     if (lastValidatedDate == null) return false;
@@ -41,6 +49,20 @@ class Habit {
     return today.difference(lastDate).inDays - 1;
   }
 
+  static String _dateToKey(DateTime date) {
+    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+  }
+
+  DayStatus getStatusForDate(DateTime date) {
+    final key = _dateToKey(date);
+    return history[key] ?? DayStatus.pending;
+  }
+
+  void setStatusForDate(DateTime date, DayStatus status) {
+    final key = _dateToKey(date);
+    history[key] = status;
+  }
+
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
@@ -48,6 +70,7 @@ class Habit {
     'penaltyMode': penaltyMode.index,
     'streak': streak,
     'lastValidatedDate': lastValidatedDate?.toIso8601String(),
+    'history': history.map((key, value) => MapEntry(key, value.index)),
   };
 
   factory Habit.fromJson(Map<String, dynamic> json) => Habit(
@@ -59,5 +82,8 @@ class Habit {
     lastValidatedDate: json['lastValidatedDate'] != null
         ? DateTime.parse(json['lastValidatedDate'])
         : null,
+    history: (json['history'] as Map<String, dynamic>?)?.map(
+      (key, value) => MapEntry(key, DayStatus.values[value as int]),
+    ) ?? {},
   );
 }

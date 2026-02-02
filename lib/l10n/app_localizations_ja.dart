@@ -115,4 +115,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stop => 'STOP';
+
+  @override
+  String get history => '履歴';
 }

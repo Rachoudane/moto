@@ -50,9 +50,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     for (final habit in _habits) {
       if (habit.lastValidatedDate != null && habit.daysMissed > 0) {
-        for (int i = 0; i < habit.daysMissed; i++) {
+        final lastDate = DateTime(
+          habit.lastValidatedDate!.year,
+          habit.lastValidatedDate!.month,
+          habit.lastValidatedDate!.day,
+        );
+        for (int i = 1; i <= habit.daysMissed; i++) {
+          final missedDate = lastDate.add(Duration(days: i));
+          habit.setStatusForDate(missedDate, DayStatus.skipped);
           _applyPenalty(habit);
         }
+        habit.lastValidatedDate = DateTime.now();
         hasChanges = true;
       }
     }
@@ -95,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!habit.isValidatedToday) {
         habit.streak++;
         habit.lastValidatedDate = DateTime.now();
+        habit.setStatusForDate(DateTime.now(), DayStatus.validated);
       }
     });
     _saveHabits();
@@ -106,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!habit.isValidatedToday) {
         _applyPenalty(habit);
         habit.lastValidatedDate = DateTime.now();
+        habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
       }
     });
     _saveHabits();
