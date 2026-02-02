@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,11 +17,12 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _taglineFade;
   late List<Animation<double>> _cellAnimations;
 
-  static const Color primaryGreen = Color(0xFF4CAF50);
-  static const Color darkGreen = Color(0xFF2E7D32);
-  static const Color darkBg = Color(0xFF0F0F0F);
-  static const Color cardBg = Color(0xFF1A1A1A);
-  static const Color textWhite = Color(0xFFE4E5F1);
+  static const Color accentGreen = Color(0xFF7DD3A8);
+  static const Color darkBg = Color(0xFF0A0A0A);
+  static const Color cardBg = Color(0xFF161B22);
+  static const Color textPrimary = Color(0xFFE6EDF3);
+  static const Color emptySquare = Color(0xFF21262D);
+  static const Color emptyBorder = Color(0xFF30363D);
 
   @override
   void initState() {
@@ -119,7 +121,7 @@ class _SplashScreenState extends State<SplashScreen>
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: primaryGreen.withValues(alpha: 0.4 * _fadeIn.value),
+                            color: accentGreen.withValues(alpha: 0.3 * _fadeIn.value),
                             blurRadius: 30,
                             spreadRadius: 5,
                           ),
@@ -134,13 +136,13 @@ class _SplashScreenState extends State<SplashScreen>
 
                 FadeTransition(
                   opacity: _fadeIn,
-                  child: const Text(
+                  child: Text(
                     'Moto',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 42,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       letterSpacing: 2,
-                      color: textWhite,
+                      color: textPrimary,
                     ),
                   ),
                 ),
@@ -153,7 +155,7 @@ class _SplashScreenState extends State<SplashScreen>
                     '元',
                     style: TextStyle(
                       fontSize: 24,
-                      color: textWhite.withValues(alpha: 0.6),
+                      color: textPrimary.withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -166,8 +168,8 @@ class _SplashScreenState extends State<SplashScreen>
                     width: 60,
                     height: 3,
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [primaryGreen, darkGreen],
+                      gradient: LinearGradient(
+                        colors: [accentGreen, accentGreen.withValues(alpha: 0.3)],
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -180,9 +182,9 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _taglineFade,
                   child: Text(
                     'Construis ta base',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: textWhite.withValues(alpha: 0.5),
+                      color: textPrimary.withValues(alpha: 0.4),
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -213,10 +215,10 @@ class _SplashScreenState extends State<SplashScreen>
               scale: _cellAnimations[index].value,
               child: Container(
                 decoration: BoxDecoration(
-                  color: index < 7 ? primaryGreen : cardBg,
-                  borderRadius: BorderRadius.circular(6),
+                  color: index < 7 ? accentGreen : emptySquare,
+                  borderRadius: BorderRadius.circular(8),
                   border: index >= 7
-                      ? Border.all(color: Colors.grey[800]!, width: 1)
+                      ? Border.all(color: emptyBorder, width: 1)
                       : null,
                 ),
               ),

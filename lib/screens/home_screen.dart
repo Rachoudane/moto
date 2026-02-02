@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/habit.dart';
 import '../services/storage_service.dart';
 import '../widgets/habit_card.dart';
@@ -14,6 +15,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final StorageService _storageService = StorageService();
   List<Habit> _habits = [];
   bool _isLoading = true;
+
+  static const Color bg = Color(0xFF0A0A0A);
+  static const Color cardBg = Color(0xFF161B22);
+  static const Color accentGreen = Color(0xFF7DD3A8);
+  static const Color danger = Color(0xFFF85149);
+  static const Color textPrimary = Color(0xFFE6EDF3);
+  static const Color textSecondary = Color(0xFF7D8590);
 
   @override
   void initState() {
@@ -128,41 +136,41 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1A1A1A),
+      backgroundColor: cardBg,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
-            return Padding(
+            return SingleChildScrollView(
               padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 20,
+                left: 24,
+                right: 24,
+                top: 24,
+                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 24,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Nouvelle habitude',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      color: textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   TextField(
                     autofocus: true,
-                    style: const TextStyle(color: Colors.white),
+                    style: GoogleFonts.inter(color: textPrimary),
                     decoration: InputDecoration(
                       hintText: 'Nom de l\'habitude',
-                      hintStyle: TextStyle(color: Colors.grey[600]),
+                      hintStyle: GoogleFonts.inter(color: textSecondary),
                       filled: true,
-                      fillColor: const Color(0xFF0F0F0F),
+                      fillColor: bg,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -170,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     onChanged: (value) => name = value,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Type d'habitude
                   Row(
@@ -178,14 +186,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () => setModalState(() => isQuitting = false),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: !isQuitting ? Colors.green[700] : const Color(0xFF0F0F0F),
-                              borderRadius: BorderRadius.circular(8),
+                              color: !isQuitting ? accentGreen.withValues(alpha: 0.2) : bg,
+                              borderRadius: BorderRadius.circular(10),
+                              border: !isQuitting ? Border.all(color: accentGreen.withValues(alpha: 0.4)) : null,
                             ),
-                            child: const Center(
-                              child: Text('À faire', style: TextStyle(color: Colors.white)),
+                            child: Center(
+                              child: Text('À faire', style: GoogleFonts.inter(
+                                color: !isQuitting ? accentGreen : textSecondary,
+                                fontWeight: FontWeight.w500,
+                              )),
                             ),
                           ),
                         ),
@@ -194,31 +207,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () => setModalState(() => isQuitting = true),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: isQuitting ? Colors.red[700] : const Color(0xFF0F0F0F),
-                              borderRadius: BorderRadius.circular(8),
+                              color: isQuitting ? danger.withValues(alpha: 0.2) : bg,
+                              borderRadius: BorderRadius.circular(10),
+                              border: isQuitting ? Border.all(color: danger.withValues(alpha: 0.4)) : null,
                             ),
-                            child: const Center(
-                              child: Text('À arrêter', style: TextStyle(color: Colors.white)),
+                            child: Center(
+                              child: Text('À arrêter', style: GoogleFonts.inter(
+                                color: isQuitting ? danger : textSecondary,
+                                fontWeight: FontWeight.w500,
+                              )),
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Mode de pénalité
                   Text(
                     'Mode de pénalité',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: Colors.grey[400],
+                      color: textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       _buildModeButton(
@@ -252,12 +270,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 8),
                   Text(
                     _getModeDescription(penaltyMode),
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: textSecondary.withValues(alpha: 0.7),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
 
                   // Bouton créer
                   SizedBox(
@@ -272,15 +290,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: accentGreen,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Créer',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            style: GoogleFonts.inter(
+                              color: const Color(0xFF0A0A0A),
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -308,12 +326,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.white.withValues(alpha: 0.15) : const Color(0xFF0F0F0F),
-            borderRadius: BorderRadius.circular(8),
-            border: isSelected ? Border.all(color: Colors.white.withValues(alpha: 0.3)) : null,
+            color: isSelected ? textPrimary.withValues(alpha: 0.1) : bg,
+            borderRadius: BorderRadius.circular(10),
+            border: isSelected ? Border.all(color: textPrimary.withValues(alpha: 0.2)) : null,
           ),
           child: Column(
             children: [
@@ -321,9 +340,10 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 4),
               Text(
                 label,
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 12,
-                  color: isSelected ? Colors.white : Colors.grey[500],
+                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+                  color: isSelected ? textPrimary : textSecondary,
                 ),
               ),
             ],
@@ -349,18 +369,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddHabitDialog,
-        backgroundColor: Colors.white,
+        backgroundColor: accentGreen,
         elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        child: const Icon(Icons.add, color: Colors.black, size: 28),
+        child: const Icon(Icons.add, color: Color(0xFF0A0A0A), size: 28),
       ),
       body: SafeArea(
         child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: accentGreen))
           : Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -368,35 +388,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.ideographic,
                 children: [
-                  const Text(
+                  Text(
                     '元',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w300,
-                      color: Colors.white24,
+                      color: textPrimary.withValues(alpha: 0.2),
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     'Moto',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      color: textPrimary,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 'Construis ta base',
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 14,
-                  color: Colors.grey[600],
+                  color: textSecondary,
                   letterSpacing: 0.5,
                 ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: 32),
 
               // Liste des habitudes
               Expanded(
@@ -409,23 +429,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             '元',
                             style: TextStyle(
                               fontSize: 64,
-                              color: Colors.grey[800],
+                              color: textSecondary.withValues(alpha: 0.3),
                             ),
                           ),
                           const SizedBox(height: 16),
                           Text(
                             'Commence par une habitude',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontSize: 16,
-                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
+                              color: textSecondary,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             'Tape + pour en ajouter une',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
-                              color: Colors.grey[700],
+                              color: textSecondary.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
@@ -436,7 +457,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         bottom: MediaQuery.of(context).viewPadding.bottom + 80,
                       ),
                       itemCount: _habits.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 12),
+                      separatorBuilder: (context, index) => const SizedBox(height: 14),
                       itemBuilder: (context, index) {
                         final habit = _habits[index];
                         return HabitCard(

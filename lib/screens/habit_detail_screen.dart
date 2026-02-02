@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/habit.dart';
 import '../widgets/habit_progress.dart';
 
@@ -17,6 +18,13 @@ class HabitDetailScreen extends StatefulWidget {
 }
 
 class _HabitDetailScreenState extends State<HabitDetailScreen> {
+  static const Color bg = Color(0xFF0A0A0A);
+  static const Color cardBg = Color(0xFF161B22);
+  static const Color accentGreen = Color(0xFF7DD3A8);
+  static const Color danger = Color(0xFFF85149);
+  static const Color textPrimary = Color(0xFFE6EDF3);
+  static const Color textSecondary = Color(0xFF7D8590);
+
   String _getModeName(PenaltyMode mode) {
     switch (mode) {
       case PenaltyMode.zen:
@@ -69,41 +77,41 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF1A1A1A),
+      backgroundColor: cardBg,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
-            return Padding(
+            return SingleChildScrollView(
               padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 20,
+                left: 24,
+                right: 24,
+                top: 24,
+                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 24,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Modifier l\'habitude',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      color: textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   TextFormField(
                     initialValue: name,
-                    style: const TextStyle(color: Colors.white),
+                    style: GoogleFonts.inter(color: textPrimary),
                     decoration: InputDecoration(
                       hintText: 'Nom de l\'habitude',
-                      hintStyle: TextStyle(color: Colors.grey[600]),
+                      hintStyle: GoogleFonts.inter(color: textSecondary),
                       filled: true,
-                      fillColor: const Color(0xFF0F0F0F),
+                      fillColor: bg,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -111,20 +119,25 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     ),
                     onChanged: (value) => name = value,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Row(
                     children: [
                       Expanded(
                         child: GestureDetector(
                           onTap: () => setModalState(() => isQuitting = false),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: !isQuitting ? Colors.green[700] : const Color(0xFF0F0F0F),
-                              borderRadius: BorderRadius.circular(8),
+                              color: !isQuitting ? accentGreen.withValues(alpha: 0.2) : bg,
+                              borderRadius: BorderRadius.circular(10),
+                              border: !isQuitting ? Border.all(color: accentGreen.withValues(alpha: 0.4)) : null,
                             ),
-                            child: const Center(
-                              child: Text('À faire', style: TextStyle(color: Colors.white)),
+                            child: Center(
+                              child: Text('À faire', style: GoogleFonts.inter(
+                                color: !isQuitting ? accentGreen : textSecondary,
+                                fontWeight: FontWeight.w500,
+                              )),
                             ),
                           ),
                         ),
@@ -133,29 +146,34 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () => setModalState(() => isQuitting = true),
-                          child: Container(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: isQuitting ? Colors.red[700] : const Color(0xFF0F0F0F),
-                              borderRadius: BorderRadius.circular(8),
+                              color: isQuitting ? danger.withValues(alpha: 0.2) : bg,
+                              borderRadius: BorderRadius.circular(10),
+                              border: isQuitting ? Border.all(color: danger.withValues(alpha: 0.4)) : null,
                             ),
-                            child: const Center(
-                              child: Text('À arrêter', style: TextStyle(color: Colors.white)),
+                            child: Center(
+                              child: Text('À arrêter', style: GoogleFonts.inter(
+                                color: isQuitting ? danger : textSecondary,
+                                fontWeight: FontWeight.w500,
+                              )),
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Text(
                     'Mode de pénalité',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: Colors.grey[400],
+                      color: textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       _buildModeButton(
@@ -186,7 +204,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
@@ -204,15 +222,15 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: accentGreen,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Enregistrer',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                            style: GoogleFonts.inter(
+                              color: const Color(0xFF0A0A0A),
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -240,12 +258,13 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.white.withValues(alpha: 0.15) : const Color(0xFF0F0F0F),
-            borderRadius: BorderRadius.circular(8),
-            border: isSelected ? Border.all(color: Colors.white.withValues(alpha: 0.3)) : null,
+            color: isSelected ? textPrimary.withValues(alpha: 0.1) : bg,
+            borderRadius: BorderRadius.circular(10),
+            border: isSelected ? Border.all(color: textPrimary.withValues(alpha: 0.2)) : null,
           ),
           child: Column(
             children: [
@@ -253,9 +272,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               const SizedBox(height: 4),
               Text(
                 label,
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 12,
-                  color: isSelected ? Colors.white : Colors.grey[500],
+                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+                  color: isSelected ? textPrimary : textSecondary,
                 ),
               ),
             ],
@@ -271,27 +291,30 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     final completedSquares = _getTotalSquaresCompleted();
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0F0F0F),
+      backgroundColor: bg,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
           widget.habit.name,
-          style: const TextStyle(color: Colors.white),
+          style: GoogleFonts.inter(
+            color: textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: textPrimary),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit_outlined, color: Colors.grey[400]),
+            icon: const Icon(Icons.edit_outlined, color: textSecondary),
             onPressed: _showEditDialog,
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -299,34 +322,35 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.red[900],
+                  color: danger.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: danger.withValues(alpha: 0.3)),
                 ),
-                child: const Text(
+                child: Text(
                   'À arrêter',
-                  style: TextStyle(color: Colors.white, fontSize: 12),
+                  style: GoogleFonts.inter(color: danger, fontSize: 12, fontWeight: FontWeight.w500),
                 ),
               ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 28),
             Center(
               child: Transform.scale(
                 scale: 2,
                 child: HabitProgress(streak: widget.habit.streak),
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 52),
             _buildStatCard(
               title: 'Progression actuelle',
               value: '$progress / $totalForNext',
               subtitle: 'Carré $currentLevel×$currentLevel en cours',
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             _buildStatCard(
               title: 'Cases totales',
               value: '${widget.habit.streak}',
               subtitle: '$completedSquares carré${completedSquares > 1 ? 's' : ''} complété${completedSquares > 1 ? 's' : ''}',
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             _buildStatCard(
               title: 'Mode de pénalité',
               value: _getModeName(widget.habit.penaltyMode),
@@ -345,12 +369,12 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   }) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(12),
+        color: cardBg,
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.05),
+          color: const Color(0xFF30363D).withValues(alpha: 0.5),
         ),
       ),
       child: Column(
@@ -358,26 +382,27 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 12,
-              color: Colors.grey[500],
+              fontWeight: FontWeight.w500,
+              color: textSecondary,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            value,
+            style: GoogleFonts.inter(
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: textPrimary,
             ),
           ),
           const SizedBox(height: 4),
           Text(
-            value,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
             subtitle,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 13,
-              color: Colors.grey[600],
+              color: textSecondary.withValues(alpha: 0.7),
             ),
           ),
         ],

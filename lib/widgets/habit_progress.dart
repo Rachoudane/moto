@@ -53,7 +53,7 @@ class _HabitProgressState extends State<HabitProgress> {
         });
 
         // After the cell pulse, switch to completed state with bounce
-        Future.delayed(const Duration(milliseconds: 350), () {
+        Future.delayed(const Duration(milliseconds: 300), () {
           if (!mounted) return;
           setState(() {
             _overrideLevel = null;

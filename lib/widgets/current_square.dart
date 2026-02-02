@@ -20,6 +20,11 @@ class CurrentSquare extends StatefulWidget {
 
 class _CurrentSquareState extends State<CurrentSquare>
     with TickerProviderStateMixin {
+  static const Color accentGreen = Color(0xFF7DD3A8);
+  static const Color danger = Color(0xFFF85149);
+  static const Color emptySquare = Color(0xFF21262D);
+  static const Color emptyBorder = Color(0xFF30363D);
+
   late AnimationController _gainController;
   late Animation<double> _gainScale;
   late Animation<double> _gainGlow;
@@ -111,18 +116,18 @@ class _CurrentSquareState extends State<CurrentSquare>
                 final bool isLastFilled =
                     index == widget.progress - 1 && widget.progress > 0;
 
-                // Red flash overlay on loss
+                // Color with loss flash
                 Color cellColor;
                 if (isFilled) {
                   cellColor = Color.lerp(
-                    Colors.green[500]!,
-                    Colors.red[500]!,
+                    accentGreen,
+                    danger,
                     _lossFlash.value * 0.5,
                   )!;
                 } else {
                   cellColor = Color.lerp(
-                    Colors.grey[800]!,
-                    Colors.red[900]!,
+                    emptySquare,
+                    danger.withValues(alpha: 0.3),
                     _lossFlash.value * 0.3,
                   )!;
                 }
@@ -133,11 +138,11 @@ class _CurrentSquareState extends State<CurrentSquare>
                     child: Container(
                       decoration: BoxDecoration(
                         color: cellColor,
-                        borderRadius: BorderRadius.circular(2),
+                        borderRadius: BorderRadius.circular(3),
                         boxShadow: _gainGlow.value > 0
                             ? [
                                 BoxShadow(
-                                  color: Colors.green.withValues(
+                                  color: accentGreen.withValues(
                                       alpha: 0.6 * _gainGlow.value),
                                   blurRadius: 6 * _gainGlow.value,
                                   spreadRadius: 1 * _gainGlow.value,
@@ -151,8 +156,9 @@ class _CurrentSquareState extends State<CurrentSquare>
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: cellColor,
-                    borderRadius: BorderRadius.circular(2),
+                    color: isFilled ? cellColor : emptySquare,
+                    borderRadius: BorderRadius.circular(3),
+                    border: isFilled ? null : Border.all(color: emptyBorder, width: 1),
                   ),
                 );
               },

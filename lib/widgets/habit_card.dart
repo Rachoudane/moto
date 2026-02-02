@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/habit.dart';
 import '../screens/habit_detail_screen.dart';
 import 'habit_progress.dart';
@@ -9,6 +10,12 @@ class HabitCard extends StatelessWidget {
   final VoidCallback onDecrement;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
+
+  static const Color cardBg = Color(0xFF161B22);
+  static const Color accentGreen = Color(0xFF7DD3A8);
+  static const Color danger = Color(0xFFF85149);
+  static const Color textPrimary = Color(0xFFE6EDF3);
+  static const Color textSecondary = Color(0xFF7D8590);
 
   const HabitCard({
     super.key,
@@ -39,25 +46,26 @@ class HabitCard extends StatelessWidget {
         return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: const Color(0xFF1A1A1A),
-            title: const Text(
+            backgroundColor: cardBg,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            title: Text(
               'Supprimer cette habitude ?',
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.inter(color: textPrimary, fontWeight: FontWeight.w600),
             ),
             content: Text(
               'Tu vas perdre ta progression de ${habit.streak} cases.',
-              style: TextStyle(color: Colors.grey[400]),
+              style: GoogleFonts.inter(color: textSecondary),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Annuler'),
+                child: Text('Annuler', style: GoogleFonts.inter(color: textSecondary)),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
                 child: Text(
                   'Supprimer',
-                  style: TextStyle(color: Colors.red[400]),
+                  style: GoogleFonts.inter(color: danger, fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -68,8 +76,8 @@ class HabitCard extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: Colors.red[900],
-          borderRadius: BorderRadius.circular(12),
+          color: danger.withValues(alpha: 0.8),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
@@ -87,12 +95,12 @@ class HabitCard extends StatelessWidget {
           );
         },
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: const Color(0xFF1A1A1A),
-            borderRadius: BorderRadius.circular(12),
+            color: cardBg,
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.05),
+              color: const Color(0xFF30363D).withValues(alpha: 0.5),
             ),
           ),
           child: Column(
@@ -103,10 +111,10 @@ class HabitCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     habit.name,
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: textPrimary,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -115,13 +123,13 @@ class HabitCard extends StatelessWidget {
                 HabitProgress(streak: habit.streak),
               ],
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             // Subtitle: streak + mode + stop
             Row(
               children: [
                 Text(
                   '${habit.streak} cases',
-                  style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+                  style: GoogleFonts.inter(fontSize: 13, color: textSecondary),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -133,36 +141,41 @@ class HabitCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                     decoration: BoxDecoration(
-                      color: Colors.red[900]?.withValues(alpha: 0.6),
+                      color: danger.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: danger.withValues(alpha: 0.3)),
                     ),
-                    child: const Text(
+                    child: Text(
                       'STOP',
-                      style: TextStyle(fontSize: 9, color: Colors.white70),
+                      style: GoogleFonts.inter(fontSize: 9, color: danger, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             // Buttons
             Row(
               children: [
                 Expanded(
-                  child: Opacity(
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
                     opacity: habit.isValidatedToday ? 0.4 : 1.0,
                     child: Material(
-                      color: Colors.red[900]?.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(8),
+                      color: danger.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         onTap: habit.isValidatedToday ? null : onDecrement,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 11),
                           child: Center(
                             child: Text(
-                              habit.isValidatedToday ? '✓ Validé' : 'Raté',
-                              style: const TextStyle(color: Colors.white),
+                              habit.isValidatedToday ? '✓' : 'Passé',
+                              style: GoogleFonts.inter(
+                                color: habit.isValidatedToday ? textSecondary : danger,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
@@ -172,20 +185,24 @@ class HabitCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Opacity(
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
                     opacity: habit.isValidatedToday ? 0.4 : 1.0,
                     child: Material(
-                      color: Colors.green[700]!,
-                      borderRadius: BorderRadius.circular(8),
+                      color: accentGreen.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(10),
                       child: InkWell(
                         onTap: habit.isValidatedToday ? null : onIncrement,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(vertical: 11),
                           child: Center(
                             child: Text(
-                              habit.isValidatedToday ? '✓ Validé' : 'Fait !',
-                              style: const TextStyle(color: Colors.white),
+                              habit.isValidatedToday ? '✓' : 'Fait',
+                              style: GoogleFonts.inter(
+                                color: habit.isValidatedToday ? textSecondary : accentGreen,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
@@ -27,7 +28,10 @@ class MotoApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0F0F0F),
+        scaffoldBackgroundColor: const Color(0xFF0A0A0A),
+        textTheme: GoogleFonts.interTextTheme(
+          ThemeData(brightness: Brightness.dark).textTheme,
+        ),
       ),
       home: const SplashScreen(),
     );

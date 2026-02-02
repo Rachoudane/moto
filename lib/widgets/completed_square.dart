@@ -20,6 +20,9 @@ class CompletedSquare extends StatefulWidget {
 
 class _CompletedSquareState extends State<CompletedSquare>
     with TickerProviderStateMixin {
+  static const Color trophyAmber = Color(0xFFE5C07B);
+  static const Color danger = Color(0xFFF85149);
+
   late AnimationController _appearController;
   late Animation<double> _appearScale;
   late Animation<double> _appearGlow;
@@ -109,7 +112,7 @@ class _CompletedSquareState extends State<CompletedSquare>
             return Container(
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(1),
+                borderRadius: BorderRadius.circular(2),
               ),
             );
           },
@@ -123,8 +126,8 @@ class _CompletedSquareState extends State<CompletedSquare>
         animation: _destroyController,
         builder: (context, child) {
           final color = Color.lerp(
-            Colors.amber[600]!,
-            Colors.red[600]!,
+            trophyAmber,
+            danger,
             _destroyFlash.value,
           )!;
           return Transform.scale(
@@ -133,7 +136,7 @@ class _CompletedSquareState extends State<CompletedSquare>
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.red.withValues(alpha: 0.4 * _destroyFlash.value),
+                    color: danger.withValues(alpha: 0.4 * _destroyFlash.value),
                     blurRadius: 8 * _destroyFlash.value,
                     spreadRadius: 1 * _destroyFlash.value,
                   ),
@@ -158,20 +161,20 @@ class _CompletedSquareState extends State<CompletedSquare>
                 boxShadow: _appearGlow.value > 0
                     ? [
                         BoxShadow(
-                          color: Colors.amber.withValues(alpha: 0.5 * _appearGlow.value),
+                          color: trophyAmber.withValues(alpha: 0.5 * _appearGlow.value),
                           blurRadius: 10 * _appearGlow.value,
                           spreadRadius: 2 * _appearGlow.value,
                         ),
                       ]
                     : null,
               ),
-              child: buildGrid(Colors.amber[600]!),
+              child: buildGrid(trophyAmber),
             ),
           );
         },
       );
     }
 
-    return buildGrid(Colors.amber[600]!);
+    return buildGrid(trophyAmber);
   }
 }
