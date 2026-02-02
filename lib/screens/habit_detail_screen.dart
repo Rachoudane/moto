@@ -84,6 +84,59 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     return level - 1;
   }
 
+  void _showDeleteConfirmation() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: cardBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(
+          l10n.deleteHabit,
+          style: GoogleFonts.inter(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: textPrimary,
+          ),
+        ),
+        content: Text(
+          l10n.deleteHabitConfirm(widget.habit.streak),
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            color: textSecondary,
+            height: 1.5,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              l10n.cancel,
+              style: GoogleFonts.inter(
+                color: accentGreen,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              widget.onUpdate();
+            },
+            child: Text(
+              l10n.delete,
+              style: GoogleFonts.inter(
+                color: danger,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showEditDialog() {
     String name = widget.habit.name;
     bool isQuitting = widget.habit.isQuitting;
@@ -246,6 +299,33 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                             l10n.save,
                             style: GoogleFonts.inter(
                               color: const Color(0xFF0A0A0A),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: double.infinity,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        _showDeleteConfirmation();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        decoration: BoxDecoration(
+                          color: danger.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: danger.withValues(alpha: 0.3)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            l10n.delete,
+                            style: GoogleFonts.inter(
+                              color: danger,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
