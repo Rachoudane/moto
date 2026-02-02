@@ -48,19 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     widget.onLanguageChanged(Locale(languageCode));
   }
 
-  String _getLanguageName(String code) {
-    switch (code) {
-      case 'en':
-        return 'English';
-      case 'fr':
-        return 'Français';
-      case 'ja':
-        return '日本語';
-      default:
-        return code;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
