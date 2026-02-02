@@ -149,16 +149,22 @@ class HabitCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Material(
-                    color: Colors.red[900]?.withValues(alpha: 0.3),
-                    borderRadius: BorderRadius.circular(8),
-                    child: InkWell(
-                      onTap: onDecrement,
+                  child: Opacity(
+                    opacity: habit.isValidatedToday ? 0.4 : 1.0,
+                    child: Material(
+                      color: Colors.red[900]?.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: const Center(
-                          child: Text('Raté', style: TextStyle(color: Colors.white)),
+                      child: InkWell(
+                        onTap: habit.isValidatedToday ? null : onDecrement,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Center(
+                            child: Text(
+                              habit.isValidatedToday ? '✓ Validé' : 'Raté',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -166,16 +172,22 @@ class HabitCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Material(
-                    color: Colors.green[700]!,
-                    borderRadius: BorderRadius.circular(8),
-                    child: InkWell(
-                      onTap: onIncrement,
+                  child: Opacity(
+                    opacity: habit.isValidatedToday ? 0.4 : 1.0,
+                    child: Material(
+                      color: Colors.green[700]!,
                       borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: const Center(
-                          child: Text('Fait !', style: TextStyle(color: Colors.white)),
+                      child: InkWell(
+                        onTap: habit.isValidatedToday ? null : onIncrement,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Center(
+                            child: Text(
+                              habit.isValidatedToday ? '✓ Validé' : 'Fait !',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
                     ),

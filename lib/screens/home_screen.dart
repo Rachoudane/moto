@@ -27,6 +27,47 @@ class _HomeScreenState extends State<HomeScreen> {
       _habits = habits;
       _isLoading = false;
     });
+    _checkMissedDays();
+  }
+
+  void _checkMissedDays() {
+    bool hasChanges = false;
+
+    for (final habit in _habits) {
+      if (habit.lastValidatedDate != null && habit.daysMissed > 0) {
+        for (int i = 0; i < habit.daysMissed; i++) {
+          _applyPenalty(habit);
+        }
+        hasChanges = true;
+      }
+    }
+
+    if (hasChanges) {
+      setState(() {});
+      _saveHabits();
+    }
+  }
+
+  void _applyPenalty(Habit habit) {
+    switch (habit.penaltyMode) {
+      case PenaltyMode.zen:
+        if (habit.streak > 0) habit.streak--;
+        break;
+      case PenaltyMode.standard:
+        int level = 1;
+        int total = 0;
+        while (total + level * level <= habit.streak) {
+          total += level * level;
+          level++;
+        }
+        if (habit.streak > total) {
+          habit.streak = total;
+        }
+        break;
+      case PenaltyMode.hardcore:
+        habit.streak = 0;
+        break;
+    }
   }
 
   Future<void> _saveHabits() async {
@@ -36,7 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _incrementStreak(String id) {
     setState(() {
       final habit = _habits.firstWhere((h) => h.id == id);
-      habit.streak++;
+      if (!habit.isValidatedToday) {
+        habit.streak++;
+        habit.lastValidatedDate = DateTime.now();
+      }
     });
     _saveHabits();
   }
@@ -44,39 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _decrementStreak(String id) {
     setState(() {
       final habit = _habits.firstWhere((h) => h.id == id);
-
-      switch (habit.penaltyMode) {
-        case PenaltyMode.zen:
-          int level = 1;
-          int total = 0;
-          while (total + level * level <= habit.streak) {
-            total += level * level;
-            level++;
-          }
-          // Perd 1 case
-          if (habit.streak > total) {
-            habit.streak--;
-          }
-          break;
-
-        case PenaltyMode.standard:
-          // Retour au début du carré en cours (mais pas en dessous)
-          int level = 1;
-          int total = 0;
-          while (total + level * level <= habit.streak) {
-            total += level * level;
-            level++;
-          }
-          // Seulement si on a progressé dans le carré
-          if (habit.streak > total) {
-            habit.streak = total;
-          }
-          break;
-
-        case PenaltyMode.hardcore:
-          // Retour à zéro total
-          habit.streak = 0;
-          break;
+      if (!habit.isValidatedToday) {
+        _applyPenalty(habit);
+        habit.lastValidatedDate = DateTime.now();
       }
     });
     _saveHabits();
