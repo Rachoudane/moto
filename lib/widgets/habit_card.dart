@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../screens/habit_detail_screen.dart';
 import 'habit_progress.dart';
@@ -40,6 +41,7 @@ class HabitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (progress, total) = _getCurrentProgress();
+    final l10n = AppLocalizations.of(context)!;
 
     return Dismissible(
       key: Key(habit.id),
@@ -51,22 +53,22 @@ class HabitCard extends StatelessWidget {
             backgroundColor: cardBg,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             title: Text(
-              'Supprimer cette habitude ?',
+              l10n.deleteHabit,
               style: GoogleFonts.inter(color: textPrimary, fontWeight: FontWeight.w600),
             ),
             content: Text(
-              'Tu vas perdre ta progression de ${habit.streak} cases.',
+              l10n.deleteHabitConfirm(habit.streak),
               style: GoogleFonts.inter(color: textSecondary),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text('Annuler', style: GoogleFonts.inter(color: textSecondary)),
+                child: Text(l10n.cancel, style: GoogleFonts.inter(color: textSecondary)),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
                 child: Text(
-                  'Supprimer',
+                  l10n.delete,
                   style: GoogleFonts.inter(color: danger, fontWeight: FontWeight.w600),
                 ),
               ),
@@ -140,7 +142,7 @@ class HabitCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(3),
                                 ),
                                 child: Text(
-                                  'STOP',
+                                  l10n.stop,
                                   style: GoogleFonts.inter(
                                     fontSize: 8,
                                     color: danger.withValues(alpha: 0.7),
@@ -165,7 +167,7 @@ class HabitCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Center(
                     child: Text(
-                      '✓',
+                      l10n.validated,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         color: textSecondary.withValues(alpha: 0.5),
@@ -192,7 +194,7 @@ class HabitCard extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                'Passé',
+                                l10n.skipped,
                                 style: GoogleFonts.inter(
                                   color: textSecondary,
                                   fontWeight: FontWeight.w500,
@@ -220,7 +222,7 @@ class HabitCard extends StatelessWidget {
                             ),
                             child: Center(
                               child: Text(
-                                'Fait',
+                                l10n.done,
                                 style: GoogleFonts.inter(
                                   color: accentGreen,
                                   fontWeight: FontWeight.w500,

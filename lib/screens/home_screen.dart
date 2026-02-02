@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../services/storage_service.dart';
 import '../widgets/habit_card.dart';
@@ -23,12 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
   static const Color textPrimary = Color(0xFFE6EDF3);
   static const Color textSecondary = Color(0xFF7D8590);
 
-  static const _frenchDays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-  static const _frenchMonths = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-
-  String get _formattedDate {
-    final now = DateTime.now();
-    return '${_frenchDays[now.weekday - 1]} ${now.day} ${_frenchMonths[now.month - 1]}';
+  String _formattedDate(BuildContext context) {
+    final locale = Localizations.localeOf(context).toString();
+    return DateFormat.yMMMMEEEEd(locale).format(DateTime.now());
   }
 
   @override
@@ -140,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String name = '';
     bool isQuitting = false;
     PenaltyMode penaltyMode = PenaltyMode.standard;
+    final l10n = AppLocalizations.of(context)!;
 
     showModalBottomSheet(
       context: context,
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Nouvelle habitude',
+                    l10n.newHabit,
                     style: GoogleFonts.inter(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     autofocus: true,
                     style: GoogleFonts.inter(color: textPrimary),
                     decoration: InputDecoration(
-                      hintText: 'Nom de l\'habitude',
+                      hintText: l10n.habitName,
                       hintStyle: GoogleFonts.inter(color: textSecondary),
                       filled: true,
                       fillColor: bg,
@@ -188,7 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Type d'habitude
                   Row(
                     children: [
                       Expanded(
@@ -203,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               border: !isQuitting ? Border.all(color: accentGreen.withValues(alpha: 0.4)) : null,
                             ),
                             child: Center(
-                              child: Text('À faire', style: GoogleFonts.inter(
+                              child: Text(l10n.toDo, style: GoogleFonts.inter(
                                 color: !isQuitting ? accentGreen : textSecondary,
                                 fontWeight: FontWeight.w500,
                               )),
@@ -224,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               border: isQuitting ? Border.all(color: danger.withValues(alpha: 0.4)) : null,
                             ),
                             child: Center(
-                              child: Text('À arrêter', style: GoogleFonts.inter(
+                              child: Text(l10n.toQuit, style: GoogleFonts.inter(
                                 color: isQuitting ? danger : textSecondary,
                                 fontWeight: FontWeight.w500,
                               )),
@@ -236,9 +235,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Mode de pénalité
                   Text(
-                    'Mode de pénalité',
+                    l10n.penaltyMode,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: textSecondary,
@@ -252,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mode: PenaltyMode.zen,
                         currentMode: penaltyMode,
                         emoji: '🌱',
-                        label: 'Zen',
+                        label: l10n.zen,
                         onTap: () => setModalState(() => penaltyMode = PenaltyMode.zen),
                       ),
                       const SizedBox(width: 8),
@@ -261,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mode: PenaltyMode.standard,
                         currentMode: penaltyMode,
                         emoji: '⚡',
-                        label: 'Standard',
+                        label: l10n.standard,
                         onTap: () => setModalState(() => penaltyMode = PenaltyMode.standard),
                       ),
                       const SizedBox(width: 8),
@@ -270,14 +268,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         mode: PenaltyMode.hardcore,
                         currentMode: penaltyMode,
                         emoji: '🔥',
-                        label: 'Hardcore',
+                        label: l10n.hardcore,
                         onTap: () => setModalState(() => penaltyMode = PenaltyMode.hardcore),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _getModeDescription(penaltyMode),
+                    _getModeDescription(l10n, penaltyMode),
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: textSecondary.withValues(alpha: 0.7),
@@ -285,7 +283,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Bouton créer
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
@@ -303,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            'Créer',
+                            l10n.create,
                             style: GoogleFonts.inter(
                               color: const Color(0xFF0A0A0A),
                               fontWeight: FontWeight.w600,
@@ -361,14 +358,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  String _getModeDescription(PenaltyMode mode) {
+  String _getModeDescription(AppLocalizations l10n, PenaltyMode mode) {
     switch (mode) {
       case PenaltyMode.zen:
-        return 'Perd 1 case en cas d\'échec';
+        return l10n.zenDescription;
       case PenaltyMode.standard:
-        return 'Perd le carré en cours en cas d\'échec';
+        return l10n.standardDescription;
       case PenaltyMode.hardcore:
-        return 'Retour à zéro total en cas d\'échec';
+        return l10n.hardcoreDescription;
     }
   }
 
@@ -387,7 +384,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: _isLoading
           ? const Center(child: CircularProgressIndicator(color: accentGreen))
-          : Padding(
+          : Builder(
+          builder: (context) {
+            final l10n = AppLocalizations.of(context)!;
+            return Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -405,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           textBaseline: TextBaseline.ideographic,
                           children: [
                             Text(
-                              '元',
+                              l10n.appSubtitle,
                               style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.w300,
@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              'Moto',
+                              l10n.appTitle,
                               style: GoogleFonts.inter(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
@@ -425,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          _formattedDate,
+                          _formattedDate(context),
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: textSecondary,
@@ -437,17 +437,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
-                    child: Icon(
-                      Icons.settings_outlined,
-                      color: textSecondary.withValues(alpha: 0.5),
-                      size: 22,
+                    child: GestureDetector(
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.comingSoon)),
+                        );
+                      },
+                      child: Icon(
+                        Icons.settings_outlined,
+                        color: textSecondary.withValues(alpha: 0.5),
+                        size: 22,
+                      ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 36),
 
-              // Liste des habitudes
               Expanded(
                 child: _habits.isEmpty
                   ? Center(
@@ -461,7 +467,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            'Aucune habitude',
+                            l10n.noHabits,
                             style: GoogleFonts.inter(
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
@@ -470,7 +476,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'Commence à construire ta base',
+                            l10n.noHabitsSubtitle,
                             style: GoogleFonts.inter(
                               fontSize: 13,
                               color: textSecondary.withValues(alpha: 0.6),
@@ -499,6 +505,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+        );
+          },
         ),
       ),
     );

@@ -1,0 +1,58 @@
+{
+  "@@locale": "en",
+  "appTitle": "Moto",
+  "appSubtitle": "元",
+  "buildYourBase": "Build your foundation",
+  "noHabits": "No habits yet",
+  "noHabitsSubtitle": "Start building your foundation",
+  "newHabit": "New habit",
+  "habitName": "Habit name",
+  "toDo": "To do",
+  "toQuit": "To quit",
+  "penaltyMode": "Penalty mode",
+  "zen": "Zen",
+  "standard": "Standard",
+  "hardcore": "Hardcore",
+  "zenDescription": "Lose 1 cell on failure",
+  "standardDescription": "Lose current square on failure",
+  "hardcoreDescription": "Back to zero on failure",
+  "create": "Create",
+  "save": "Save",
+  "cancel": "Cancel",
+  "done": "Done",
+  "skipped": "Skipped",
+  "validated": "✓",
+  "deleteHabit": "Delete this habit?",
+  "deleteHabitConfirm": "You will lose your progress of {count} cells.",
+  "@deleteHabitConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "Delete",
+  "editHabit": "Edit habit",
+  "currentProgress": "Current progress",
+  "squareInProgress": "{level}×{level} square in progress",
+  "@squareInProgress": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "totalCells": "Total cells",
+  "completedSquares": "{count} completed square(s)",
+  "@completedSquares": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings": "Settings",
+  "cells": "cells",
+  "comingSoon": "Coming soon",
+  "stop": "STOP"
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -180,13 +181,18 @@ class _SplashScreenState extends State<SplashScreen>
 
                 FadeTransition(
                   opacity: _taglineFade,
-                  child: Text(
-                    'Construis ta base',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: textPrimary.withValues(alpha: 0.4),
-                      fontStyle: FontStyle.italic,
-                    ),
+                  child: Builder(
+                    builder: (context) {
+                      final l10n = AppLocalizations.of(context);
+                      return Text(
+                        l10n?.buildYourBase ?? '',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: textPrimary.withValues(alpha: 0.4),
+                          fontStyle: FontStyle.italic,
+                        ),
+                      );
+                    },
                   ),
                 ),
 

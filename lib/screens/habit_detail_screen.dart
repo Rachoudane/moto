@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../widgets/habit_progress.dart';
 
@@ -25,25 +26,25 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   static const Color textPrimary = Color(0xFFE6EDF3);
   static const Color textSecondary = Color(0xFF7D8590);
 
-  String _getModeName(PenaltyMode mode) {
+  String _getModeName(AppLocalizations l10n, PenaltyMode mode) {
     switch (mode) {
       case PenaltyMode.zen:
-        return '🌱 Zen';
+        return '🌱 ${l10n.zen}';
       case PenaltyMode.standard:
-        return '⚡ Standard';
+        return '⚡ ${l10n.standard}';
       case PenaltyMode.hardcore:
-        return '🔥 Hardcore';
+        return '🔥 ${l10n.hardcore}';
     }
   }
 
-  String _getModeDescription(PenaltyMode mode) {
+  String _getModeDescription(AppLocalizations l10n, PenaltyMode mode) {
     switch (mode) {
       case PenaltyMode.zen:
-        return 'Perd 1 case en cas d\'échec';
+        return l10n.zenDescription;
       case PenaltyMode.standard:
-        return 'Perd le carré en cours en cas d\'échec';
+        return l10n.standardDescription;
       case PenaltyMode.hardcore:
-        return 'Retour à zéro total en cas d\'échec';
+        return l10n.hardcoreDescription;
     }
   }
 
@@ -73,6 +74,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     String name = widget.habit.name;
     bool isQuitting = widget.habit.isQuitting;
     PenaltyMode penaltyMode = widget.habit.penaltyMode;
+    final l10n = AppLocalizations.of(context)!;
 
     showModalBottomSheet(
       context: context,
@@ -96,7 +98,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Modifier l\'habitude',
+                    l10n.editHabit,
                     style: GoogleFonts.inter(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -108,7 +110,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     initialValue: name,
                     style: GoogleFonts.inter(color: textPrimary),
                     decoration: InputDecoration(
-                      hintText: 'Nom de l\'habitude',
+                      hintText: l10n.habitName,
                       hintStyle: GoogleFonts.inter(color: textSecondary),
                       filled: true,
                       fillColor: bg,
@@ -134,7 +136,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                               border: !isQuitting ? Border.all(color: accentGreen.withValues(alpha: 0.4)) : null,
                             ),
                             child: Center(
-                              child: Text('À faire', style: GoogleFonts.inter(
+                              child: Text(l10n.toDo, style: GoogleFonts.inter(
                                 color: !isQuitting ? accentGreen : textSecondary,
                                 fontWeight: FontWeight.w500,
                               )),
@@ -155,7 +157,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                               border: isQuitting ? Border.all(color: danger.withValues(alpha: 0.4)) : null,
                             ),
                             child: Center(
-                              child: Text('À arrêter', style: GoogleFonts.inter(
+                              child: Text(l10n.toQuit, style: GoogleFonts.inter(
                                 color: isQuitting ? danger : textSecondary,
                                 fontWeight: FontWeight.w500,
                               )),
@@ -167,7 +169,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Mode de pénalité',
+                    l10n.penaltyMode,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: textSecondary,
@@ -181,7 +183,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         mode: PenaltyMode.zen,
                         currentMode: penaltyMode,
                         emoji: '🌱',
-                        label: 'Zen',
+                        label: l10n.zen,
                         onTap: () => setModalState(() => penaltyMode = PenaltyMode.zen),
                       ),
                       const SizedBox(width: 8),
@@ -190,7 +192,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         mode: PenaltyMode.standard,
                         currentMode: penaltyMode,
                         emoji: '⚡',
-                        label: 'Standard',
+                        label: l10n.standard,
                         onTap: () => setModalState(() => penaltyMode = PenaltyMode.standard),
                       ),
                       const SizedBox(width: 8),
@@ -199,7 +201,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         mode: PenaltyMode.hardcore,
                         currentMode: penaltyMode,
                         emoji: '🔥',
-                        label: 'Hardcore',
+                        label: l10n.hardcore,
                         onTap: () => setModalState(() => penaltyMode = PenaltyMode.hardcore),
                       ),
                     ],
@@ -227,7 +229,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            'Enregistrer',
+                            l10n.save,
                             style: GoogleFonts.inter(
                               color: const Color(0xFF0A0A0A),
                               fontWeight: FontWeight.w600,
@@ -289,6 +291,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   Widget build(BuildContext context) {
     final (currentLevel, progress, totalForNext) = _getStats();
     final completedSquares = _getTotalSquaresCompleted();
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: bg,
@@ -327,7 +330,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   border: Border.all(color: danger.withValues(alpha: 0.3)),
                 ),
                 child: Text(
-                  'À arrêter',
+                  l10n.toQuit,
                   style: GoogleFonts.inter(color: danger, fontSize: 12, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -340,21 +343,21 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             ),
             const SizedBox(height: 52),
             _buildStatCard(
-              title: 'Progression actuelle',
+              title: l10n.currentProgress,
               value: '$progress / $totalForNext',
-              subtitle: 'Carré $currentLevel×$currentLevel en cours',
+              subtitle: l10n.squareInProgress(currentLevel),
             ),
             const SizedBox(height: 14),
             _buildStatCard(
-              title: 'Cases totales',
+              title: l10n.totalCells,
               value: '${widget.habit.streak}',
-              subtitle: '$completedSquares carré${completedSquares > 1 ? 's' : ''} complété${completedSquares > 1 ? 's' : ''}',
+              subtitle: l10n.completedSquares(completedSquares),
             ),
             const SizedBox(height: 14),
             _buildStatCard(
-              title: 'Mode de pénalité',
-              value: _getModeName(widget.habit.penaltyMode),
-              subtitle: _getModeDescription(widget.habit.penaltyMode),
+              title: l10n.penaltyMode,
+              value: _getModeName(l10n, widget.habit.penaltyMode),
+              subtitle: _getModeDescription(l10n, widget.habit.penaltyMode),
             ),
           ],
         ),
