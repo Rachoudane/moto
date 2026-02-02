@@ -507,19 +507,31 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            _buildStatCard(
-              title: l10n.currentProgress,
-              value: '$progress / $totalForNext',
-              subtitle: l10n.squareInProgress(currentLevel),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildAdvancedStatCard(
+                    title: l10n.currentProgress,
+                    value: '$progress / $totalForNext',
+                    subtitle: l10n.squareInProgress(currentLevel),
+                    icon: Icons.layers_outlined,
+                    iconColor: const Color(0xFFE5C07B),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildAdvancedStatCard(
+                    title: l10n.totalCells,
+                    value: '${widget.habit.streak}',
+                    subtitle: l10n.completedSquares(completedSquares),
+                    icon: Icons.grid_on_outlined,
+                    iconColor: accentGreen,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 14),
-            _buildStatCard(
-              title: l10n.totalCells,
-              value: '${widget.habit.streak}',
-              subtitle: l10n.completedSquares(completedSquares),
-            ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
             _buildStatCard(
               title: l10n.penaltyMode,
               value: _getModeName(l10n, widget.habit.penaltyMode),
