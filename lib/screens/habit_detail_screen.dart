@@ -49,6 +49,19 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     }
   }
 
+  String _getDayName(AppLocalizations l10n, int day) {
+    switch (day) {
+      case 0: return l10n.monday;
+      case 1: return l10n.tuesday;
+      case 2: return l10n.wednesday;
+      case 3: return l10n.thursday;
+      case 4: return l10n.friday;
+      case 5: return l10n.saturday;
+      case 6: return l10n.sunday;
+      default: return '';
+    }
+  }
+
   (int level, int progress, int totalForNext) _getStats() {
     int level = 1;
     int total = 0;
@@ -353,6 +366,67 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             ),
             const SizedBox(height: 12),
             HabitCalendar(habit: widget.habit),
+            const SizedBox(height: 32),
+            Text(
+              l10n.statistics,
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: textPrimary,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildAdvancedStatCard(
+                    title: l10n.currentStreak,
+                    value: "${widget.habit.currentStreak}",
+                    subtitle: l10n.days,
+                    icon: Icons.local_fire_department_outlined,
+                    iconColor: const Color(0xFFE5C07B),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildAdvancedStatCard(
+                    title: l10n.longestStreak,
+                    value: "${widget.habit.longestStreak}",
+                    subtitle: l10n.days,
+                    icon: Icons.emoji_events_outlined,
+                    iconColor: const Color(0xFFE5C07B),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildAdvancedStatCard(
+                    title: l10n.successRate,
+                    value: "${widget.habit.successRate.toStringAsFixed(0)}%",
+                    subtitle: "${widget.habit.totalValidatedDays} ${l10n.days}",
+                    icon: Icons.trending_up_outlined,
+                    iconColor: accentGreen,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildAdvancedStatCard(
+                    title: l10n.bestDay,
+                    value: widget.habit.bestDayOfWeek != null 
+                        ? _getDayName(l10n, widget.habit.bestDayOfWeek!)
+                        : "-",
+                    subtitle: widget.habit.bestDayOfWeek != null 
+                        ? "" 
+                        : l10n.noDataYet,
+                    icon: Icons.calendar_today_outlined,
+                    iconColor: accentGreen,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 24),
             _buildStatCard(
               title: l10n.currentProgress,
@@ -418,6 +492,67 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             subtitle,
             style: GoogleFonts.inter(
               fontSize: 13,
+              color: textSecondary.withValues(alpha: 0.7),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdvancedStatCard({
+    required String title,
+    required String value,
+    required String subtitle,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: const Color(0xFF30363D).withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: textSecondary,
+                  ),
+                ),
+              ),
+              Icon(
+                icon,
+                size: 16,
+                color: iconColor,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: GoogleFonts.inter(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: textPrimary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            subtitle,
+            style: GoogleFonts.inter(
+              fontSize: 12,
               color: textSecondary.withValues(alpha: 0.7),
             ),
           ),

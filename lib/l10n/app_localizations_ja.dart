@@ -118,4 +118,49 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get history => '履歴';
+
+  @override
+  String get statistics => '統計';
+
+  @override
+  String get currentStreak => '現在の連続';
+
+  @override
+  String get longestStreak => '最長連続';
+
+  @override
+  String get successRate => '成功率';
+
+  @override
+  String get bestDay => 'ベストな曜日';
+
+  @override
+  String get totalDays => '達成日数';
+
+  @override
+  String get days => '日';
+
+  @override
+  String get monday => '月曜日';
+
+  @override
+  String get tuesday => '火曜日';
+
+  @override
+  String get wednesday => '水曜日';
+
+  @override
+  String get thursday => '木曜日';
+
+  @override
+  String get friday => '金曜日';
+
+  @override
+  String get saturday => '土曜日';
+
+  @override
+  String get sunday => '日曜日';
+
+  @override
+  String get noDataYet => 'まだデータがありません';
 }

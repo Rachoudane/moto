@@ -34,5 +34,20 @@
   "cells": "cases",
   "comingSoon": "Bientôt disponible",
   "stop": "STOP",
-  "history": "Historique"
+  "history": "Historique",
+  "statistics": "Statistiques",
+  "currentStreak": "Série actuelle",
+  "longestStreak": "Meilleure série",
+  "successRate": "Taux de réussite",
+  "bestDay": "Meilleur jour",
+  "totalDays": "Jours validés",
+  "days": "jours",
+  "monday": "Lundi",
+  "tuesday": "Mardi",
+  "wednesday": "Mercredi",
+  "thursday": "Jeudi",
+  "friday": "Vendredi",
+  "saturday": "Samedi",
+  "sunday": "Dimanche",
+  "noDataYet": "Pas encore de données"
 }

@@ -118,4 +118,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get history => 'History';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get currentStreak => 'Current streak';
+
+  @override
+  String get longestStreak => 'Longest streak';
+
+  @override
+  String get successRate => 'Success rate';
+
+  @override
+  String get bestDay => 'Best day';
+
+  @override
+  String get totalDays => 'Total days';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get noDataYet => 'No data yet';
 }

@@ -55,5 +55,20 @@
   "cells": "cells",
   "comingSoon": "Coming soon",
   "stop": "STOP",
-  "history": "History"
+  "history": "History",
+  "statistics": "Statistics",
+  "currentStreak": "Current streak",
+  "longestStreak": "Longest streak",
+  "successRate": "Success rate",
+  "bestDay": "Best day",
+  "totalDays": "Total days",
+  "days": "days",
+  "monday": "Monday",
+  "tuesday": "Tuesday",
+  "wednesday": "Wednesday",
+  "thursday": "Thursday",
+  "friday": "Friday",
+  "saturday": "Saturday",
+  "sunday": "Sunday",
+  "noDataYet": "No data yet"
 }

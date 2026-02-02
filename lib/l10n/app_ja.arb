@@ -34,5 +34,20 @@
   "cells": "マス",
   "comingSoon": "近日公開",
   "stop": "STOP",
-  "history": "履歴"
+  "history": "履歴",
+  "statistics": "統計",
+  "currentStreak": "現在の連続",
+  "longestStreak": "最長連続",
+  "successRate": "成功率",
+  "bestDay": "ベストな曜日",
+  "totalDays": "達成日数",
+  "days": "日",
+  "monday": "月曜日",
+  "tuesday": "火曜日",
+  "wednesday": "水曜日",
+  "thursday": "木曜日",
+  "friday": "金曜日",
+  "saturday": "土曜日",
+  "sunday": "日曜日",
+  "noDataYet": "まだデータがありません"
 }
