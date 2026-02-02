@@ -4,7 +4,12 @@ import '../l10n/app_localizations.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final Function(Locale)? onLanguageChanged;
+
+  const SplashScreen({
+    super.key,
+    this.onLanguageChanged,
+  });
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -76,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomeScreen(),
+              HomeScreen(onLanguageChanged: widget.onLanguageChanged),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },

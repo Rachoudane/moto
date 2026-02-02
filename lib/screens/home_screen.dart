@@ -5,9 +5,15 @@ import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../services/storage_service.dart';
 import '../widgets/habit_card.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Function(Locale)? onLanguageChanged;
+
+  const HomeScreen({
+    super.key,
+    this.onLanguageChanged,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -449,8 +455,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(top: 8),
                     child: GestureDetector(
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.comingSoon)),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsScreen(
+                              onLanguageChanged: widget.onLanguageChanged ?? (_) {},
+                            ),
+                          ),
                         );
                       },
                       child: Icon(
