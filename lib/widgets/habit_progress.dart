@@ -155,7 +155,7 @@ class _HabitProgressState extends State<HabitProgress> {
 
     return SizedBox(
       width: 180,
-      height: 44,
+      height: 48,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -186,7 +186,7 @@ class _HabitProgressState extends State<HabitProgress> {
                     children: [
                       for (int i = 1; i <= completedLevels; i++)
                         Padding(
-                          padding: const EdgeInsets.only(right: 4),
+                          padding: const EdgeInsets.only(right: 8),
                           child: CompletedSquare(
                             level: i,
                             completedLevels: completedLevels,

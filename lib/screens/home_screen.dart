@@ -23,6 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   static const Color textPrimary = Color(0xFFE6EDF3);
   static const Color textSecondary = Color(0xFF7D8590);
 
+  static const _frenchDays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  static const _frenchMonths = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+  String get _formattedDate {
+    final now = DateTime.now();
+    return '${_frenchDays[now.weekday - 1]} ${now.day} ${_frenchMonths[now.month - 1]}';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -367,14 +375,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
         onPressed: _showAddHabitDialog,
         backgroundColor: accentGreen,
-        elevation: 4,
+        elevation: 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
         ),
-        child: const Icon(Icons.add, color: Color(0xFF0A0A0A), size: 28),
+        child: const Icon(Icons.add, color: Color(0xFF0A0A0A), size: 22),
       ),
       body: SafeArea(
         child: _isLoading
@@ -384,39 +392,60 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Header
               Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.ideographic,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '元',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w300,
-                      color: textPrimary.withValues(alpha: 0.2),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.ideographic,
+                          children: [
+                            Text(
+                              '元',
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w300,
+                                color: textPrimary.withValues(alpha: 0.2),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Moto',
+                              style: GoogleFonts.inter(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w700,
+                                color: textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _formattedDate,
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: textSecondary,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Moto',
-                    style: GoogleFonts.inter(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: textPrimary,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Icon(
+                      Icons.settings_outlined,
+                      color: textSecondary.withValues(alpha: 0.5),
+                      size: 22,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
-              Text(
-                'Construis ta base',
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: textSecondary,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 36),
 
               // Liste des habitudes
               Expanded(
@@ -425,25 +454,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            '元',
-                            style: TextStyle(
-                              fontSize: 64,
-                              color: textSecondary.withValues(alpha: 0.3),
-                            ),
+                          Icon(
+                            Icons.grid_view_rounded,
+                            size: 48,
+                            color: textSecondary.withValues(alpha: 0.25),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 20),
                           Text(
-                            'Commence par une habitude',
+                            'Aucune habitude',
                             style: GoogleFonts.inter(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
                               color: textSecondary,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           Text(
-                            'Tape + pour en ajouter une',
+                            'Commence à construire ta base',
                             style: GoogleFonts.inter(
                               fontSize: 13,
                               color: textSecondary.withValues(alpha: 0.6),

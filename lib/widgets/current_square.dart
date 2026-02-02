@@ -101,8 +101,8 @@ class _CurrentSquareState extends State<CurrentSquare>
         return Transform.translate(
           offset: Offset(_lossShake.value, 0),
           child: SizedBox(
-            width: 44,
-            height: 44,
+            width: 48,
+            height: 48,
             child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

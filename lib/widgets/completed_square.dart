@@ -94,7 +94,7 @@ class _CompletedSquareState extends State<CompletedSquare>
   @override
   Widget build(BuildContext context) {
     final double ratio = 0.3 + (widget.level / widget.completedLevels) * 0.45;
-    final double size = 44 * ratio;
+    final double size = 48 * ratio;
 
     Widget buildGrid(Color color) {
       return SizedBox(

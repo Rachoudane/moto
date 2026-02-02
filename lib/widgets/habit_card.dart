@@ -16,6 +16,7 @@ class HabitCard extends StatelessWidget {
   static const Color danger = Color(0xFFF85149);
   static const Color textPrimary = Color(0xFFE6EDF3);
   static const Color textSecondary = Color(0xFF7D8590);
+  static const Color borderColor = Color(0xFF21262D);
 
   const HabitCard({
     super.key,
@@ -26,19 +27,20 @@ class HabitCard extends StatelessWidget {
     required this.onUpdate,
   });
 
-  String _getModeEmoji(PenaltyMode mode) {
-    switch (mode) {
-      case PenaltyMode.zen:
-        return '🌱';
-      case PenaltyMode.standard:
-        return '⚡';
-      case PenaltyMode.hardcore:
-        return '🔥';
+  (int, int) _getCurrentProgress() {
+    int level = 1;
+    int remaining = habit.streak;
+    while (remaining >= level * level) {
+      remaining -= level * level;
+      level++;
     }
+    return (remaining, level * level);
   }
 
   @override
   Widget build(BuildContext context) {
+    final (progress, total) = _getCurrentProgress();
+
     return Dismissible(
       key: Key(habit.id),
       direction: DismissDirection.endToStart,
@@ -77,7 +79,7 @@ class HabitCard extends StatelessWidget {
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
           color: danger.withValues(alpha: 0.8),
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(16),
         ),
         child: const Icon(Icons.delete, color: Colors.white),
       ),
@@ -98,123 +100,143 @@ class HabitCard extends StatelessWidget {
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
             color: cardBg,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: const Color(0xFF30363D).withValues(alpha: 0.5),
-            ),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: borderColor),
           ),
           child: Column(
-          children: [
-            // Top: name + progress
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    habit.name,
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: textPrimary,
+            children: [
+              // Top: name + progress squares
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          habit.name,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: textPrimary,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Text(
+                              '$progress/$total',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: textSecondary,
+                              ),
+                            ),
+                            if (habit.isQuitting) ...[
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: danger.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                                child: Text(
+                                  'STOP',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 8,
+                                    color: danger.withValues(alpha: 0.7),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ],
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                const SizedBox(width: 12),
-                HabitProgress(streak: habit.streak),
-              ],
-            ),
-            const SizedBox(height: 8),
-            // Subtitle: streak + mode + stop
-            Row(
-              children: [
-                Text(
-                  '${habit.streak} cases',
-                  style: GoogleFonts.inter(fontSize: 13, color: textSecondary),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  _getModeEmoji(habit.penaltyMode),
-                  style: const TextStyle(fontSize: 12),
-                ),
-                if (habit.isQuitting) ...[
-                  const SizedBox(width: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                    decoration: BoxDecoration(
-                      color: danger.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: danger.withValues(alpha: 0.3)),
-                    ),
-                    child: Text(
-                      'STOP',
-                      style: GoogleFonts.inter(fontSize: 9, color: danger, fontWeight: FontWeight.w600),
-                    ),
-                  ),
+                  const SizedBox(width: 12),
+                  HabitProgress(streak: habit.streak),
                 ],
-              ],
-            ),
-            const SizedBox(height: 14),
-            // Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: habit.isValidatedToday ? 0.4 : 1.0,
-                    child: Material(
-                      color: danger.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: habit.isValidatedToday ? null : onDecrement,
+              ),
+              const SizedBox(height: 14),
+              // Buttons or validated state
+              if (habit.isValidatedToday)
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Center(
+                    child: Text(
+                      '✓',
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        color: textSecondary.withValues(alpha: 0.5),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                Row(
+                  children: [
+                    Expanded(
+                      child: Material(
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 11),
-                          child: Center(
-                            child: Text(
-                              habit.isValidatedToday ? '✓' : 'Passé',
-                              style: GoogleFonts.inter(
-                                color: habit.isValidatedToday ? textSecondary : danger,
-                                fontWeight: FontWeight.w500,
+                        child: InkWell(
+                          onTap: onDecrement,
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: textSecondary.withValues(alpha: 0.3)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Passé',
+                                style: GoogleFonts.inter(
+                                  color: textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: habit.isValidatedToday ? 0.4 : 1.0,
-                    child: Material(
-                      color: accentGreen.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: habit.isValidatedToday ? null : onIncrement,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Material(
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 11),
-                          child: Center(
-                            child: Text(
-                              habit.isValidatedToday ? '✓' : 'Fait',
-                              style: GoogleFonts.inter(
-                                color: habit.isValidatedToday ? textSecondary : accentGreen,
-                                fontWeight: FontWeight.w500,
+                        child: InkWell(
+                          onTap: onIncrement,
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: accentGreen.withValues(alpha: 0.5)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Fait',
+                                style: GoogleFonts.inter(
+                                  color: accentGreen,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 13,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
