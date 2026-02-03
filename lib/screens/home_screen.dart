@@ -178,8 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _updateHabit() {
-    setState(() {});
-    _saveHabits();
+    // Reload habits from storage to ensure latest changes
+    _loadHabits();
   }
 
   void _showAddHabitDialog() {

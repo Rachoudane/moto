@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
 import '../services/notification_service.dart';
+import '../services/storage_service.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
 
@@ -27,6 +28,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   static const Color danger = Color(0xFFF85149);
   static const Color textPrimary = Color(0xFFE6EDF3);
   static const Color textSecondary = Color(0xFF7D8590);
+
+  final StorageService _storageService = StorageService();
 
   String _getModeName(AppLocalizations l10n, PenaltyMode mode) {
     switch (mode) {
@@ -436,20 +439,45 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       return;
                     }
                   }
-                  setState(() {
-                    habit.reminderEnabled = value;
+                  
+                  // Load all habits, modify this one, and save
+                  final allHabits = await _storageService.loadHabits();
+                  final habitIndex = allHabits.indexWhere((h) => h.id == widget.habit.id);
+                  
+                  if (habitIndex != -1) {
+                    allHabits[habitIndex].reminderEnabled = value;
+                    setState(() {
+                      habit.reminderEnabled = value;
+                    });
+                    
                     if (!value) {
-                      NotificationService.cancelHabitReminder(habit.id);
-                    } else if (habit.reminderHour != null && habit.reminderMinute != null) {
-                      NotificationService.scheduleHabitReminder(
-                        habit: habit,
-                        hour: habit.reminderHour!,
-                        minute: habit.reminderMinute!,
-                        locale: locale,
-                      );
+                      NotificationService.cancelHabitReminder(widget.habit.id);
+                    } else if (allHabits[habitIndex].reminderHour != null && allHabits[habitIndex].reminderMinute != null) {
+                      try {
+                        await NotificationService.scheduleHabitReminder(
+                          habit: allHabits[habitIndex],
+                          hour: allHabits[habitIndex].reminderHour!,
+                          minute: allHabits[habitIndex].reminderMinute!,
+                          locale: locale,
+                        );
+                      } catch (e) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Erreur: ${e.toString()}')),
+                          );
+                        }
+                      }
                     }
-                  });
-                  widget.onUpdate();
+                    
+                    await _storageService.saveHabits(allHabits);
+                    print('[DEBUG] Saved habits to storage, enabled=${allHabits[habitIndex].reminderEnabled}');
+                    
+                    // Verify save
+                    final verify = await _storageService.loadHabits();
+                    final verifyIndex = verify.indexWhere((h) => h.id == widget.habit.id);
+                    print('[DEBUG] Verify enabled: ${verify[verifyIndex].reminderEnabled}');
+                  }
+
                 },
                 activeTrackColor: accentGreen,
               ),
@@ -478,17 +506,36 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   },
                 );
                 if (time != null) {
-                  setState(() {
-                    habit.reminderHour = time.hour;
-                    habit.reminderMinute = time.minute;
-                  });
-                  await NotificationService.scheduleHabitReminder(
-                    habit: habit,
-                    hour: time.hour,
-                    minute: time.minute,
-                    locale: locale,
-                  );
-                  widget.onUpdate();
+                  // Load all habits, modify this one, and save
+                  final allHabits = await _storageService.loadHabits();
+                  final habitIndex = allHabits.indexWhere((h) => h.id == widget.habit.id);
+                  
+                  if (habitIndex != -1) {
+                    allHabits[habitIndex].reminderHour = time.hour;
+                    allHabits[habitIndex].reminderMinute = time.minute;
+                    
+                    setState(() {
+                      habit.reminderHour = time.hour;
+                      habit.reminderMinute = time.minute;
+                    });
+                    
+                    try {
+                      await NotificationService.scheduleHabitReminder(
+                        habit: allHabits[habitIndex],
+                        hour: time.hour,
+                        minute: time.minute,
+                        locale: locale,
+                      );
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Erreur: ${e.toString()}')),
+                        );
+                      }
+                    }
+                    
+                    await _storageService.saveHabits(allHabits);
+                  }
                 }
               },
               child: Container(

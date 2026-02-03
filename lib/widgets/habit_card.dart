@@ -87,8 +87,8 @@ class HabitCard extends StatelessWidget {
       ),
       onDismissed: (_) => onDelete(),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => HabitDetailScreen(
@@ -97,6 +97,8 @@ class HabitCard extends StatelessWidget {
               ),
             ),
           );
+          // Reload data after returning from detail screen
+          onUpdate();
         },
         child: Container(
           padding: const EdgeInsets.all(18),
