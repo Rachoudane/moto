@@ -292,4 +292,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get correctionWarning => 'この操作は連続記録を変更します';
+
+  @override
+  String get languageSection => '言語';
+
+  @override
+  String get aboutSection => 'アプリについて';
+
+  @override
+  String get dangerZone => '危険ゾーン';
+
+  @override
+  String get resetAllData => 'すべてのデータをリセット';
+
+  @override
+  String get resetAllDataDescription => 'すべての習慣と進捗を完全に削除';
+
+  @override
+  String get resetAllDataConfirm => 'すべての習慣と進捗が完全に削除されます。この操作は元に戻せません。';
+
+  @override
+  String get reset => 'リセット';
+
+  @override
+  String get version => 'バージョン';
+
+  @override
+  String get appDescription => '毎日、基盤を築こう。';
 }

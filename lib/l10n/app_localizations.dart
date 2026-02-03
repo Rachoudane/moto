@@ -585,6 +585,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This action will modify your streak'**
   String get correctionWarning;
+
+  /// No description provided for @languageSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageSection;
+
+  /// No description provided for @aboutSection.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutSection;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger zone'**
+  String get dangerZone;
+
+  /// No description provided for @resetAllData.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset all data'**
+  String get resetAllData;
+
+  /// No description provided for @resetAllDataDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all habits and progress permanently'**
+  String get resetAllDataDescription;
+
+  /// No description provided for @resetAllDataConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all your habits and progress. This action cannot be undone.'**
+  String get resetAllDataConfirm;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @appDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Build your foundation, one day at a time.'**
+  String get appDescription;
 }
 
 class _AppLocalizationsDelegate

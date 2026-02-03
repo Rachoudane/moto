@@ -292,4 +292,33 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get correctionWarning => 'Cette action va modifier ton streak';
+
+  @override
+  String get languageSection => 'Langue';
+
+  @override
+  String get aboutSection => 'À propos';
+
+  @override
+  String get dangerZone => 'Zone de danger';
+
+  @override
+  String get resetAllData => 'Réinitialiser les données';
+
+  @override
+  String get resetAllDataDescription =>
+      'Supprimer toutes les habitudes et la progression';
+
+  @override
+  String get resetAllDataConfirm =>
+      'Cela supprimera définitivement toutes vos habitudes et votre progression. Cette action est irréversible.';
+
+  @override
+  String get reset => 'Réinitialiser';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get appDescription => 'Construis ta base, jour après jour.';
 }

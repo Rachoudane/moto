@@ -22,4 +22,9 @@ class StorageService {
     final String encoded = jsonEncode(habits.map((h) => h.toJson()).toList());
     await prefs.setString(_habitsKey, encoded);
   }
+
+  static Future<void> clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_habitsKey);
+  }
 }

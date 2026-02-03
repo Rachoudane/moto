@@ -171,5 +171,14 @@
   "todayPending": "Today: Pending",
   "markAsValidated": "Mark as validated",
   "markAsSkipped": "Mark as skipped",
-  "correctionWarning": "This action will modify your streak"
+  "correctionWarning": "This action will modify your streak",
+  "languageSection": "Language",
+  "aboutSection": "About",
+  "dangerZone": "Danger zone",
+  "resetAllData": "Reset all data",
+  "resetAllDataDescription": "Delete all habits and progress permanently",
+  "resetAllDataConfirm": "This will permanently delete all your habits and progress. This action cannot be undone.",
+  "reset": "Reset",
+  "version": "Version",
+  "appDescription": "Build your foundation, one day at a time."
 }

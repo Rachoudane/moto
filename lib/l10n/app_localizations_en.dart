@@ -292,4 +292,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get correctionWarning => 'This action will modify your streak';
+
+  @override
+  String get languageSection => 'Language';
+
+  @override
+  String get aboutSection => 'About';
+
+  @override
+  String get dangerZone => 'Danger zone';
+
+  @override
+  String get resetAllData => 'Reset all data';
+
+  @override
+  String get resetAllDataDescription =>
+      'Delete all habits and progress permanently';
+
+  @override
+  String get resetAllDataConfirm =>
+      'This will permanently delete all your habits and progress. This action cannot be undone.';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get appDescription => 'Build your foundation, one day at a time.';
 }

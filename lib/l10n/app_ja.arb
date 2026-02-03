@@ -150,5 +150,14 @@
   "todayPending": "今日：未定",
   "markAsValidated": "達成にする",
   "markAsSkipped": "失敗にする",
-  "correctionWarning": "この操作は連続記録を変更します"
+  "correctionWarning": "この操作は連続記録を変更します",
+  "languageSection": "言語",
+  "aboutSection": "アプリについて",
+  "dangerZone": "危険ゾーン",
+  "resetAllData": "すべてのデータをリセット",
+  "resetAllDataDescription": "すべての習慣と進捗を完全に削除",
+  "resetAllDataConfirm": "すべての習慣と進捗が完全に削除されます。この操作は元に戻せません。",
+  "reset": "リセット",
+  "version": "バージョン",
+  "appDescription": "毎日、基盤を築こう。"
 }

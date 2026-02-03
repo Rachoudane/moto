@@ -150,5 +150,14 @@
   "todayPending": "Aujourd'hui : En attente",
   "markAsValidated": "Marquer comme validé",
   "markAsSkipped": "Marquer comme raté",
-  "correctionWarning": "Cette action va modifier ton streak"
+  "correctionWarning": "Cette action va modifier ton streak",
+  "languageSection": "Langue",
+  "aboutSection": "À propos",
+  "dangerZone": "Zone de danger",
+  "resetAllData": "Réinitialiser les données",
+  "resetAllDataDescription": "Supprimer toutes les habitudes et la progression",
+  "resetAllDataConfirm": "Cela supprimera définitivement toutes vos habitudes et votre progression. Cette action est irréversible.",
+  "reset": "Réinitialiser",
+  "version": "Version",
+  "appDescription": "Construis ta base, jour après jour."
 }
