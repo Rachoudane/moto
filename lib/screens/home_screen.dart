@@ -120,9 +120,16 @@ class _HomeScreenState extends State<HomeScreen> {
         habit.setStatusForDate(DateTime.now(), DayStatus.validated);
       });
       _saveHabits();
-      // Cancel today's reminder since habit is now validated
+      // Cancel today's reminder and reschedule for tomorrow
       if (habit.reminderEnabled) {
         NotificationService.cancelHabitReminder(habit.id);
+        final locale = Localizations.localeOf(context).languageCode;
+        NotificationService.scheduleHabitReminder(
+          habit: habit,
+          hour: habit.reminderHour!,
+          minute: habit.reminderMinute!,
+          locale: locale,
+        );
       }
     }
   }
@@ -136,9 +143,16 @@ class _HomeScreenState extends State<HomeScreen> {
         habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
       });
       _saveHabits();
-      // Cancel today's reminder since habit is now marked as skipped
+      // Cancel today's reminder and reschedule for tomorrow
       if (habit.reminderEnabled) {
         NotificationService.cancelHabitReminder(habit.id);
+        final locale = Localizations.localeOf(context).languageCode;
+        NotificationService.scheduleHabitReminder(
+          habit: habit,
+          hour: habit.reminderHour!,
+          minute: habit.reminderMinute!,
+          locale: locale,
+        );
       }
     }
   }

@@ -81,6 +81,7 @@ class NotificationService {
           color: const Color(0xFF7DD3A8),
           colorized: true,
           category: AndroidNotificationCategory.reminder,
+          autoCancel: false,
           styleInformation: BigTextStyleInformation(
             ReminderMessages.getContextualMessage(habit: habit, locale: locale),
             contentTitle: 'Moto 元',
@@ -93,10 +94,9 @@ class NotificationService {
           presentSound: true,
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      matchDateTimeComponents: DateTimeComponents.time, // Repeat daily
     );
   }
 
