@@ -639,6 +639,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Build your foundation, one day at a time.'**
   String get appDescription;
+
+  /// No description provided for @appearanceSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceSection;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark mode'**
+  String get darkMode;
+
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode'**
+  String get lightMode;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @supportSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get supportSection;
+
+  /// No description provided for @sendFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get sendFeedback;
+
+  /// No description provided for @sendFeedbackDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a bug or suggest an improvement'**
+  String get sendFeedbackDescription;
+
+  /// No description provided for @shareApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Moto'**
+  String get shareApp;
+
+  /// No description provided for @shareAppDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommend Moto to your friends'**
+  String get shareAppDescription;
+
+  /// No description provided for @shareMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m building better habits with Moto! Join me and start building your foundation, one day at a time. 🧱'**
+  String get shareMessage;
+
+  /// No description provided for @feedbackSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Moto Feedback'**
+  String get feedbackSubject;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @notificationsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your reminder preferences'**
+  String get notificationsDescription;
 }
 
 class _AppLocalizationsDelegate

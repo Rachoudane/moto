@@ -159,5 +159,18 @@
   "resetAllDataConfirm": "すべての習慣と進捗が完全に削除されます。この操作は元に戻せません。",
   "reset": "リセット",
   "version": "バージョン",
-  "appDescription": "毎日、基盤を築こう。"
+  "appDescription": "毎日、基盤を築こう。",
+  "appearanceSection": "外観",
+  "darkMode": "ダークモード",
+  "lightMode": "ライトモード",
+  "theme": "テーマ",
+  "supportSection": "サポート",
+  "sendFeedback": "フィードバックを送る",
+  "sendFeedbackDescription": "バグを報告するか改善を提案する",
+  "shareApp": "Motoをシェア",
+  "shareAppDescription": "友達にMotoをおすすめする",
+  "shareMessage": "Motoでより良い習慣を築いています！一緒に始めて、毎日基盤を築こう。🧱",
+  "feedbackSubject": "Motoフィードバック",
+  "notifications": "通知",
+  "notificationsDescription": "リマインダー設定を管理する"
 }

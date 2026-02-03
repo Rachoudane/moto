@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 class CompletedSquare extends StatefulWidget {
   final int level;
@@ -21,7 +22,6 @@ class CompletedSquare extends StatefulWidget {
 class _CompletedSquareState extends State<CompletedSquare>
     with TickerProviderStateMixin {
   static const Color trophyAmber = Color(0xFFE5C07B);
-  static const Color danger = Color(0xFFF85149);
 
   late AnimationController _appearController;
   late Animation<double> _appearScale;
@@ -35,7 +35,6 @@ class _CompletedSquareState extends State<CompletedSquare>
   void initState() {
     super.initState();
 
-    // Appear bounce
     _appearController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
@@ -51,7 +50,6 @@ class _CompletedSquareState extends State<CompletedSquare>
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 65),
     ]).animate(CurvedAnimation(parent: _appearController, curve: Curves.easeOut));
 
-    // Destroy shrink
     _destroyController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -93,6 +91,7 @@ class _CompletedSquareState extends State<CompletedSquare>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<MotoTheme>()!;
     final double ratio = 0.3 + (widget.level / widget.completedLevels) * 0.45;
     final double size = 48 * ratio;
 
@@ -120,14 +119,13 @@ class _CompletedSquareState extends State<CompletedSquare>
       );
     }
 
-    // Destroy animation
     if (widget.animateDestroy) {
       return AnimatedBuilder(
         animation: _destroyController,
         builder: (context, child) {
           final color = Color.lerp(
             trophyAmber,
-            danger,
+            theme.danger,
             _destroyFlash.value,
           )!;
           return Transform.scale(
@@ -136,7 +134,7 @@ class _CompletedSquareState extends State<CompletedSquare>
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: danger.withValues(alpha: 0.4 * _destroyFlash.value),
+                    color: theme.danger.withValues(alpha: 0.4 * _destroyFlash.value),
                     blurRadius: 8 * _destroyFlash.value,
                     spreadRadius: 1 * _destroyFlash.value,
                   ),
@@ -149,7 +147,6 @@ class _CompletedSquareState extends State<CompletedSquare>
       );
     }
 
-    // Appear animation
     if (widget.animate) {
       return AnimatedBuilder(
         animation: _appearController,

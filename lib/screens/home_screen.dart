@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
 import '../models/habit.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
@@ -10,10 +11,14 @@ import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final Function(Locale)? onLanguageChanged;
+  final Function(bool)? onThemeChanged;
+  final bool isDarkMode;
 
   const HomeScreen({
     super.key,
     this.onLanguageChanged,
+    this.onThemeChanged,
+    this.isDarkMode = true,
   });
 
   @override
@@ -24,13 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final StorageService _storageService = StorageService();
   List<Habit> _habits = [];
   bool _isLoading = true;
-
-  static const Color bg = Color(0xFF0A0A0A);
-  static const Color cardBg = Color(0xFF161B22);
-  static const Color accentGreen = Color(0xFF7DD3A8);
-  static const Color danger = Color(0xFFF85149);
-  static const Color textPrimary = Color(0xFFE6EDF3);
-  static const Color textSecondary = Color(0xFF7D8590);
 
   String _formattedDate(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
@@ -189,15 +187,17 @@ class _HomeScreenState extends State<HomeScreen> {
     bool isQuitting = false;
     PenaltyMode penaltyMode = PenaltyMode.standard;
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: cardBg,
+      backgroundColor: theme.cardBg,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
+        final modalTheme = Theme.of(context).extension<MotoTheme>()!;
         return StatefulBuilder(
           builder: (context, setModalState) {
             return SingleChildScrollView(
@@ -216,18 +216,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: GoogleFonts.inter(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
-                      color: textPrimary,
+                      color: modalTheme.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 24),
                   TextField(
                     autofocus: true,
-                    style: GoogleFonts.inter(color: textPrimary),
+                    style: GoogleFonts.inter(color: modalTheme.textPrimary),
                     decoration: InputDecoration(
                       hintText: l10n.habitName,
-                      hintStyle: GoogleFonts.inter(color: textSecondary),
+                      hintStyle: GoogleFonts.inter(color: modalTheme.textSecondary),
                       filled: true,
-                      fillColor: bg,
+                      fillColor: modalTheme.bg,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -246,13 +246,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: !isQuitting ? accentGreen.withValues(alpha: 0.2) : bg,
+                              color: !isQuitting ? modalTheme.accentGreen.withValues(alpha: 0.2) : modalTheme.bg,
                               borderRadius: BorderRadius.circular(10),
-                              border: !isQuitting ? Border.all(color: accentGreen.withValues(alpha: 0.4)) : null,
+                              border: !isQuitting ? Border.all(color: modalTheme.accentGreen.withValues(alpha: 0.4)) : null,
                             ),
                             child: Center(
                               child: Text(l10n.toDo, style: GoogleFonts.inter(
-                                color: !isQuitting ? accentGreen : textSecondary,
+                                color: !isQuitting ? modalTheme.accentGreen : modalTheme.textSecondary,
                                 fontWeight: FontWeight.w500,
                               )),
                             ),
@@ -267,13 +267,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: isQuitting ? danger.withValues(alpha: 0.2) : bg,
+                              color: isQuitting ? modalTheme.danger.withValues(alpha: 0.2) : modalTheme.bg,
                               borderRadius: BorderRadius.circular(10),
-                              border: isQuitting ? Border.all(color: danger.withValues(alpha: 0.4)) : null,
+                              border: isQuitting ? Border.all(color: modalTheme.danger.withValues(alpha: 0.4)) : null,
                             ),
                             child: Center(
                               child: Text(l10n.toQuit, style: GoogleFonts.inter(
-                                color: isQuitting ? danger : textSecondary,
+                                color: isQuitting ? modalTheme.danger : modalTheme.textSecondary,
                                 fontWeight: FontWeight.w500,
                               )),
                             ),
@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     l10n.penaltyMode,
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      color: textSecondary,
+                      color: modalTheme.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -296,6 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       _buildModeButton(
                         setModalState,
+                        modalTheme,
                         mode: PenaltyMode.zen,
                         currentMode: penaltyMode,
                         emoji: '🌱',
@@ -305,6 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(width: 8),
                       _buildModeButton(
                         setModalState,
+                        modalTheme,
                         mode: PenaltyMode.standard,
                         currentMode: penaltyMode,
                         emoji: '⚡',
@@ -314,6 +316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(width: 8),
                       _buildModeButton(
                         setModalState,
+                        modalTheme,
                         mode: PenaltyMode.hardcore,
                         currentMode: penaltyMode,
                         emoji: '🔥',
@@ -327,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _getModeDescription(l10n, penaltyMode),
                     style: GoogleFonts.inter(
                       fontSize: 12,
-                      color: textSecondary.withValues(alpha: 0.7),
+                      color: modalTheme.textSecondary.withValues(alpha: 0.7),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -344,14 +347,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         decoration: BoxDecoration(
-                          color: accentGreen,
+                          color: modalTheme.accentGreen,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Center(
                           child: Text(
                             l10n.create,
                             style: GoogleFonts.inter(
-                              color: const Color(0xFF0A0A0A),
+                              color: modalTheme.bg,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -369,7 +372,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildModeButton(
-    StateSetter setModalState, {
+    StateSetter setModalState,
+    MotoTheme theme, {
     required PenaltyMode mode,
     required PenaltyMode currentMode,
     required String emoji,
@@ -384,9 +388,9 @@ class _HomeScreenState extends State<HomeScreen> {
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? textPrimary.withValues(alpha: 0.1) : bg,
+            color: isSelected ? theme.textPrimary.withValues(alpha: 0.1) : theme.bg,
             borderRadius: BorderRadius.circular(10),
-            border: isSelected ? Border.all(color: textPrimary.withValues(alpha: 0.2)) : null,
+            border: isSelected ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2)) : null,
           ),
           child: Column(
             children: [
@@ -397,7 +401,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                  color: isSelected ? textPrimary : textSecondary,
+                  color: isSelected ? theme.textPrimary : theme.textSecondary,
                 ),
               ),
             ],
@@ -420,19 +424,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton.small(
         onPressed: _showAddHabitDialog,
-        backgroundColor: accentGreen,
+        backgroundColor: theme.accentGreen,
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
         ),
-        child: const Icon(Icons.add, color: Color(0xFF0A0A0A), size: 22),
+        child: Icon(Icons.add, color: theme.bg, size: 22),
       ),
       body: SafeArea(
         child: _isLoading
-          ? const Center(child: CircularProgressIndicator(color: accentGreen))
+          ? Center(child: CircularProgressIndicator(color: theme.accentGreen))
           : Builder(
           builder: (context) {
             final l10n = AppLocalizations.of(context)!;
@@ -458,7 +464,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.w300,
-                                color: textPrimary.withValues(alpha: 0.2),
+                                color: theme.textPrimary.withValues(alpha: 0.2),
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -467,7 +473,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: GoogleFonts.inter(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
-                                color: textPrimary,
+                                color: theme.textPrimary,
                               ),
                             ),
                           ],
@@ -477,7 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _formattedDate(context),
                           style: GoogleFonts.inter(
                             fontSize: 14,
-                            color: textSecondary,
+                            color: theme.textSecondary,
                             letterSpacing: 0.3,
                           ),
                         ),
@@ -493,13 +499,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => SettingsScreen(
                               onLanguageChanged: widget.onLanguageChanged ?? (_) {},
+                              onThemeChanged: widget.onThemeChanged ?? (_) {},
+                              isDarkMode: widget.isDarkMode,
                             ),
                           ),
                         );
                       },
                       child: Icon(
                         Icons.settings_outlined,
-                        color: textSecondary.withValues(alpha: 0.5),
+                        color: theme.textSecondary.withValues(alpha: 0.5),
                         size: 22,
                       ),
                     ),
@@ -517,7 +525,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Icon(
                             Icons.grid_view_rounded,
                             size: 48,
-                            color: textSecondary.withValues(alpha: 0.25),
+                            color: theme.textSecondary.withValues(alpha: 0.25),
                           ),
                           const SizedBox(height: 20),
                           Text(
@@ -525,7 +533,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: GoogleFonts.inter(
                               fontSize: 17,
                               fontWeight: FontWeight.w600,
-                              color: textSecondary,
+                              color: theme.textSecondary,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -533,7 +541,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             l10n.noHabitsSubtitle,
                             style: GoogleFonts.inter(
                               fontSize: 13,
-                              color: textSecondary.withValues(alpha: 0.6),
+                              color: theme.textSecondary.withValues(alpha: 0.6),
                             ),
                           ),
                         ],

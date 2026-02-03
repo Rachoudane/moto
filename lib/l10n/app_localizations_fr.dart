@@ -321,4 +321,45 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get appDescription => 'Construis ta base, jour après jour.';
+
+  @override
+  String get appearanceSection => 'Apparence';
+
+  @override
+  String get darkMode => 'Mode sombre';
+
+  @override
+  String get lightMode => 'Mode clair';
+
+  @override
+  String get theme => 'Thème';
+
+  @override
+  String get supportSection => 'Support';
+
+  @override
+  String get sendFeedback => 'Envoyer un feedback';
+
+  @override
+  String get sendFeedbackDescription =>
+      'Signaler un bug ou suggérer une amélioration';
+
+  @override
+  String get shareApp => 'Partager Moto';
+
+  @override
+  String get shareAppDescription => 'Recommander Moto à tes amis';
+
+  @override
+  String get shareMessage =>
+      'Je construis de meilleures habitudes avec Moto ! Rejoins-moi et commence à bâtir ta base, jour après jour. 🧱';
+
+  @override
+  String get feedbackSubject => 'Feedback Moto';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get notificationsDescription => 'Gérer les préférences de rappel';
 }

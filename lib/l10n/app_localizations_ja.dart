@@ -319,4 +319,43 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get appDescription => '毎日、基盤を築こう。';
+
+  @override
+  String get appearanceSection => '外観';
+
+  @override
+  String get darkMode => 'ダークモード';
+
+  @override
+  String get lightMode => 'ライトモード';
+
+  @override
+  String get theme => 'テーマ';
+
+  @override
+  String get supportSection => 'サポート';
+
+  @override
+  String get sendFeedback => 'フィードバックを送る';
+
+  @override
+  String get sendFeedbackDescription => 'バグを報告するか改善を提案する';
+
+  @override
+  String get shareApp => 'Motoをシェア';
+
+  @override
+  String get shareAppDescription => '友達にMotoをおすすめする';
+
+  @override
+  String get shareMessage => 'Motoでより良い習慣を築いています！一緒に始めて、毎日基盤を築こう。🧱';
+
+  @override
+  String get feedbackSubject => 'Motoフィードバック';
+
+  @override
+  String get notifications => '通知';
+
+  @override
+  String get notificationsDescription => 'リマインダー設定を管理する';
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#1A1A1A</color>
-    <!-- Light mode splash background (beige minéral) -->
-    <color name="splash_background">#F2EFEA</color>
+    <!-- Dark mode splash background -->
+    <color name="splash_background">#0A0A0A</color>
 </resources>

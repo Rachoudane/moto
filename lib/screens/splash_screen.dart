@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(Locale)? onLanguageChanged;
+  final Function(bool)? onThemeChanged;
+  final bool isDarkMode;
 
   const SplashScreen({
     super.key,
     this.onLanguageChanged,
+    this.onThemeChanged,
+    this.isDarkMode = true,
   });
 
   @override
@@ -22,13 +27,6 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _scale;
   late Animation<double> _taglineFade;
   late List<Animation<double>> _cellAnimations;
-
-  static const Color accentGreen = Color(0xFF7DD3A8);
-  static const Color darkBg = Color(0xFF0A0A0A);
-  static const Color cardBg = Color(0xFF161B22);
-  static const Color textPrimary = Color(0xFFE6EDF3);
-  static const Color emptySquare = Color(0xFF21262D);
-  static const Color emptyBorder = Color(0xFF30363D);
 
   @override
   void initState() {
@@ -81,7 +79,11 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              HomeScreen(onLanguageChanged: widget.onLanguageChanged),
+              HomeScreen(
+                onLanguageChanged: widget.onLanguageChanged,
+                onThemeChanged: widget.onThemeChanged,
+                isDarkMode: widget.isDarkMode,
+              ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
@@ -99,14 +101,16 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+
     return Scaffold(
       body: SizedBox.expand(
         child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [darkBg, cardBg],
+            colors: [theme.bg, theme.cardBg],
           ),
         ),
         child: AnimatedBuilder(
@@ -127,13 +131,13 @@ class _SplashScreenState extends State<SplashScreen>
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: accentGreen.withValues(alpha: 0.3 * _fadeIn.value),
+                            color: theme.accentGreen.withValues(alpha: 0.3 * _fadeIn.value),
                             blurRadius: 30,
                             spreadRadius: 5,
                           ),
                         ],
                       ),
-                      child: _buildLogo(),
+                      child: _buildLogo(theme),
                     ),
                   ),
                 ),
@@ -148,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen>
                       fontSize: 42,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 2,
-                      color: textPrimary,
+                      color: theme.textPrimary,
                     ),
                   ),
                 ),
@@ -161,7 +165,7 @@ class _SplashScreenState extends State<SplashScreen>
                     '元',
                     style: TextStyle(
                       fontSize: 24,
-                      color: textPrimary.withValues(alpha: 0.5),
+                      color: theme.textPrimary.withValues(alpha: 0.5),
                     ),
                   ),
                 ),
@@ -175,7 +179,7 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 3,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [accentGreen, accentGreen.withValues(alpha: 0.3)],
+                        colors: [theme.accentGreen, theme.accentGreen.withValues(alpha: 0.3)],
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -193,7 +197,7 @@ class _SplashScreenState extends State<SplashScreen>
                         l10n?.buildYourBase ?? '',
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: textPrimary.withValues(alpha: 0.4),
+                          color: theme.textPrimary.withValues(alpha: 0.4),
                           fontStyle: FontStyle.italic,
                         ),
                       );
@@ -211,7 +215,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
-  Widget _buildLogo() {
+  Widget _buildLogo(MotoTheme theme) {
     return GridView.count(
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
@@ -226,10 +230,10 @@ class _SplashScreenState extends State<SplashScreen>
               scale: _cellAnimations[index].value,
               child: Container(
                 decoration: BoxDecoration(
-                  color: index < 7 ? accentGreen : emptySquare,
+                  color: index < 7 ? theme.accentGreen : theme.emptySquare,
                   borderRadius: BorderRadius.circular(8),
                   border: index >= 7
-                      ? Border.all(color: emptyBorder, width: 1)
+                      ? Border.all(color: theme.emptyBorder, width: 1)
                       : null,
                 ),
               ),

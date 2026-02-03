@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 enum CellChangeType { none, gain, lossOne, lossSquare, lossAll }
 
@@ -20,11 +21,6 @@ class CurrentSquare extends StatefulWidget {
 
 class _CurrentSquareState extends State<CurrentSquare>
     with TickerProviderStateMixin {
-  static const Color accentGreen = Color(0xFF7DD3A8);
-  static const Color danger = Color(0xFFF85149);
-  static const Color emptySquare = Color(0xFF21262D);
-  static const Color emptyBorder = Color(0xFF30363D);
-
   late AnimationController _gainController;
   late Animation<double> _gainScale;
   late Animation<double> _gainGlow;
@@ -37,7 +33,6 @@ class _CurrentSquareState extends State<CurrentSquare>
   void initState() {
     super.initState();
 
-    // Gain animation
     _gainController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
@@ -52,7 +47,6 @@ class _CurrentSquareState extends State<CurrentSquare>
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 60),
     ]).animate(CurvedAnimation(parent: _gainController, curve: Curves.easeOut));
 
-    // Loss animation
     _lossController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
@@ -95,6 +89,8 @@ class _CurrentSquareState extends State<CurrentSquare>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+
     return AnimatedBuilder(
       animation: Listenable.merge([_gainController, _lossController]),
       builder: (context, child) {
@@ -116,18 +112,17 @@ class _CurrentSquareState extends State<CurrentSquare>
                 final bool isLastFilled =
                     index == widget.progress - 1 && widget.progress > 0;
 
-                // Color with loss flash
                 Color cellColor;
                 if (isFilled) {
                   cellColor = Color.lerp(
-                    accentGreen,
-                    danger,
+                    theme.accentGreen,
+                    theme.danger,
                     _lossFlash.value * 0.5,
                   )!;
                 } else {
                   cellColor = Color.lerp(
-                    emptySquare,
-                    danger.withValues(alpha: 0.3),
+                    theme.emptySquare,
+                    theme.danger.withValues(alpha: 0.3),
                     _lossFlash.value * 0.3,
                   )!;
                 }
@@ -142,7 +137,7 @@ class _CurrentSquareState extends State<CurrentSquare>
                         boxShadow: _gainGlow.value > 0
                             ? [
                                 BoxShadow(
-                                  color: accentGreen.withValues(
+                                  color: theme.accentGreen.withValues(
                                       alpha: 0.6 * _gainGlow.value),
                                   blurRadius: 6 * _gainGlow.value,
                                   spreadRadius: 1 * _gainGlow.value,
@@ -156,9 +151,9 @@ class _CurrentSquareState extends State<CurrentSquare>
 
                 return Container(
                   decoration: BoxDecoration(
-                    color: isFilled ? cellColor : emptySquare,
+                    color: isFilled ? cellColor : theme.emptySquare,
                     borderRadius: BorderRadius.circular(3),
-                    border: isFilled ? null : Border.all(color: emptyBorder, width: 1),
+                    border: isFilled ? null : Border.all(color: theme.emptyBorder, width: 1),
                   ),
                 );
               },

@@ -180,5 +180,18 @@
   "resetAllDataConfirm": "This will permanently delete all your habits and progress. This action cannot be undone.",
   "reset": "Reset",
   "version": "Version",
-  "appDescription": "Build your foundation, one day at a time."
+  "appDescription": "Build your foundation, one day at a time.",
+  "appearanceSection": "Appearance",
+  "darkMode": "Dark mode",
+  "lightMode": "Light mode",
+  "theme": "Theme",
+  "supportSection": "Support",
+  "sendFeedback": "Send feedback",
+  "sendFeedbackDescription": "Report a bug or suggest an improvement",
+  "shareApp": "Share Moto",
+  "shareAppDescription": "Recommend Moto to your friends",
+  "shareMessage": "I'm building better habits with Moto! Join me and start building your foundation, one day at a time. 🧱",
+  "feedbackSubject": "Moto Feedback",
+  "notifications": "Notifications",
+  "notificationsDescription": "Manage your reminder preferences"
 }

@@ -159,5 +159,18 @@
   "resetAllDataConfirm": "Cela supprimera définitivement toutes vos habitudes et votre progression. Cette action est irréversible.",
   "reset": "Réinitialiser",
   "version": "Version",
-  "appDescription": "Construis ta base, jour après jour."
+  "appDescription": "Construis ta base, jour après jour.",
+  "appearanceSection": "Apparence",
+  "darkMode": "Mode sombre",
+  "lightMode": "Mode clair",
+  "theme": "Thème",
+  "supportSection": "Support",
+  "sendFeedback": "Envoyer un feedback",
+  "sendFeedbackDescription": "Signaler un bug ou suggérer une amélioration",
+  "shareApp": "Partager Moto",
+  "shareAppDescription": "Recommander Moto à tes amis",
+  "shareMessage": "Je construis de meilleures habitudes avec Moto ! Rejoins-moi et commence à bâtir ta base, jour après jour. 🧱",
+  "feedbackSubject": "Feedback Moto",
+  "notifications": "Notifications",
+  "notificationsDescription": "Gérer les préférences de rappel"
 }

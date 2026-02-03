@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
 import '../models/habit.dart';
 import '../screens/habit_detail_screen.dart';
 import 'habit_progress.dart';
@@ -11,13 +12,6 @@ class HabitCard extends StatelessWidget {
   final VoidCallback onDecrement;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
-
-  static const Color cardBg = Color(0xFF161B22);
-  static const Color accentGreen = Color(0xFF7DD3A8);
-  static const Color danger = Color(0xFFF85149);
-  static const Color textPrimary = Color(0xFFE6EDF3);
-  static const Color textSecondary = Color(0xFF7D8590);
-  static const Color borderColor = Color(0xFF21262D);
 
   const HabitCard({
     super.key,
@@ -40,6 +34,7 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<MotoTheme>()!;
     final (progress, total) = _getCurrentProgress();
     final l10n = AppLocalizations.of(context)!;
 
@@ -49,27 +44,27 @@ class HabitCard extends StatelessWidget {
       confirmDismiss: (direction) async {
         return await showDialog<bool>(
           context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: cardBg,
+          builder: (ctx) => AlertDialog(
+            backgroundColor: theme.cardBg,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             title: Text(
               l10n.deleteHabit,
-              style: GoogleFonts.inter(color: textPrimary, fontWeight: FontWeight.w600),
+              style: GoogleFonts.inter(color: theme.textPrimary, fontWeight: FontWeight.w600),
             ),
             content: Text(
               l10n.deleteHabitConfirm(habit.streak),
-              style: GoogleFonts.inter(color: textSecondary),
+              style: GoogleFonts.inter(color: theme.textSecondary),
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(l10n.cancel, style: GoogleFonts.inter(color: textSecondary)),
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(l10n.cancel, style: GoogleFonts.inter(color: theme.textSecondary)),
               ),
               TextButton(
-                onPressed: () => Navigator.pop(context, true),
+                onPressed: () => Navigator.pop(ctx, true),
                 child: Text(
                   l10n.delete,
-                  style: GoogleFonts.inter(color: danger, fontWeight: FontWeight.w600),
+                  style: GoogleFonts.inter(color: theme.danger, fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -80,7 +75,7 @@ class HabitCard extends StatelessWidget {
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         decoration: BoxDecoration(
-          color: danger.withValues(alpha: 0.8),
+          color: theme.danger.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(16),
         ),
         child: const Icon(Icons.delete, color: Colors.white),
@@ -97,19 +92,17 @@ class HabitCard extends StatelessWidget {
               ),
             ),
           );
-          // Reload data after returning from detail screen
           onUpdate();
         },
         child: Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: cardBg,
+            color: theme.cardBg,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: borderColor),
+            border: Border.all(color: theme.borderColor),
           ),
           child: Column(
             children: [
-              // Top: name + progress squares
               Row(
                 children: [
                   Expanded(
@@ -121,7 +114,7 @@ class HabitCard extends StatelessWidget {
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: textPrimary,
+                            color: theme.textPrimary,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -132,7 +125,7 @@ class HabitCard extends StatelessWidget {
                               '$progress/$total',
                               style: GoogleFonts.inter(
                                 fontSize: 12,
-                                color: textSecondary,
+                                color: theme.textSecondary,
                               ),
                             ),
                             if (habit.isQuitting) ...[
@@ -140,14 +133,14 @@ class HabitCard extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                                 decoration: BoxDecoration(
-                                  color: danger.withValues(alpha: 0.1),
+                                  color: theme.danger.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(3),
                                 ),
                                 child: Text(
                                   l10n.stop,
                                   style: GoogleFonts.inter(
                                     fontSize: 8,
-                                    color: danger.withValues(alpha: 0.7),
+                                    color: theme.danger.withValues(alpha: 0.7),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -163,7 +156,6 @@ class HabitCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 14),
-              // Buttons or validated state
               if (habit.isValidatedToday)
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -172,7 +164,7 @@ class HabitCard extends StatelessWidget {
                       l10n.validated,
                       style: GoogleFonts.inter(
                         fontSize: 16,
-                        color: textSecondary.withValues(alpha: 0.5),
+                        color: theme.textSecondary.withValues(alpha: 0.5),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -192,13 +184,13 @@ class HabitCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: textSecondary.withValues(alpha: 0.3)),
+                              border: Border.all(color: theme.textSecondary.withValues(alpha: 0.3)),
                             ),
                             child: Center(
                               child: Text(
                                 l10n.skipped,
                                 style: GoogleFonts.inter(
-                                  color: textSecondary,
+                                  color: theme.textSecondary,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13,
                                 ),
@@ -220,13 +212,13 @@ class HabitCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: accentGreen.withValues(alpha: 0.5)),
+                              border: Border.all(color: theme.accentGreen.withValues(alpha: 0.5)),
                             ),
                             child: Center(
                               child: Text(
                                 l10n.done,
                                 style: GoogleFonts.inter(
-                                  color: accentGreen,
+                                  color: theme.accentGreen,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13,
                                 ),
