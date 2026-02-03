@@ -66,10 +66,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancel => 'Annuler';
 
   @override
-  String get done => 'Fait';
+  String get done => 'Validé';
 
   @override
-  String get skipped => 'Passé';
+  String get skipped => 'Manqué';
 
   @override
   String get validated => '✓';
@@ -362,4 +362,44 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get notificationsDescription => 'Gérer les préférences de rappel';
+
+  @override
+  String get skip => 'Passer';
+
+  @override
+  String get next => 'Suivant';
+
+  @override
+  String get getStarted => 'Commencer';
+
+  @override
+  String get onboardingTitle1 => 'Bienvenue sur Moto';
+
+  @override
+  String get onboardingDesc1 =>
+      'Construis des habitudes durables avec un système de progression visuelle unique inspiré de la philosophie japonaise.';
+
+  @override
+  String get onboardingTitle2 => 'Carré par carré';
+
+  @override
+  String get onboardingDesc2 =>
+      'Chaque jour complété construit un carré. Commence par 1×1, puis 2×2, puis 3×3, et au-delà.';
+
+  @override
+  String get onboardingTitle3 => 'Gagne tes trophées';
+
+  @override
+  String get onboardingDesc3 =>
+      'Les carrés complétés deviennent des trophées dorés. Construis ta collection et regarde ta progression grandir.';
+
+  @override
+  String get onboardingTitle4 => 'Choisis ton défi';
+
+  @override
+  String get onboardingDesc4 =>
+      'Trois modes de pénalité s\'adaptent à tes objectifs. Zen pour débuter, Standard pour le quotidien, Hardcore pour les engagements sérieux.';
+
+  @override
+  String get replayOnboarding => 'Revoir l\'introduction';
 }

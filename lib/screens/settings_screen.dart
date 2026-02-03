@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
@@ -8,6 +9,7 @@ import '../services/language_service.dart';
 import '../services/storage_service.dart';
 import '../services/notification_service.dart';
 import '../services/theme_service.dart';
+import 'onboarding_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Function(Locale) onLanguageChanged;
@@ -147,6 +149,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await SharePlus.instance.share(ShareParams(text: loc.shareMessage));
   }
 
+  Future<void> _replayOnboarding() async {
+    final navigator = Navigator.of(context);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_complete', false);
+    if (mounted) {
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => OnboardingScreen(
+            onLanguageChanged: widget.onLanguageChanged,
+            onThemeChanged: widget.onThemeChanged,
+            isDarkMode: _isDarkMode,
+          ),
+        ),
+        (route) => false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -249,6 +269,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildActionCard(
+                    theme: theme,
+                    icon: Icons.replay_outlined,
+                    iconColor: theme.textSecondary,
+                    title: loc.replayOnboarding,
+                    subtitle: '',
+                    onTap: () => _replayOnboarding(),
                   ),
                   const SizedBox(height: 40),
 

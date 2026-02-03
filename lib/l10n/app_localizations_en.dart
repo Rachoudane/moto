@@ -362,4 +362,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsDescription => 'Manage your reminder preferences';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get onboardingTitle1 => 'Welcome to Moto';
+
+  @override
+  String get onboardingDesc1 =>
+      'Build lasting habits with a unique visual progression system inspired by Japanese philosophy.';
+
+  @override
+  String get onboardingTitle2 => 'Square by Square';
+
+  @override
+  String get onboardingDesc2 =>
+      'Each day you complete builds a square. Start with 1×1, then 2×2, then 3×3, and beyond.';
+
+  @override
+  String get onboardingTitle3 => 'Earn Your Trophies';
+
+  @override
+  String get onboardingDesc3 =>
+      'Completed squares become golden trophies. Build your collection and watch your progress grow.';
+
+  @override
+  String get onboardingTitle4 => 'Choose Your Challenge';
+
+  @override
+  String get onboardingDesc4 =>
+      'Three penalty modes adapt to your goals. Zen for beginners, Standard for daily habits, Hardcore for serious commitments.';
+
+  @override
+  String get replayOnboarding => 'Replay introduction';
 }

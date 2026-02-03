@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'home_screen.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(Locale)? onLanguageChanged;
@@ -74,16 +76,26 @@ class _SplashScreenState extends State<SplashScreen>
       if (mounted) _controller.forward();
     });
 
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    Future.delayed(const Duration(milliseconds: 3000), () async {
+      if (!mounted) return;
+      final prefs = await SharedPreferences.getInstance();
+      final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              HomeScreen(
-                onLanguageChanged: widget.onLanguageChanged,
-                onThemeChanged: widget.onThemeChanged,
-                isDarkMode: widget.isDarkMode,
-              ),
+              onboardingComplete
+                  ? HomeScreen(
+                      onLanguageChanged: widget.onLanguageChanged,
+                      onThemeChanged: widget.onThemeChanged,
+                      isDarkMode: widget.isDarkMode,
+                    )
+                  : OnboardingScreen(
+                      onLanguageChanged: widget.onLanguageChanged,
+                      onThemeChanged: widget.onThemeChanged,
+                      isDarkMode: widget.isDarkMode,
+                    ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },

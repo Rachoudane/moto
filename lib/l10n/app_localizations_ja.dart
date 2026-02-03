@@ -358,4 +358,41 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get notificationsDescription => 'リマインダー設定を管理する';
+
+  @override
+  String get skip => 'スキップ';
+
+  @override
+  String get next => '次へ';
+
+  @override
+  String get getStarted => '始める';
+
+  @override
+  String get onboardingTitle1 => 'Motoへようこそ';
+
+  @override
+  String get onboardingDesc1 => '日本の哲学にインスパイアされたユニークな視覚的進捗システムで、持続する習慣を築きましょう。';
+
+  @override
+  String get onboardingTitle2 => '一つずつ、確実に';
+
+  @override
+  String get onboardingDesc2 => '毎日の達成が正方形を作ります。1×1から始めて、2×2、3×3へと成長します。';
+
+  @override
+  String get onboardingTitle3 => 'トロフィーを獲得';
+
+  @override
+  String get onboardingDesc3 => '完成した正方形は金色のトロフィーになります。コレクションを増やし、成長を見守りましょう。';
+
+  @override
+  String get onboardingTitle4 => 'チャレンジを選ぶ';
+
+  @override
+  String get onboardingDesc4 =>
+      '3つのペナルティモードが目標に合わせて調整できます。初心者は禅、日常習慣は普通、本気の約束は本気モード。';
+
+  @override
+  String get replayOnboarding => '紹介を再生';
 }

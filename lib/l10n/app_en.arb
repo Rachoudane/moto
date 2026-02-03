@@ -193,5 +193,17 @@
   "shareMessage": "I'm building better habits with Moto! Join me and start building your foundation, one day at a time. 🧱",
   "feedbackSubject": "Moto Feedback",
   "notifications": "Notifications",
-  "notificationsDescription": "Manage your reminder preferences"
+  "notificationsDescription": "Manage your reminder preferences",
+  "skip": "Skip",
+  "next": "Next",
+  "getStarted": "Get Started",
+  "onboardingTitle1": "Welcome to Moto",
+  "onboardingDesc1": "Build lasting habits with a unique visual progression system inspired by Japanese philosophy.",
+  "onboardingTitle2": "Square by Square",
+  "onboardingDesc2": "Each day you complete builds a square. Start with 1×1, then 2×2, then 3×3, and beyond.",
+  "onboardingTitle3": "Earn Your Trophies",
+  "onboardingDesc3": "Completed squares become golden trophies. Build your collection and watch your progress grow.",
+  "onboardingTitle4": "Choose Your Challenge",
+  "onboardingDesc4": "Three penalty modes adapt to your goals. Zen for beginners, Standard for daily habits, Hardcore for serious commitments.",
+  "replayOnboarding": "Replay introduction"
 }

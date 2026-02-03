@@ -717,6 +717,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage your reminder preferences'**
   String get notificationsDescription;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Moto'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'Build lasting habits with a unique visual progression system inspired by Japanese philosophy.'**
+  String get onboardingDesc1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Square by Square'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'Each day you complete builds a square. Start with 1×1, then 2×2, then 3×3, and beyond.'**
+  String get onboardingDesc2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Earn Your Trophies'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed squares become golden trophies. Build your collection and watch your progress grow.'**
+  String get onboardingDesc3;
+
+  /// No description provided for @onboardingTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Challenge'**
+  String get onboardingTitle4;
+
+  /// No description provided for @onboardingDesc4.
+  ///
+  /// In en, this message translates to:
+  /// **'Three penalty modes adapt to your goals. Zen for beginners, Standard for daily habits, Hardcore for serious commitments.'**
+  String get onboardingDesc4;
+
+  /// No description provided for @replayOnboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay introduction'**
+  String get replayOnboarding;
 }
 
 class _AppLocalizationsDelegate

@@ -172,5 +172,17 @@
   "shareMessage": "Motoでより良い習慣を築いています！一緒に始めて、毎日基盤を築こう。🧱",
   "feedbackSubject": "Motoフィードバック",
   "notifications": "通知",
-  "notificationsDescription": "リマインダー設定を管理する"
+  "notificationsDescription": "リマインダー設定を管理する",
+  "skip": "スキップ",
+  "next": "次へ",
+  "getStarted": "始める",
+  "onboardingTitle1": "Motoへようこそ",
+  "onboardingDesc1": "日本の哲学にインスパイアされたユニークな視覚的進捗システムで、持続する習慣を築きましょう。",
+  "onboardingTitle2": "一つずつ、確実に",
+  "onboardingDesc2": "毎日の達成が正方形を作ります。1×1から始めて、2×2、3×3へと成長します。",
+  "onboardingTitle3": "トロフィーを獲得",
+  "onboardingDesc3": "完成した正方形は金色のトロフィーになります。コレクションを増やし、成長を見守りましょう。",
+  "onboardingTitle4": "チャレンジを選ぶ",
+  "onboardingDesc4": "3つのペナルティモードが目標に合わせて調整できます。初心者は禅、日常習慣は普通、本気の約束は本気モード。",
+  "replayOnboarding": "紹介を再生"
 }
