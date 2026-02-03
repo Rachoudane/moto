@@ -115,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final habit = _habits.firstWhere((h) => h.id == id);
     if (!habit.isValidatedToday) {
       setState(() {
+        habit.setStreakBeforeAction(DateTime.now(), habit.streak);
         habit.streak++;
         habit.lastValidatedDate = DateTime.now();
         habit.setStatusForDate(DateTime.now(), DayStatus.validated);
@@ -138,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final habit = _habits.firstWhere((h) => h.id == id);
     if (!habit.isValidatedToday) {
       setState(() {
+        habit.setStreakBeforeAction(DateTime.now(), habit.streak);
         _applyPenalty(habit);
         habit.lastValidatedDate = DateTime.now();
         habit.setStatusForDate(DateTime.now(), DayStatus.skipped);

@@ -88,6 +88,73 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     return level - 1;
   }
 
+  void _applyPenalty(Habit habit) {
+    switch (habit.penaltyMode) {
+      case PenaltyMode.zen:
+        if (habit.streak > 0) habit.streak--;
+        break;
+      case PenaltyMode.standard:
+        int level = 1;
+        int total = 0;
+        while (total + level * level <= habit.streak) {
+          total += level * level;
+          level++;
+        }
+        if (habit.streak > total) {
+          habit.streak = total;
+        }
+        break;
+      case PenaltyMode.hardcore:
+        habit.streak = 0;
+        break;
+    }
+  }
+
+  Future<void> _correctTodayStatus(DayStatus newStatus, StateSetter setModalState) async {
+    final habit = widget.habit;
+    final todayStatus = habit.getStatusForDate(DateTime.now());
+
+    if (todayStatus == newStatus) return;
+
+    // Récupérer le streak avant l'action originale
+    final streakBefore = habit.getStreakBeforeAction(DateTime.now());
+
+    setState(() {
+      if (newStatus == DayStatus.validated) {
+        // Raté → Validé : restaurer le streak d'avant puis +1
+        if (streakBefore != null) {
+          habit.streak = streakBefore + 1;
+        } else {
+          // Fallback si pas de données (anciennes habitudes)
+          habit.streak++;
+        }
+        habit.lastValidatedDate = DateTime.now();
+        habit.setStatusForDate(DateTime.now(), DayStatus.validated);
+      } else if (newStatus == DayStatus.skipped) {
+        // Validé → Raté : restaurer le streak d'avant puis appliquer la pénalité
+        if (streakBefore != null) {
+          habit.streak = streakBefore;
+        } else {
+          // Fallback : annuler le +1
+          if (habit.streak > 0) habit.streak--;
+        }
+        _applyPenalty(habit);
+        habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
+      }
+    });
+
+    // Sauvegarder
+    final allHabits = await _storageService.loadHabits();
+    final habitIndex = allHabits.indexWhere((h) => h.id == habit.id);
+    if (habitIndex != -1) {
+      allHabits[habitIndex] = habit;
+      await _storageService.saveHabits(allHabits);
+    }
+
+    setModalState(() {});
+    widget.onUpdate();
+  }
+
   void _showDeleteConfirmation() {
     final l10n = AppLocalizations.of(context)!;
     showDialog(
@@ -278,6 +345,110 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
+                  // Section correction du jour
+                  Builder(
+                    builder: (context) {
+                      final todayStatus = widget.habit.getStatusForDate(DateTime.now());
+                      if (todayStatus == DayStatus.pending) {
+                        return const SizedBox.shrink();
+                      }
+
+                      final isValidated = todayStatus == DayStatus.validated;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.correctToday,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: bg,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isValidated
+                                    ? accentGreen.withValues(alpha: 0.3)
+                                    : danger.withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 32,
+                                      height: 32,
+                                      decoration: BoxDecoration(
+                                        color: isValidated
+                                            ? accentGreen.withValues(alpha: 0.2)
+                                            : danger.withValues(alpha: 0.2),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Icon(
+                                        isValidated ? Icons.check : Icons.close,
+                                        color: isValidated ? accentGreen : danger,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        isValidated ? l10n.todayValidated : l10n.todaySkipped,
+                                        style: GoogleFonts.inter(
+                                          color: textPrimary,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await _correctTodayStatus(
+                                      isValidated ? DayStatus.skipped : DayStatus.validated,
+                                      setModalState,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                    decoration: BoxDecoration(
+                                      color: isValidated
+                                          ? danger.withValues(alpha: 0.15)
+                                          : accentGreen.withValues(alpha: 0.15),
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: isValidated
+                                            ? danger.withValues(alpha: 0.3)
+                                            : accentGreen.withValues(alpha: 0.3),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        isValidated ? l10n.markAsSkipped : l10n.markAsValidated,
+                                        style: GoogleFonts.inter(
+                                          color: isValidated ? danger : accentGreen,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      );
+                    },
+                  ),
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(

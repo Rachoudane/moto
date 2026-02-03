@@ -268,4 +268,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String reminderBuildingMomentum(String habit) {
     return 'You\'re unstoppable: do $habit today!';
   }
+
+  @override
+  String get todayStatus => 'Today\'s status';
+
+  @override
+  String get correctToday => 'Correct today';
+
+  @override
+  String get todayValidated => 'Today: Validated ✓';
+
+  @override
+  String get todaySkipped => 'Today: Skipped ✗';
+
+  @override
+  String get todayPending => 'Today: Pending';
+
+  @override
+  String get markAsValidated => 'Mark as validated';
+
+  @override
+  String get markAsSkipped => 'Mark as skipped';
+
+  @override
+  String get correctionWarning => 'This action will modify your streak';
 }

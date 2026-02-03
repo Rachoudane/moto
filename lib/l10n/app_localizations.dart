@@ -537,6 +537,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'re unstoppable: do {habit} today!'**
   String reminderBuildingMomentum(String habit);
+
+  /// No description provided for @todayStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s status'**
+  String get todayStatus;
+
+  /// No description provided for @correctToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct today'**
+  String get correctToday;
+
+  /// No description provided for @todayValidated.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: Validated ✓'**
+  String get todayValidated;
+
+  /// No description provided for @todaySkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: Skipped ✗'**
+  String get todaySkipped;
+
+  /// No description provided for @todayPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: Pending'**
+  String get todayPending;
+
+  /// No description provided for @markAsValidated.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as validated'**
+  String get markAsValidated;
+
+  /// No description provided for @markAsSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as skipped'**
+  String get markAsSkipped;
+
+  /// No description provided for @correctionWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This action will modify your streak'**
+  String get correctionWarning;
 }
 
 class _AppLocalizationsDelegate

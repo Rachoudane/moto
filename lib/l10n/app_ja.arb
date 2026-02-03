@@ -142,5 +142,13 @@
   },
   "@reminderBuildingMomentum": {
     "placeholders": {"habit": {"type": "String"}}
-  }
+  },
+  "todayStatus": "今日のステータス",
+  "correctToday": "今日を修正",
+  "todayValidated": "今日：達成 ✓",
+  "todaySkipped": "今日：失敗 ✗",
+  "todayPending": "今日：未定",
+  "markAsValidated": "達成にする",
+  "markAsSkipped": "失敗にする",
+  "correctionWarning": "この操作は連続記録を変更します"
 }

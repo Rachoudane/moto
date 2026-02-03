@@ -18,6 +18,7 @@ class Habit {
   int streak;
   DateTime? lastValidatedDate;
   Map<String, DayStatus> history;
+  Map<String, int> streakBeforeAction; // Streak avant chaque action (pour correction)
   bool reminderEnabled;
   int? reminderHour;
   int? reminderMinute;
@@ -30,10 +31,12 @@ class Habit {
     this.streak = 0,
     this.lastValidatedDate,
     Map<String, DayStatus>? history,
+    Map<String, int>? streakBeforeAction,
     this.reminderEnabled = false,
     this.reminderHour,
     this.reminderMinute,
-  }) : history = history ?? {};
+  }) : history = history ?? {},
+       streakBeforeAction = streakBeforeAction ?? {};
 
   bool get isValidatedToday {
     if (lastValidatedDate == null) return false;
@@ -67,6 +70,18 @@ class Habit {
   void setStatusForDate(DateTime date, DayStatus status) {
     final key = _dateToKey(date);
     history[key] = status;
+  }
+
+  // Stocke le streak avant une action pour permettre la correction
+  void setStreakBeforeAction(DateTime date, int streakValue) {
+    final key = _dateToKey(date);
+    streakBeforeAction[key] = streakValue;
+  }
+
+  // Récupère le streak avant l'action pour une date donnée
+  int? getStreakBeforeAction(DateTime date) {
+    final key = _dateToKey(date);
+    return streakBeforeAction[key];
   }
 
   // Calculate success rate (percentage)
@@ -161,6 +176,7 @@ class Habit {
     'streak': streak,
     'lastValidatedDate': lastValidatedDate?.toIso8601String(),
     'history': history.map((key, value) => MapEntry(key, value.index)),
+    'streakBeforeAction': streakBeforeAction,
     'reminderEnabled': reminderEnabled,
     'reminderHour': reminderHour,
     'reminderMinute': reminderMinute,
@@ -177,6 +193,9 @@ class Habit {
         : null,
     history: (json['history'] as Map<String, dynamic>?)?.map(
       (key, value) => MapEntry(key, DayStatus.values[value as int]),
+    ) ?? {},
+    streakBeforeAction: (json['streakBeforeAction'] as Map<String, dynamic>?)?.map(
+      (key, value) => MapEntry(key, value as int),
     ) ?? {},
     reminderEnabled: json['reminderEnabled'] ?? false,
     reminderHour: json['reminderHour'],

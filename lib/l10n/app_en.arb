@@ -163,5 +163,13 @@
   },
   "@reminderBuildingMomentum": {
     "placeholders": {"habit": {"type": "String"}}
-  }
+  },
+  "todayStatus": "Today's status",
+  "correctToday": "Correct today",
+  "todayValidated": "Today: Validated ✓",
+  "todaySkipped": "Today: Skipped ✗",
+  "todayPending": "Today: Pending",
+  "markAsValidated": "Mark as validated",
+  "markAsSkipped": "Mark as skipped",
+  "correctionWarning": "This action will modify your streak"
 }
