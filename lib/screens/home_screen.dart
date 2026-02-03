@@ -128,15 +128,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _decrementStreak(String id) {
-    setState(() {
-      final habit = _habits.firstWhere((h) => h.id == id);
-      if (!habit.isValidatedToday) {
+    final habit = _habits.firstWhere((h) => h.id == id);
+    if (!habit.isValidatedToday) {
+      setState(() {
         _applyPenalty(habit);
         habit.lastValidatedDate = DateTime.now();
         habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
+      });
+      _saveHabits();
+      // Cancel today's reminder since habit is now marked as skipped
+      if (habit.reminderEnabled) {
+        NotificationService.cancelHabitReminder(habit.id);
       }
-    });
-    _saveHabits();
+    }
   }
 
   void _addHabit(String name, bool isQuitting, PenaltyMode penaltyMode) {
@@ -152,6 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _deleteHabit(String id) {
+    NotificationService.cancelHabitReminder(id);
     setState(() {
       _habits.removeWhere((h) => h.id == id);
     });

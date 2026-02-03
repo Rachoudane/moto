@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:permission_handler/permission_handler.dart';
@@ -11,6 +12,10 @@ class NotificationService {
 
   static Future<void> initialize() async {
     tz_data.initializeTimeZones();
+
+    // Set local timezone
+    final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName));
 
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings(
@@ -28,8 +33,8 @@ class NotificationService {
   }
 
   static Future<bool> requestPermission() async {
-    final status = await Permission.notification.request();
-    return status.isGranted;
+    final notifStatus = await Permission.notification.request();
+    return notifStatus.isGranted;
   }
 
   static Future<void> scheduleHabitReminder({
@@ -73,6 +78,13 @@ class NotificationService {
           importance: Importance.high,
           priority: Priority.high,
           color: const Color(0xFF7DD3A8),
+          colorized: true,
+          category: AndroidNotificationCategory.reminder,
+          styleInformation: BigTextStyleInformation(
+            _getReminderMessage(habit, locale),
+            contentTitle: 'Moto 元',
+            summaryText: habit.name,
+          ),
         ),
         iOS: const DarwinNotificationDetails(
           presentAlert: true,
@@ -80,7 +92,7 @@ class NotificationService {
           presentSound: true,
         ),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time, // Repeat daily
