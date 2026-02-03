@@ -83,5 +83,85 @@
     }
   },
   "noReminder": "No reminder",
-  "permissionRequired": "Notification permission required"
+  "permissionRequired": "Notification permission required",
+  "reminderBuildingMorning": "Start your day strong with {habit}",
+  "reminderBuildingAfternoon": "Keep going! Time for {habit}",
+  "reminderBuildingEvening": "Cap off your day with {habit}",
+  "reminderQuittingMorning": "Start your day clean without {habit}",
+  "reminderQuittingAfternoon": "Stay strong: resist {habit} today!",
+  "reminderQuittingEvening": "End the day proud: you avoided {habit}",
+  "@reminderBuildingMorning": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderBuildingAfternoon": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderBuildingEvening": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingMorning": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingAfternoon": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingEvening": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "reminderBeginnerGeneral": "You're just getting started with {habit}!",
+  "reminderBeginnerMotivation": "First steps count: let's do {habit}",
+  "reminderIntermediateGeneral": "Look at your progress! Keep going with {habit}",
+  "reminderIntermediateMotivation": "Momentum is real: another day of {habit}",
+  "reminderAdvancedGeneral": "You're a champion! Keep the streak alive with {habit}",
+  "reminderAdvancedMotivation": "Mastery awaits: another day of {habit}",
+  "@reminderBeginnerGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBeginnerMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderIntermediateGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderIntermediateMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderAdvancedGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderAdvancedMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "reminderQuittingVictory": "Every day without {habit} is a victory",
+  "reminderQuittingWillpower": "Break the chain with {habit} - you can!",
+  "reminderBuildingSuccess": "Success comes from consistency: {habit}",
+  "reminderBuildingFoundation": "Let's build: time for {habit}!",
+  "reminderBuildingMomentum": "You're unstoppable: do {habit} today!",
+  "@reminderQuittingVictory": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingWillpower": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingSuccess": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingFoundation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingMomentum": {
+    "placeholders": {"habit": {"type": "String"}}
+  }
 }

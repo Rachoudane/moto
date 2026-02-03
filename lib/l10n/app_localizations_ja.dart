@@ -183,4 +183,89 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get permissionRequired => '通知の許可が必要です';
+
+  @override
+  String reminderBuildingMorning(String habit) {
+    return '朝から力強く$habitをしよう';
+  }
+
+  @override
+  String reminderBuildingAfternoon(String habit) {
+    return '続けよう！$habitの時間だ';
+  }
+
+  @override
+  String reminderBuildingEvening(String habit) {
+    return '一日の終わりに$habitをしよう';
+  }
+
+  @override
+  String reminderQuittingMorning(String habit) {
+    return '朝から$habitなしで始めよう';
+  }
+
+  @override
+  String reminderQuittingAfternoon(String habit) {
+    return '$habitに抵抗し続けよう！';
+  }
+
+  @override
+  String reminderQuittingEvening(String habit) {
+    return '$habitを避けた誇りある夜';
+  }
+
+  @override
+  String reminderBeginnerGeneral(String habit) {
+    return '$habitを始めたばかり - 素晴らしい！';
+  }
+
+  @override
+  String reminderBeginnerMotivation(String habit) {
+    return '第一歩が大切：$habitをしよう';
+  }
+
+  @override
+  String reminderIntermediateGeneral(String habit) {
+    return '自分の進捗を見よう！$habitを続けよう';
+  }
+
+  @override
+  String reminderIntermediateMotivation(String habit) {
+    return '勢いは本物だ：さらに一日の$habit';
+  }
+
+  @override
+  String reminderAdvancedGeneral(String habit) {
+    return '君はチャンピオンだ！$habitで記録を保ちよう';
+  }
+
+  @override
+  String reminderAdvancedMotivation(String habit) {
+    return '熟練へ向かおう：さらに一日の$habit';
+  }
+
+  @override
+  String reminderQuittingVictory(String habit) {
+    return '$habitのない毎日が勝利だ';
+  }
+
+  @override
+  String reminderQuittingWillpower(String habit) {
+    return '$habitとの関係を断ち切ろう - 君なら出来る！';
+  }
+
+  @override
+  String reminderBuildingSuccess(String habit) {
+    return '成功は継続から来る：$habit';
+  }
+
+  @override
+  String reminderBuildingFoundation(String habit) {
+    return '$habitの時間だ！基盤を築こう！';
+  }
+
+  @override
+  String reminderBuildingMomentum(String habit) {
+    return '君は止められない！$habitをしよう';
+  }
 }

@@ -5,6 +5,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:permission_handler/permission_handler.dart';
 import '../models/habit.dart';
+import 'reminder_messages.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
@@ -68,7 +69,7 @@ class NotificationService {
     await _notifications.zonedSchedule(
       habit.id.hashCode,
       'Moto 元',
-      _getReminderMessage(habit, locale),
+      ReminderMessages.getContextualMessage(habit: habit, locale: locale),
       scheduledDate,
       NotificationDetails(
         android: AndroidNotificationDetails(
@@ -81,7 +82,7 @@ class NotificationService {
           colorized: true,
           category: AndroidNotificationCategory.reminder,
           styleInformation: BigTextStyleInformation(
-            _getReminderMessage(habit, locale),
+            ReminderMessages.getContextualMessage(habit: habit, locale: locale),
             contentTitle: 'Moto 元',
             summaryText: habit.name,
           ),
@@ -110,55 +111,6 @@ class NotificationService {
           locale: locale,
         );
       }
-    }
-  }
-
-  static String _getReminderMessage(Habit habit, String locale) {
-    final messages = _getLocalizedMessages(habit.name, locale);
-    return messages[DateTime.now().millisecond % messages.length];
-  }
-
-  static List<String> _getLocalizedMessages(String habitName, String locale) {
-    switch (locale) {
-      case 'fr':
-        return [
-          "C'est l'heure de $habitName !",
-          "N'oublie pas : $habitName",
-          "Construis ta base : $habitName",
-          "Une case de plus : $habitName",
-          "$habitName t'attend !",
-          "Ta fondation se construit jour après jour",
-          "Chaque effort compte pour $habitName",
-          "Le moment est venu : $habitName",
-          "Continue sur ta lancée !",
-          "Un petit pas aujourd'hui, un grand progrès demain",
-        ];
-      case 'ja':
-        return [
-          "$habitNameの時間です！",
-          "忘れずに：$habitName",
-          "基盤を築こう：$habitName",
-          "もう一マス：$habitName",
-          "$habitNameが待っています！",
-          "毎日の積み重ねが大切",
-          "$habitNameで自分を磨こう",
-          "今がその時：$habitName",
-          "継続は力なり",
-          "小さな一歩が大きな進歩に",
-        ];
-      default: // English
-        return [
-          "Time to work on $habitName!",
-          "Don't forget: $habitName",
-          "Build your foundation: $habitName",
-          "One more square: $habitName",
-          "$habitName is waiting for you!",
-          "Your foundation grows day by day",
-          "Every effort counts for $habitName",
-          "Now is the time: $habitName",
-          "Keep the momentum going!",
-          "A small step today, big progress tomorrow",
-        ];
     }
   }
 

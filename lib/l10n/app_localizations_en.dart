@@ -183,4 +183,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get permissionRequired => 'Notification permission required';
+
+  @override
+  String reminderBuildingMorning(String habit) {
+    return 'Start your day strong with $habit';
+  }
+
+  @override
+  String reminderBuildingAfternoon(String habit) {
+    return 'Keep going! Time for $habit';
+  }
+
+  @override
+  String reminderBuildingEvening(String habit) {
+    return 'Cap off your day with $habit';
+  }
+
+  @override
+  String reminderQuittingMorning(String habit) {
+    return 'Start your day clean without $habit';
+  }
+
+  @override
+  String reminderQuittingAfternoon(String habit) {
+    return 'Stay strong: resist $habit today!';
+  }
+
+  @override
+  String reminderQuittingEvening(String habit) {
+    return 'End the day proud: you avoided $habit';
+  }
+
+  @override
+  String reminderBeginnerGeneral(String habit) {
+    return 'You\'re just getting started with $habit!';
+  }
+
+  @override
+  String reminderBeginnerMotivation(String habit) {
+    return 'First steps count: let\'s do $habit';
+  }
+
+  @override
+  String reminderIntermediateGeneral(String habit) {
+    return 'Look at your progress! Keep going with $habit';
+  }
+
+  @override
+  String reminderIntermediateMotivation(String habit) {
+    return 'Momentum is real: another day of $habit';
+  }
+
+  @override
+  String reminderAdvancedGeneral(String habit) {
+    return 'You\'re a champion! Keep the streak alive with $habit';
+  }
+
+  @override
+  String reminderAdvancedMotivation(String habit) {
+    return 'Mastery awaits: another day of $habit';
+  }
+
+  @override
+  String reminderQuittingVictory(String habit) {
+    return 'Every day without $habit is a victory';
+  }
+
+  @override
+  String reminderQuittingWillpower(String habit) {
+    return 'Break the chain with $habit - you can!';
+  }
+
+  @override
+  String reminderBuildingSuccess(String habit) {
+    return 'Success comes from consistency: $habit';
+  }
+
+  @override
+  String reminderBuildingFoundation(String habit) {
+    return 'Let\'s build: time for $habit!';
+  }
+
+  @override
+  String reminderBuildingMomentum(String habit) {
+    return 'You\'re unstoppable: do $habit today!';
+  }
 }

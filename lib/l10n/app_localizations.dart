@@ -435,6 +435,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification permission required'**
   String get permissionRequired;
+
+  /// No description provided for @reminderBuildingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your day strong with {habit}'**
+  String reminderBuildingMorning(String habit);
+
+  /// No description provided for @reminderBuildingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep going! Time for {habit}'**
+  String reminderBuildingAfternoon(String habit);
+
+  /// No description provided for @reminderBuildingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Cap off your day with {habit}'**
+  String reminderBuildingEvening(String habit);
+
+  /// No description provided for @reminderQuittingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your day clean without {habit}'**
+  String reminderQuittingMorning(String habit);
+
+  /// No description provided for @reminderQuittingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay strong: resist {habit} today!'**
+  String reminderQuittingAfternoon(String habit);
+
+  /// No description provided for @reminderQuittingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'End the day proud: you avoided {habit}'**
+  String reminderQuittingEvening(String habit);
+
+  /// No description provided for @reminderBeginnerGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re just getting started with {habit}!'**
+  String reminderBeginnerGeneral(String habit);
+
+  /// No description provided for @reminderBeginnerMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'First steps count: let\'s do {habit}'**
+  String reminderBeginnerMotivation(String habit);
+
+  /// No description provided for @reminderIntermediateGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Look at your progress! Keep going with {habit}'**
+  String reminderIntermediateGeneral(String habit);
+
+  /// No description provided for @reminderIntermediateMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Momentum is real: another day of {habit}'**
+  String reminderIntermediateMotivation(String habit);
+
+  /// No description provided for @reminderAdvancedGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re a champion! Keep the streak alive with {habit}'**
+  String reminderAdvancedGeneral(String habit);
+
+  /// No description provided for @reminderAdvancedMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery awaits: another day of {habit}'**
+  String reminderAdvancedMotivation(String habit);
+
+  /// No description provided for @reminderQuittingVictory.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day without {habit} is a victory'**
+  String reminderQuittingVictory(String habit);
+
+  /// No description provided for @reminderQuittingWillpower.
+  ///
+  /// In en, this message translates to:
+  /// **'Break the chain with {habit} - you can!'**
+  String reminderQuittingWillpower(String habit);
+
+  /// No description provided for @reminderBuildingSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success comes from consistency: {habit}'**
+  String reminderBuildingSuccess(String habit);
+
+  /// No description provided for @reminderBuildingFoundation.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s build: time for {habit}!'**
+  String reminderBuildingFoundation(String habit);
+
+  /// No description provided for @reminderBuildingMomentum.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re unstoppable: do {habit} today!'**
+  String reminderBuildingMomentum(String habit);
 }
 
 class _AppLocalizationsDelegate

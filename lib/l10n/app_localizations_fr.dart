@@ -183,4 +183,89 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get permissionRequired => 'Permission de notification requise';
+
+  @override
+  String reminderBuildingMorning(String habit) {
+    return 'Commence ta journée fort avec $habit';
+  }
+
+  @override
+  String reminderBuildingAfternoon(String habit) {
+    return 'Continue ! C\'est l\'heure de $habit';
+  }
+
+  @override
+  String reminderBuildingEvening(String habit) {
+    return 'Finis ta journée avec $habit';
+  }
+
+  @override
+  String reminderQuittingMorning(String habit) {
+    return 'Commence ta journée sans $habit';
+  }
+
+  @override
+  String reminderQuittingAfternoon(String habit) {
+    return 'Reste fort : résiste à $habit aujourd\'hui !';
+  }
+
+  @override
+  String reminderQuittingEvening(String habit) {
+    return 'Finis la journée fier : tu as évité $habit';
+  }
+
+  @override
+  String reminderBeginnerGeneral(String habit) {
+    return 'Tu débutes avec $habit - c\'est excellent !';
+  }
+
+  @override
+  String reminderBeginnerMotivation(String habit) {
+    return 'Les premiers pas comptent : c\'est $habit';
+  }
+
+  @override
+  String reminderIntermediateGeneral(String habit) {
+    return 'Regarde ta progression ! Continue avec $habit';
+  }
+
+  @override
+  String reminderIntermediateMotivation(String habit) {
+    return 'La dynamique est réelle : encore un jour de $habit';
+  }
+
+  @override
+  String reminderAdvancedGeneral(String habit) {
+    return 'Tu es un champion ! Garde ta série avec $habit';
+  }
+
+  @override
+  String reminderAdvancedMotivation(String habit) {
+    return 'La maîtrise t\'attend : encore un jour de $habit';
+  }
+
+  @override
+  String reminderQuittingVictory(String habit) {
+    return 'Chaque jour sans $habit est une victoire';
+  }
+
+  @override
+  String reminderQuittingWillpower(String habit) {
+    return 'Casse la chaîne avec $habit - tu peux !';
+  }
+
+  @override
+  String reminderBuildingSuccess(String habit) {
+    return 'Le succès vient de la constance : $habit';
+  }
+
+  @override
+  String reminderBuildingFoundation(String habit) {
+    return 'Construisons : c\'est l\'heure de $habit !';
+  }
+
+  @override
+  String reminderBuildingMomentum(String habit) {
+    return 'Tu es inarrêtable : fais $habit aujourd\'hui !';
+  }
 }

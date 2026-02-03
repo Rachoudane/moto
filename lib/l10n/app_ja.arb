@@ -62,5 +62,85 @@
     }
   },
   "noReminder": "リマインダーなし",
-  "permissionRequired": "通知の許可が必要です"
+  "permissionRequired": "通知の許可が必要です",
+  "reminderBuildingMorning": "朝から力強く{habit}をしよう",
+  "reminderBuildingAfternoon": "続けよう！{habit}の時間だ",
+  "reminderBuildingEvening": "一日の終わりに{habit}をしよう",
+  "reminderQuittingMorning": "朝から{habit}なしで始めよう",
+  "reminderQuittingAfternoon": "{habit}に抵抗し続けよう！",
+  "reminderQuittingEvening": "{habit}を避けた誇りある夜",
+  "@reminderBuildingMorning": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderBuildingAfternoon": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderBuildingEvening": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingMorning": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingAfternoon": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingEvening": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "reminderBeginnerGeneral": "{habit}を始めたばかり - 素晴らしい！",
+  "reminderBeginnerMotivation": "第一歩が大切：{habit}をしよう",
+  "reminderIntermediateGeneral": "自分の進捗を見よう！{habit}を続けよう",
+  "reminderIntermediateMotivation": "勢いは本物だ：さらに一日の{habit}",
+  "reminderAdvancedGeneral": "君はチャンピオンだ！{habit}で記録を保ちよう",
+  "reminderAdvancedMotivation": "熟練へ向かおう：さらに一日の{habit}",
+  "@reminderBeginnerGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBeginnerMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderIntermediateGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderIntermediateMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderAdvancedGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderAdvancedMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "reminderQuittingVictory": "{habit}のない毎日が勝利だ",
+  "reminderQuittingWillpower": "{habit}との関係を断ち切ろう - 君なら出来る！",
+  "reminderBuildingSuccess": "成功は継続から来る：{habit}",
+  "reminderBuildingFoundation": "{habit}の時間だ！基盤を築こう！",
+  "reminderBuildingMomentum": "君は止められない！{habit}をしよう",
+  "@reminderQuittingVictory": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingWillpower": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingSuccess": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingFoundation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingMomentum": {
+    "placeholders": {"habit": {"type": "String"}}
+  }
 }

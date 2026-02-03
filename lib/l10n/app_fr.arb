@@ -62,5 +62,85 @@
     }
   },
   "noReminder": "Pas de rappel",
-  "permissionRequired": "Permission de notification requise"
+  "permissionRequired": "Permission de notification requise",
+  "reminderBuildingMorning": "Commence ta journée fort avec {habit}",
+  "reminderBuildingAfternoon": "Continue ! C'est l'heure de {habit}",
+  "reminderBuildingEvening": "Finis ta journée avec {habit}",
+  "reminderQuittingMorning": "Commence ta journée sans {habit}",
+  "reminderQuittingAfternoon": "Reste fort : résiste à {habit} aujourd'hui !",
+  "reminderQuittingEvening": "Finis la journée fier : tu as évité {habit}",
+  "@reminderBuildingMorning": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderBuildingAfternoon": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderBuildingEvening": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingMorning": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingAfternoon": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "@reminderQuittingEvening": {
+    "placeholders": {
+      "habit": {"type": "String"}
+    }
+  },
+  "reminderBeginnerGeneral": "Tu débutes avec {habit} - c'est excellent !",
+  "reminderBeginnerMotivation": "Les premiers pas comptent : c'est {habit}",
+  "reminderIntermediateGeneral": "Regarde ta progression ! Continue avec {habit}",
+  "reminderIntermediateMotivation": "La dynamique est réelle : encore un jour de {habit}",
+  "reminderAdvancedGeneral": "Tu es un champion ! Garde ta série avec {habit}",
+  "reminderAdvancedMotivation": "La maîtrise t'attend : encore un jour de {habit}",
+  "@reminderBeginnerGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBeginnerMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderIntermediateGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderIntermediateMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderAdvancedGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderAdvancedMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "reminderQuittingVictory": "Chaque jour sans {habit} est une victoire",
+  "reminderQuittingWillpower": "Casse la chaîne avec {habit} - tu peux !",
+  "reminderBuildingSuccess": "Le succès vient de la constance : {habit}",
+  "reminderBuildingFoundation": "Construisons : c'est l'heure de {habit} !",
+  "reminderBuildingMomentum": "Tu es inarrêtable : fais {habit} aujourd'hui !",
+  "@reminderQuittingVictory": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingWillpower": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingSuccess": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingFoundation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderBuildingMomentum": {
+    "placeholders": {"habit": {"type": "String"}}
+  }
 }
