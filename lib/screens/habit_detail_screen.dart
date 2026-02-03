@@ -658,11 +658,12 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () async {
+                final now = TimeOfDay.now();
                 final time = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay(
-                    hour: habit.reminderHour ?? 9,
-                    minute: habit.reminderMinute ?? 0,
+                    hour: habit.reminderHour ?? now.hour,
+                    minute: habit.reminderMinute ?? now.minute,
                   ),
                   builder: (context, child) {
                     return Theme(
