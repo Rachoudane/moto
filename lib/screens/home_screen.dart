@@ -159,12 +159,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _addHabit(String name, bool isQuitting, PenaltyMode penaltyMode) {
     setState(() {
-      _habits.add(Habit(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: name,
-        isQuitting: isQuitting,
-        penaltyMode: penaltyMode,
-      ));
+      _habits.add(
+        Habit(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          name: name,
+          isQuitting: isQuitting,
+          penaltyMode: penaltyMode,
+        ),
+      );
     });
     _saveHabits();
   }
@@ -205,7 +207,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 24,
                 right: 24,
                 top: 24,
-                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 24,
+                bottom:
+                    MediaQuery.of(context).viewInsets.bottom +
+                    MediaQuery.of(context).viewPadding.bottom +
+                    24,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -225,7 +230,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: GoogleFonts.inter(color: modalTheme.textPrimary),
                     decoration: InputDecoration(
                       hintText: l10n.habitName,
-                      hintStyle: GoogleFonts.inter(color: modalTheme.textSecondary),
+                      hintStyle: GoogleFonts.inter(
+                        color: modalTheme.textSecondary,
+                      ),
                       filled: true,
                       fillColor: modalTheme.bg,
                       border: OutlineInputBorder(
@@ -246,15 +253,30 @@ class _HomeScreenState extends State<HomeScreen> {
                             duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: !isQuitting ? modalTheme.accentGreen.withValues(alpha: 0.2) : modalTheme.bg,
+                              color: !isQuitting
+                                  ? modalTheme.accentGreen.withValues(
+                                      alpha: 0.2,
+                                    )
+                                  : modalTheme.bg,
                               borderRadius: BorderRadius.circular(10),
-                              border: !isQuitting ? Border.all(color: modalTheme.accentGreen.withValues(alpha: 0.4)) : null,
+                              border: !isQuitting
+                                  ? Border.all(
+                                      color: modalTheme.accentGreen.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                    )
+                                  : null,
                             ),
                             child: Center(
-                              child: Text(l10n.toDo, style: GoogleFonts.inter(
-                                color: !isQuitting ? modalTheme.accentGreen : modalTheme.textSecondary,
-                                fontWeight: FontWeight.w500,
-                              )),
+                              child: Text(
+                                l10n.toDo,
+                                style: GoogleFonts.inter(
+                                  color: !isQuitting
+                                      ? modalTheme.accentGreen
+                                      : modalTheme.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -267,15 +289,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: isQuitting ? modalTheme.danger.withValues(alpha: 0.2) : modalTheme.bg,
+                              color: isQuitting
+                                  ? modalTheme.danger.withValues(alpha: 0.2)
+                                  : modalTheme.bg,
                               borderRadius: BorderRadius.circular(10),
-                              border: isQuitting ? Border.all(color: modalTheme.danger.withValues(alpha: 0.4)) : null,
+                              border: isQuitting
+                                  ? Border.all(
+                                      color: modalTheme.danger.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                    )
+                                  : null,
                             ),
                             child: Center(
-                              child: Text(l10n.toQuit, style: GoogleFonts.inter(
-                                color: isQuitting ? modalTheme.danger : modalTheme.textSecondary,
-                                fontWeight: FontWeight.w500,
-                              )),
+                              child: Text(
+                                l10n.toQuit,
+                                style: GoogleFonts.inter(
+                                  color: isQuitting
+                                      ? modalTheme.danger
+                                      : modalTheme.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -301,7 +336,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         currentMode: penaltyMode,
                         emoji: '🌱',
                         label: l10n.zen,
-                        onTap: () => setModalState(() => penaltyMode = PenaltyMode.zen),
+                        onTap: () =>
+                            setModalState(() => penaltyMode = PenaltyMode.zen),
                       ),
                       const SizedBox(width: 8),
                       _buildModeButton(
@@ -311,7 +347,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         currentMode: penaltyMode,
                         emoji: '⚡',
                         label: l10n.standard,
-                        onTap: () => setModalState(() => penaltyMode = PenaltyMode.standard),
+                        onTap: () => setModalState(
+                          () => penaltyMode = PenaltyMode.standard,
+                        ),
                       ),
                       const SizedBox(width: 8),
                       _buildModeButton(
@@ -321,7 +359,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         currentMode: penaltyMode,
                         emoji: '🔥',
                         label: l10n.hardcore,
-                        onTap: () => setModalState(() => penaltyMode = PenaltyMode.hardcore),
+                        onTap: () => setModalState(
+                          () => penaltyMode = PenaltyMode.hardcore,
+                        ),
                       ),
                     ],
                   ),
@@ -388,9 +428,13 @@ class _HomeScreenState extends State<HomeScreen> {
           duration: const Duration(milliseconds: 300),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? theme.textPrimary.withValues(alpha: 0.1) : theme.bg,
+            color: isSelected
+                ? theme.textPrimary.withValues(alpha: 0.1)
+                : theme.bg,
             borderRadius: BorderRadius.circular(10),
-            border: isSelected ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2)) : null,
+            border: isSelected
+                ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2))
+                : null,
           ),
           child: Column(
             children: [
@@ -431,145 +475,167 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: _showAddHabitDialog,
         backgroundColor: theme.accentGreen,
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         child: Icon(Icons.add, color: theme.bg, size: 22),
       ),
       body: SafeArea(
         child: _isLoading
-          ? Center(child: CircularProgressIndicator(color: theme.accentGreen))
-          : Builder(
-          builder: (context) {
-            final l10n = AppLocalizations.of(context)!;
-            return Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
+            ? Center(child: CircularProgressIndicator(color: theme.accentGreen))
+            : Builder(
+                builder: (context) {
+                  final l10n = AppLocalizations.of(context)!;
+                  return Padding(
+                    padding: const EdgeInsets.all(24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Header
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.ideographic,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              l10n.appSubtitle,
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w300,
-                                color: theme.textPrimary.withValues(alpha: 0.2),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.baseline,
+                                    textBaseline: TextBaseline.ideographic,
+                                    children: [
+                                      Text(
+                                        l10n.appSubtitle,
+                                        style: TextStyle(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.w300,
+                                          color: theme.textPrimary.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        l10n.appTitle,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w700,
+                                          color: theme.textPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _formattedDate(context),
+                                    style: GoogleFonts.inter(
+                                      fontSize: 14,
+                                      color: theme.textSecondary,
+                                      letterSpacing: 0.3,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            Text(
-                              l10n.appTitle,
-                              style: GoogleFonts.inter(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w700,
-                                color: theme.textPrimary,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SettingsScreen(
+                                        onLanguageChanged:
+                                            widget.onLanguageChanged ?? (_) {},
+                                        onThemeChanged:
+                                            widget.onThemeChanged ?? (_) {},
+                                        isDarkMode: widget.isDarkMode,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(
+                                    12,
+                                  ), // 👈 zone tactile
+                                  child: Icon(
+                                    Icons.settings_outlined,
+                                    color: theme.textSecondary.withValues(
+                                      alpha: 0.5,
+                                    ),
+                                    size: 22,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _formattedDate(context),
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            color: theme.textSecondary,
-                            letterSpacing: 0.3,
-                          ),
+                        const SizedBox(height: 36),
+
+                        Expanded(
+                          child: _habits.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.grid_view_rounded,
+                                        size: 48,
+                                        color: theme.textSecondary.withValues(
+                                          alpha: 0.25,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        l10n.noHabits,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          color: theme.textSecondary,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        l10n.noHabitsSubtitle,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 13,
+                                          color: theme.textSecondary.withValues(
+                                            alpha: 0.6,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : ListView.separated(
+                                  padding: EdgeInsets.only(
+                                    bottom:
+                                        MediaQuery.of(
+                                          context,
+                                        ).viewPadding.bottom +
+                                        80,
+                                  ),
+                                  itemCount: _habits.length,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 14),
+                                  itemBuilder: (context, index) {
+                                    final habit = _habits[index];
+                                    return HabitCard(
+                                      habit: habit,
+                                      onIncrement: () =>
+                                          _incrementStreak(habit.id),
+                                      onDecrement: () =>
+                                          _decrementStreak(habit.id),
+                                      onDelete: () => _deleteHabit(habit.id),
+                                      onUpdate: _updateHabit,
+                                    );
+                                  },
+                                ),
                         ),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SettingsScreen(
-                              onLanguageChanged: widget.onLanguageChanged ?? (_) {},
-                              onThemeChanged: widget.onThemeChanged ?? (_) {},
-                              isDarkMode: widget.isDarkMode,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Icon(
-                        Icons.settings_outlined,
-                        color: theme.textSecondary.withValues(alpha: 0.5),
-                        size: 22,
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
-              const SizedBox(height: 36),
-
-              Expanded(
-                child: _habits.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.grid_view_rounded,
-                            size: 48,
-                            color: theme.textSecondary.withValues(alpha: 0.25),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            l10n.noHabits,
-                            style: GoogleFonts.inter(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                              color: theme.textSecondary,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            l10n.noHabitsSubtitle,
-                            style: GoogleFonts.inter(
-                              fontSize: 13,
-                              color: theme.textSecondary.withValues(alpha: 0.6),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.separated(
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewPadding.bottom + 80,
-                      ),
-                      itemCount: _habits.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 14),
-                      itemBuilder: (context, index) {
-                        final habit = _habits[index];
-                        return HabitCard(
-                          habit: habit,
-                          onIncrement: () => _incrementStreak(habit.id),
-                          onDecrement: () => _decrementStreak(habit.id),
-                          onDelete: () => _deleteHabit(habit.id),
-                          onUpdate: _updateHabit,
-                        );
-                      },
-                    ),
-              ),
-            ],
-          ),
-        );
-          },
-        ),
       ),
     );
   }
