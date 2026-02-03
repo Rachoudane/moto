@@ -67,7 +67,10 @@ class _MotoAppState extends State<MotoApp> {
     setState(() {
       _isDarkMode = isDark;
     });
-    _updateSystemUI();
+    // Ensure UI is updated after the frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateSystemUI();
+    });
   }
 
   ThemeData get _darkTheme => ThemeData(
@@ -76,6 +79,14 @@ class _MotoAppState extends State<MotoApp> {
     cardColor: MotoColors.darkCardBg,
     textTheme: GoogleFonts.interTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme,
+    ),
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
     ),
     extensions: [MotoColors.dark],
   );
@@ -86,6 +97,14 @@ class _MotoAppState extends State<MotoApp> {
     cardColor: MotoColors.lightCardBg,
     textTheme: GoogleFonts.interTextTheme(
       ThemeData(brightness: Brightness.light).textTheme,
+    ),
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
     ),
     extensions: [MotoColors.light],
   );

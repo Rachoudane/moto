@@ -39,8 +39,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadSettings() async {
     final language = await LanguageService.getSelectedLanguage();
+    final isDark = await ThemeService.isDarkMode();
     setState(() {
       _selectedLanguage = language;
+      _isDarkMode = isDark;
       _isLoading = false;
     });
   }
