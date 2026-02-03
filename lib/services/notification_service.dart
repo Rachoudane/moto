@@ -40,6 +40,11 @@ class NotificationService {
   }) async {
     await cancelHabitReminder(habit.id);
 
+    // Don't schedule if already validated today
+    if (habit.isValidatedToday) {
+      return;
+    }
+
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate = tz.TZDateTime(
       tz.local,
@@ -80,6 +85,20 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time, // Repeat daily
     );
+  }
+
+  /// Reschedule all habit reminders (call on app start and after validation)
+  static Future<void> rescheduleAllReminders(List<Habit> habits, String locale) async {
+    for (final habit in habits) {
+      if (habit.reminderEnabled && habit.reminderHour != null && habit.reminderMinute != null) {
+        await scheduleHabitReminder(
+          habit: habit,
+          hour: habit.reminderHour!,
+          minute: habit.reminderMinute!,
+          locale: locale,
+        );
+      }
+    }
   }
 
   static String _getReminderMessage(Habit habit, String locale) {

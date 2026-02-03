@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
+import '../services/notification_service.dart';
 import '../services/storage_service.dart';
 import '../widgets/habit_card.dart';
 import 'settings_screen.dart';
@@ -49,6 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _isLoading = false;
     });
     _checkMissedDays();
+    // Reschedule reminders after frame is built (to get locale)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final locale = Localizations.localeOf(context).languageCode;
+        NotificationService.rescheduleAllReminders(_habits, locale);
+      }
+    });
   }
 
   void _checkMissedDays() {
@@ -104,15 +112,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _incrementStreak(String id) {
-    setState(() {
-      final habit = _habits.firstWhere((h) => h.id == id);
-      if (!habit.isValidatedToday) {
+    final habit = _habits.firstWhere((h) => h.id == id);
+    if (!habit.isValidatedToday) {
+      setState(() {
         habit.streak++;
         habit.lastValidatedDate = DateTime.now();
         habit.setStatusForDate(DateTime.now(), DayStatus.validated);
+      });
+      _saveHabits();
+      // Cancel today's reminder since habit is now validated
+      if (habit.reminderEnabled) {
+        NotificationService.cancelHabitReminder(habit.id);
       }
-    });
-    _saveHabits();
+    }
   }
 
   void _decrementStreak(String id) {
