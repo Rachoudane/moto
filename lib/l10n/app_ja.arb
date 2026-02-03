@@ -49,5 +49,18 @@
   "friday": "金曜日",
   "saturday": "土曜日",
   "sunday": "日曜日",
-  "noDataYet": "まだデータがありません"
+  "noDataYet": "まだデータがありません",
+  "reminder": "リマインダー",
+  "reminderEnabled": "毎日のリマインダー",
+  "reminderTime": "リマインダー時間",
+  "reminderSet": "{time}にリマインダー設定",
+  "@reminderSet": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "noReminder": "リマインダーなし",
+  "permissionRequired": "通知の許可が必要です"
 }

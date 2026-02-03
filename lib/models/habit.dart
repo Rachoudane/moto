@@ -18,6 +18,9 @@ class Habit {
   int streak;
   DateTime? lastValidatedDate;
   Map<String, DayStatus> history;
+  bool reminderEnabled;
+  int? reminderHour;
+  int? reminderMinute;
 
   Habit({
     required this.id,
@@ -27,6 +30,9 @@ class Habit {
     this.streak = 0,
     this.lastValidatedDate,
     Map<String, DayStatus>? history,
+    this.reminderEnabled = false,
+    this.reminderHour,
+    this.reminderMinute,
   }) : history = history ?? {};
 
   bool get isValidatedToday {
@@ -155,6 +161,9 @@ class Habit {
     'streak': streak,
     'lastValidatedDate': lastValidatedDate?.toIso8601String(),
     'history': history.map((key, value) => MapEntry(key, value.index)),
+    'reminderEnabled': reminderEnabled,
+    'reminderHour': reminderHour,
+    'reminderMinute': reminderMinute,
   };
 
   factory Habit.fromJson(Map<String, dynamic> json) => Habit(
@@ -169,5 +178,8 @@ class Habit {
     history: (json['history'] as Map<String, dynamic>?)?.map(
       (key, value) => MapEntry(key, DayStatus.values[value as int]),
     ) ?? {},
+    reminderEnabled: json['reminderEnabled'] ?? false,
+    reminderHour: json['reminderHour'],
+    reminderMinute: json['reminderMinute'],
   );
 }

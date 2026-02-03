@@ -163,4 +163,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noDataYet => 'Pas encore de données';
+
+  @override
+  String get reminder => 'Rappel';
+
+  @override
+  String get reminderEnabled => 'Rappel quotidien';
+
+  @override
+  String get reminderTime => 'Heure du rappel';
+
+  @override
+  String reminderSet(String time) {
+    return 'Rappel programmé à $time';
+  }
+
+  @override
+  String get noReminder => 'Pas de rappel';
+
+  @override
+  String get permissionRequired => 'Permission de notification requise';
 }

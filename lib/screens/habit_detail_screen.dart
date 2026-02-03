@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/habit.dart';
+import '../services/notification_service.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
 
@@ -381,6 +382,145 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     );
   }
 
+  Widget _buildReminderCard(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final habit = widget.habit;
+    final locale = Localizations.localeOf(context).languageCode;
+
+    String timeText = l10n.noReminder;
+    if (habit.reminderEnabled && habit.reminderHour != null && habit.reminderMinute != null) {
+      timeText = "${habit.reminderHour!.toString().padLeft(2, '0')}:${habit.reminderMinute!.toString().padLeft(2, '0')}";
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF21262D)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.notifications_outlined,
+                    size: 18,
+                    color: textSecondary,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    l10n.reminder,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+              Switch(
+                value: habit.reminderEnabled,
+                onChanged: (value) async {
+                  if (value) {
+                    final hasPermission = await NotificationService.requestPermission();
+                    if (!hasPermission) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.permissionRequired)),
+                        );
+                      }
+                      return;
+                    }
+                  }
+                  setState(() {
+                    habit.reminderEnabled = value;
+                    if (!value) {
+                      NotificationService.cancelHabitReminder(habit.id);
+                    } else if (habit.reminderHour != null && habit.reminderMinute != null) {
+                      NotificationService.scheduleHabitReminder(
+                        habit: habit,
+                        hour: habit.reminderHour!,
+                        minute: habit.reminderMinute!,
+                        locale: locale,
+                      );
+                    }
+                  });
+                  widget.onUpdate();
+                },
+                activeTrackColor: accentGreen,
+              ),
+            ],
+          ),
+          if (habit.reminderEnabled) ...[
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: () async {
+                final time = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay(
+                    hour: habit.reminderHour ?? 9,
+                    minute: habit.reminderMinute ?? 0,
+                  ),
+                  builder: (context, child) {
+                    return Theme(
+                      data: Theme.of(context).copyWith(
+                        colorScheme: const ColorScheme.dark(
+                          primary: accentGreen,
+                          surface: cardBg,
+                        ),
+                      ),
+                      child: child!,
+                    );
+                  },
+                );
+                if (time != null) {
+                  setState(() {
+                    habit.reminderHour = time.hour;
+                    habit.reminderMinute = time.minute;
+                  });
+                  await NotificationService.scheduleHabitReminder(
+                    habit: habit,
+                    hour: time.hour,
+                    minute: time.minute,
+                    locale: locale,
+                  );
+                  widget.onUpdate();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF21262D),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      l10n.reminderTime,
+                      style: GoogleFonts.inter(color: textSecondary),
+                    ),
+                    Text(
+                      timeText,
+                      style: GoogleFonts.inter(
+                        color: textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final (currentLevel, progress, totalForNext) = _getStats();
@@ -452,6 +592,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               value: _getModeName(l10n, widget.habit.penaltyMode),
               subtitle: _getModeDescription(l10n, widget.habit.penaltyMode),
             ),
+            const SizedBox(height: 16),
+            _buildReminderCard(context),
             const SizedBox(height: 32),
             Text(
               l10n.statistics,

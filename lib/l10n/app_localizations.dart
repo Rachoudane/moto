@@ -399,6 +399,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No data yet'**
   String get noDataYet;
+
+  /// No description provided for @reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get reminder;
+
+  /// No description provided for @reminderEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminder'**
+  String get reminderEnabled;
+
+  /// No description provided for @reminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder time'**
+  String get reminderTime;
+
+  /// No description provided for @reminderSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder set for {time}'**
+  String reminderSet(String time);
+
+  /// No description provided for @noReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'No reminder'**
+  String get noReminder;
+
+  /// No description provided for @permissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification permission required'**
+  String get permissionRequired;
 }
 
 class _AppLocalizationsDelegate

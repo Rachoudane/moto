@@ -163,4 +163,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noDataYet => 'No data yet';
+
+  @override
+  String get reminder => 'Reminder';
+
+  @override
+  String get reminderEnabled => 'Daily reminder';
+
+  @override
+  String get reminderTime => 'Reminder time';
+
+  @override
+  String reminderSet(String time) {
+    return 'Reminder set for $time';
+  }
+
+  @override
+  String get noReminder => 'No reminder';
+
+  @override
+  String get permissionRequired => 'Notification permission required';
 }

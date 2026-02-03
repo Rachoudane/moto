@@ -163,4 +163,24 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get noDataYet => 'まだデータがありません';
+
+  @override
+  String get reminder => 'リマインダー';
+
+  @override
+  String get reminderEnabled => '毎日のリマインダー';
+
+  @override
+  String get reminderTime => 'リマインダー時間';
+
+  @override
+  String reminderSet(String time) {
+    return '$timeにリマインダー設定';
+  }
+
+  @override
+  String get noReminder => 'リマインダーなし';
+
+  @override
+  String get permissionRequired => '通知の許可が必要です';
 }

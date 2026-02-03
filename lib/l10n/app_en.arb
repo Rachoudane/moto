@@ -70,5 +70,18 @@
   "friday": "Friday",
   "saturday": "Saturday",
   "sunday": "Sunday",
-  "noDataYet": "No data yet"
+  "noDataYet": "No data yet",
+  "reminder": "Reminder",
+  "reminderEnabled": "Daily reminder",
+  "reminderTime": "Reminder time",
+  "reminderSet": "Reminder set for {time}",
+  "@reminderSet": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "noReminder": "No reminder",
+  "permissionRequired": "Notification permission required"
 }

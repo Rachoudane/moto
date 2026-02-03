@@ -49,5 +49,18 @@
   "friday": "Vendredi",
   "saturday": "Samedi",
   "sunday": "Dimanche",
-  "noDataYet": "Pas encore de données"
+  "noDataYet": "Pas encore de données",
+  "reminder": "Rappel",
+  "reminderEnabled": "Rappel quotidien",
+  "reminderTime": "Heure du rappel",
+  "reminderSet": "Rappel programmé à {time}",
+  "@reminderSet": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "noReminder": "Pas de rappel",
+  "permissionRequired": "Permission de notification requise"
 }
