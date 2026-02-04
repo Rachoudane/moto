@@ -373,32 +373,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getStarted => 'Get Started';
 
   @override
-  String get onboardingTitle1 => 'Welcome to Moto';
+  String get onboardingTitle1 => '元 — The Origin';
 
   @override
   String get onboardingDesc1 =>
-      'Build lasting habits with a unique visual progression system inspired by Japanese philosophy.';
+      'In Japanese, 元 (Moto) means \'origin\' or \'foundation\'. Every great achievement starts with a single action. Today, you lay the first stone.';
 
   @override
-  String get onboardingTitle2 => 'Square by Square';
+  String get onboardingTitle2 => 'Build, brick by brick';
 
   @override
   String get onboardingDesc2 =>
-      'Each day you complete builds a square. Start with 1×1, then 2×2, then 3×3, and beyond.';
+      'No magic streaks here. Every validated day adds a cell to your square. 1×1, then 2×2, then 3×3... You literally watch your discipline take shape.';
 
   @override
-  String get onboardingTitle3 => 'Earn Your Trophies';
+  String get onboardingTitle3 => 'Your victories remain';
 
   @override
   String get onboardingDesc3 =>
-      'Completed squares become golden trophies. Build your collection and watch your progress grow.';
+      'Each completed square becomes a golden trophy — proof of your consistency. Even if you stumble, your trophies stay. You never truly start from zero.';
 
   @override
-  String get onboardingTitle4 => 'Choose Your Challenge';
+  String get onboardingTitle4 => 'Choose your path';
 
   @override
   String get onboardingDesc4 =>
-      'Three penalty modes adapt to your goals. Zen for beginners, Standard for daily habits, Hardcore for serious commitments.';
+      '🌱 Zen: Progress gently, lose one cell.\n⚡ Standard: Lose your current square.\n🔥 Hardcore: Start over completely.';
 
   @override
   String get replayOnboarding => 'Replay introduction';

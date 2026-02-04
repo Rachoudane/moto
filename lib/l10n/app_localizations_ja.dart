@@ -369,29 +369,32 @@ class AppLocalizationsJa extends AppLocalizations {
   String get getStarted => '始める';
 
   @override
-  String get onboardingTitle1 => 'Motoへようこそ';
+  String get onboardingTitle1 => '元 — 始まり';
 
   @override
-  String get onboardingDesc1 => '日本の哲学にインスパイアされたユニークな視覚的進捗システムで、持続する習慣を築きましょう。';
+  String get onboardingDesc1 =>
+      '「元」は起源、基盤を意味します。すべての偉大な成果は、たった一つの行動から始まります。今日、最初の石を置こう。';
 
   @override
-  String get onboardingTitle2 => '一つずつ、確実に';
+  String get onboardingTitle2 => '一歩ずつ、積み上げる';
 
   @override
-  String get onboardingDesc2 => '毎日の達成が正方形を作ります。1×1から始めて、2×2、3×3へと成長します。';
+  String get onboardingDesc2 =>
+      '魔法のストリークはありません。毎日の達成がマスを増やします。1×1、2×2、3×3…自分の規律が形になるのを見届けよう。';
 
   @override
-  String get onboardingTitle3 => 'トロフィーを獲得';
+  String get onboardingTitle3 => '勝利は残る';
 
   @override
-  String get onboardingDesc3 => '完成した正方形は金色のトロフィーになります。コレクションを増やし、成長を見守りましょう。';
+  String get onboardingDesc3 =>
+      '完成した正方形は金色のトロフィーになります。つまずいても、トロフィーは消えません。ゼロからやり直すことはありません。';
 
   @override
-  String get onboardingTitle4 => 'チャレンジを選ぶ';
+  String get onboardingTitle4 => '自分の道を選ぶ';
 
   @override
   String get onboardingDesc4 =>
-      '3つのペナルティモードが目標に合わせて調整できます。初心者は禅、日常習慣は普通、本気の約束は本気モード。';
+      '🌱 禅：優しく進む、1マス失う。\n⚡ 普通：現在の正方形を失う。\n🔥 本気：完全にゼロから。';
 
   @override
   String get replayOnboarding => '紹介を再生';

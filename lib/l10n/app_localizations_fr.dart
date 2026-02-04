@@ -373,32 +373,32 @@ class AppLocalizationsFr extends AppLocalizations {
   String get getStarted => 'Commencer';
 
   @override
-  String get onboardingTitle1 => 'Bienvenue sur Moto';
+  String get onboardingTitle1 => '元 — L\'Origine';
 
   @override
   String get onboardingDesc1 =>
-      'Construis des habitudes durables avec un système de progression visuelle unique inspiré de la philosophie japonaise.';
+      'En japonais, 元 (Moto) signifie « origine » ou « fondement ». Chaque grande réussite commence par une seule action. Aujourd\'hui, tu poses la première pierre.';
 
   @override
-  String get onboardingTitle2 => 'Carré par carré';
+  String get onboardingTitle2 => 'Construis, brique par brique';
 
   @override
   String get onboardingDesc2 =>
-      'Chaque jour complété construit un carré. Commence par 1×1, puis 2×2, puis 3×3, et au-delà.';
+      'Pas de streak magique ici. Chaque jour validé ajoute une case à ton carré. 1×1, puis 2×2, puis 3×3... Tu visualises ta discipline prendre forme.';
 
   @override
-  String get onboardingTitle3 => 'Gagne tes trophées';
+  String get onboardingTitle3 => 'Tes victoires restent';
 
   @override
   String get onboardingDesc3 =>
-      'Les carrés complétés deviennent des trophées dorés. Construis ta collection et regarde ta progression grandir.';
+      'Chaque carré complété devient un trophée doré — une preuve de ta constance. Même si tu trébuches, tes trophées restent. Tu ne repars jamais de zéro.';
 
   @override
-  String get onboardingTitle4 => 'Choisis ton défi';
+  String get onboardingTitle4 => 'Choisis ton chemin';
 
   @override
   String get onboardingDesc4 =>
-      'Trois modes de pénalité s\'adaptent à tes objectifs. Zen pour débuter, Standard pour le quotidien, Hardcore pour les engagements sérieux.';
+      '🌱 Zen : Progresse en douceur, perds une case.\n⚡ Standard : Perds le carré en cours.\n🔥 Hardcore : Recommence tout à zéro.';
 
   @override
   String get replayOnboarding => 'Revoir l\'introduction';
