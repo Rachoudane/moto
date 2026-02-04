@@ -23,16 +23,19 @@ class ProScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Spacer(),
+              const SizedBox(height: 24),
 
               // Pro badge
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -87,17 +90,37 @@ class ProScreen extends StatelessWidget {
 
               // Features list
               _buildFeatureItem(
-                  context, theme, Icons.all_inclusive, loc.proFeature1),
+                context,
+                theme,
+                Icons.all_inclusive,
+                loc.proFeature1,
+              ),
               _buildFeatureItem(
-                  context, theme, Icons.psychology_outlined, loc.proFeature2),
-              _buildFeatureItem(context, theme, Icons.calendar_month_outlined,
-                  loc.proFeature3),
-              _buildFeatureItem(context, theme, Icons.notifications_outlined,
-                  loc.proFeature4),
+                context,
+                theme,
+                Icons.psychology_outlined,
+                loc.proFeature2,
+              ),
               _buildFeatureItem(
-                  context, theme, Icons.color_lens_outlined, loc.proFeature5),
+                context,
+                theme,
+                Icons.calendar_month_outlined,
+                loc.proFeature3,
+              ),
+              _buildFeatureItem(
+                context,
+                theme,
+                Icons.notifications_outlined,
+                loc.proFeature4,
+              ),
+              _buildFeatureItem(
+                context,
+                theme,
+                Icons.color_lens_outlined,
+                loc.proFeature5,
+              ),
 
-              const Spacer(),
+              const SizedBox(height: 48),
 
               // Pricing buttons
               _buildPricingButton(
@@ -149,7 +172,7 @@ class ProScreen extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -158,7 +181,11 @@ class ProScreen extends StatelessWidget {
   }
 
   Widget _buildFeatureItem(
-      BuildContext context, MotoTheme theme, IconData icon, String text) {
+    BuildContext context,
+    MotoTheme theme,
+    IconData icon,
+    String text,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -175,10 +202,7 @@ class ProScreen extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: GoogleFonts.inter(
-                fontSize: 15,
-                color: theme.textPrimary,
-              ),
+              style: GoogleFonts.inter(fontSize: 15, color: theme.textPrimary),
             ),
           ),
         ],
@@ -250,8 +274,12 @@ class ProScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _purchase(BuildContext context, MotoTheme theme,
-      AppLocalizations loc, String type) async {
+  Future<void> _purchase(
+    BuildContext context,
+    MotoTheme theme,
+    AppLocalizations loc,
+    String type,
+  ) async {
     // TODO: Implement real purchase with RevenueCat or in_app_purchase
     // For now, just simulate a purchase for testing
 
@@ -271,8 +299,10 @@ class ProScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(loc.cancel,
-                style: GoogleFonts.inter(color: theme.textSecondary)),
+            child: Text(
+              loc.cancel,
+              style: GoogleFonts.inter(color: theme.textSecondary),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
@@ -300,10 +330,12 @@ class ProScreen extends StatelessWidget {
   }
 
   Future<void> _restorePurchases(
-      BuildContext context, AppLocalizations loc) async {
+    BuildContext context,
+    AppLocalizations loc,
+  ) async {
     // TODO: Implement real restore with RevenueCat or in_app_purchase
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(loc.noPurchasesFound)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(loc.noPurchasesFound)));
   }
 }
