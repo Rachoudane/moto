@@ -406,4 +406,65 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get couldNotOpenEmail => 'メールアプリを開けませんでした';
+
+  @override
+  String get unlockFullPotential => '全ての可能性を解放';
+
+  @override
+  String get proDescription =>
+      '無制限の習慣、すべてのペナルティモード、そして持続する習慣を築くための強力な機能を手に入れよう。';
+
+  @override
+  String get proFeature1 => '無制限の習慣';
+
+  @override
+  String get proFeature2 => 'すべてのペナルティモード（禅、普通、本気）';
+
+  @override
+  String get proFeature3 => '完全な履歴とカレンダー';
+
+  @override
+  String get proFeature4 => '習慣ごとのカスタム通知';
+
+  @override
+  String get proFeature5 => '将来のアップデートとテーマ';
+
+  @override
+  String get yearly => '年間';
+
+  @override
+  String get yearlySubtitle => 'お得 • 44%節約';
+
+  @override
+  String get monthly => '月間';
+
+  @override
+  String get monthlySubtitle => 'いつでも解約可能';
+
+  @override
+  String get lifetimeOffer => '永久アクセス 39,99€ →';
+
+  @override
+  String get restorePurchases => '購入を復元';
+
+  @override
+  String get proActivated => 'Pro有効化！🎉';
+
+  @override
+  String get noPurchasesFound => '購入が見つかりません';
+
+  @override
+  String get habitLimitReached => '無料の上限に達しました';
+
+  @override
+  String get upgradeToAddMore => 'Proにアップグレードして無制限に';
+
+  @override
+  String get upgrade => 'アップグレード';
+
+  @override
+  String get proOnly => 'Pro';
+
+  @override
+  String get freeLimitedHistory => 'Proで完全な履歴を利用可能';
 }

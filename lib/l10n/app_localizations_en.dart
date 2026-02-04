@@ -410,4 +410,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couldNotOpenEmail => 'Could not open email client';
+
+  @override
+  String get unlockFullPotential => 'Unlock your full potential';
+
+  @override
+  String get proDescription =>
+      'Get unlimited habits, all penalty modes, and powerful features to build lasting habits.';
+
+  @override
+  String get proFeature1 => 'Unlimited habits';
+
+  @override
+  String get proFeature2 => 'All penalty modes (Zen, Standard, Hardcore)';
+
+  @override
+  String get proFeature3 => 'Complete history & calendar';
+
+  @override
+  String get proFeature4 => 'Custom notifications per habit';
+
+  @override
+  String get proFeature5 => 'Future updates & themes';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String get yearlySubtitle => 'Best value • Save 44%';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get monthlySubtitle => 'Cancel anytime';
+
+  @override
+  String get lifetimeOffer => 'Lifetime access for 39,99€ →';
+
+  @override
+  String get restorePurchases => 'Restore purchases';
+
+  @override
+  String get proActivated => 'Pro activated! 🎉';
+
+  @override
+  String get noPurchasesFound => 'No purchases found';
+
+  @override
+  String get habitLimitReached => 'Free limit reached';
+
+  @override
+  String get upgradeToAddMore => 'Upgrade to Pro for unlimited habits';
+
+  @override
+  String get upgrade => 'Upgrade';
+
+  @override
+  String get proOnly => 'Pro';
+
+  @override
+  String get freeLimitedHistory => 'Full history available with Pro';
 }

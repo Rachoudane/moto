@@ -6,8 +6,13 @@ import '../models/habit.dart';
 
 class HabitCalendar extends StatelessWidget {
   final Habit habit;
+  final int daysToShow;
 
-  const HabitCalendar({super.key, required this.habit});
+  const HabitCalendar({
+    super.key,
+    required this.habit,
+    this.daysToShow = 35,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class HabitCalendar extends StatelessWidget {
     final todayNorm = DateTime(today.year, today.month, today.day);
 
     final endDate = todayNorm;
-    final rawStart = endDate.subtract(const Duration(days: 34));
+    final rawStart = endDate.subtract(Duration(days: daysToShow - 1));
     final startDate = rawStart.subtract(Duration(days: rawStart.weekday - 1));
     final totalDays = endDate.difference(startDate).inDays + 1;
     final paddedDays = ((totalDays + 6) ~/ 7) * 7;

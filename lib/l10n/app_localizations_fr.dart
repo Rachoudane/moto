@@ -410,4 +410,66 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get couldNotOpenEmail => 'Impossible d\'ouvrir le client email';
+
+  @override
+  String get unlockFullPotential => 'Libère tout ton potentiel';
+
+  @override
+  String get proDescription =>
+      'Obtiens des habitudes illimitées, tous les modes de pénalité et des fonctionnalités puissantes pour construire des habitudes durables.';
+
+  @override
+  String get proFeature1 => 'Habitudes illimitées';
+
+  @override
+  String get proFeature2 =>
+      'Tous les modes de pénalité (Zen, Standard, Hardcore)';
+
+  @override
+  String get proFeature3 => 'Historique complet et calendrier';
+
+  @override
+  String get proFeature4 => 'Notifications personnalisées par habitude';
+
+  @override
+  String get proFeature5 => 'Futures mises à jour et thèmes';
+
+  @override
+  String get yearly => 'Annuel';
+
+  @override
+  String get yearlySubtitle => 'Meilleure offre • Économise 44%';
+
+  @override
+  String get monthly => 'Mensuel';
+
+  @override
+  String get monthlySubtitle => 'Annule quand tu veux';
+
+  @override
+  String get lifetimeOffer => 'Accès à vie pour 39,99€ →';
+
+  @override
+  String get restorePurchases => 'Restaurer les achats';
+
+  @override
+  String get proActivated => 'Pro activé ! 🎉';
+
+  @override
+  String get noPurchasesFound => 'Aucun achat trouvé';
+
+  @override
+  String get habitLimitReached => 'Limite gratuite atteinte';
+
+  @override
+  String get upgradeToAddMore => 'Passe à Pro pour des habitudes illimitées';
+
+  @override
+  String get upgrade => 'Améliorer';
+
+  @override
+  String get proOnly => 'Pro';
+
+  @override
+  String get freeLimitedHistory => 'Historique complet disponible avec Pro';
 }

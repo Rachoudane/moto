@@ -212,5 +212,25 @@
       "message": {"type": "String"}
     }
   },
-  "couldNotOpenEmail": "Could not open email client"
+  "couldNotOpenEmail": "Could not open email client",
+  "unlockFullPotential": "Unlock your full potential",
+  "proDescription": "Get unlimited habits, all penalty modes, and powerful features to build lasting habits.",
+  "proFeature1": "Unlimited habits",
+  "proFeature2": "All penalty modes (Zen, Standard, Hardcore)",
+  "proFeature3": "Complete history & calendar",
+  "proFeature4": "Custom notifications per habit",
+  "proFeature5": "Future updates & themes",
+  "yearly": "Yearly",
+  "yearlySubtitle": "Best value • Save 44%",
+  "monthly": "Monthly",
+  "monthlySubtitle": "Cancel anytime",
+  "lifetimeOffer": "Lifetime access for 39,99€ →",
+  "restorePurchases": "Restore purchases",
+  "proActivated": "Pro activated! 🎉",
+  "noPurchasesFound": "No purchases found",
+  "habitLimitReached": "Free limit reached",
+  "upgradeToAddMore": "Upgrade to Pro for unlimited habits",
+  "upgrade": "Upgrade",
+  "proOnly": "Pro",
+  "freeLimitedHistory": "Full history available with Pro"
 }

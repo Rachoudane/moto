@@ -7,7 +7,9 @@ import '../main.dart';
 import '../models/habit.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
+import '../services/subscription_service.dart';
 import '../widgets/habit_card.dart';
+import 'pro_screen.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final StorageService _storageService = StorageService();
   List<Habit> _habits = [];
   bool _isLoading = true;
+  bool _isPro = false;
 
   String _formattedDate(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
@@ -40,6 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadHabits();
+    _loadProStatus();
+  }
+
+  Future<void> _loadProStatus() async {
+    final isPro = await SubscriptionService.isPro();
+    if (mounted) {
+      setState(() {
+        _isPro = isPro;
+      });
+    }
   }
 
   Future<void> _loadHabits() async {
@@ -211,9 +224,71 @@ class _HomeScreenState extends State<HomeScreen> {
   void _updateHabit() {
     // Reload habits from storage to ensure latest changes
     _loadHabits();
+    _loadProStatus();
+  }
+
+  void _showUpgradeDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: theme.cardBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            const Icon(Icons.star, color: Color(0xFFE5C07B)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.habitLimitReached,
+                style: GoogleFonts.inter(
+                  color: theme.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          l10n.upgradeToAddMore,
+          style: GoogleFonts.inter(color: theme.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              l10n.cancel,
+              style: GoogleFonts.inter(color: theme.textSecondary),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProScreen()),
+              ).then((_) => _loadProStatus());
+            },
+            child: Text(
+              l10n.upgrade,
+              style: GoogleFonts.inter(color: theme.accentGreen),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showAddHabitDialog() {
+    // Check free limit
+    if (!_isPro && _habits.length >= SubscriptionService.freeHabitLimit) {
+      _showUpgradeDialog();
+      return;
+    }
+
     String name = '';
     bool isQuitting = false;
     PenaltyMode penaltyMode = PenaltyMode.standard;
@@ -440,6 +515,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  bool _isModeAvailable(PenaltyMode mode) {
+    if (_isPro) return true;
+    return mode == PenaltyMode.standard;
+  }
+
   Widget _buildModeButton(
     StateSetter setModalState,
     MotoTheme theme, {
@@ -450,33 +530,55 @@ class _HomeScreenState extends State<HomeScreen> {
     required VoidCallback onTap,
   }) {
     final isSelected = mode == currentMode;
+    final isAvailable = _isModeAvailable(mode);
+
     return Expanded(
       child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? theme.textPrimary.withValues(alpha: 0.1)
-                : theme.bg,
-            borderRadius: BorderRadius.circular(10),
-            border: isSelected
-                ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2))
-                : null,
-          ),
-          child: Column(
+        onTap: isAvailable ? onTap : _showUpgradeDialog,
+        child: Opacity(
+          opacity: isAvailable ? 1.0 : 0.5,
+          child: Stack(
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 18)),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                  color: isSelected ? theme.textPrimary : theme.textSecondary,
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? theme.textPrimary.withValues(alpha: 0.1)
+                      : theme.bg,
+                  borderRadius: BorderRadius.circular(10),
+                  border: isSelected
+                      ? Border.all(
+                          color: theme.textPrimary.withValues(alpha: 0.2))
+                      : null,
+                ),
+                child: Column(
+                  children: [
+                    Text(emoji, style: const TextStyle(fontSize: 18)),
+                    const SizedBox(height: 4),
+                    Text(
+                      label,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        fontWeight:
+                            isSelected ? FontWeight.w500 : FontWeight.w400,
+                        color:
+                            isSelected ? theme.textPrimary : theme.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              if (!isAvailable)
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: Icon(
+                    Icons.lock,
+                    size: 12,
+                    color: theme.textSecondary,
+                  ),
+                ),
             ],
           ),
         ),

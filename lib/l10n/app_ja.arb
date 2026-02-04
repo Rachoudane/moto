@@ -191,5 +191,25 @@
       "message": {"type": "String"}
     }
   },
-  "couldNotOpenEmail": "メールアプリを開けませんでした"
+  "couldNotOpenEmail": "メールアプリを開けませんでした",
+  "unlockFullPotential": "全ての可能性を解放",
+  "proDescription": "無制限の習慣、すべてのペナルティモード、そして持続する習慣を築くための強力な機能を手に入れよう。",
+  "proFeature1": "無制限の習慣",
+  "proFeature2": "すべてのペナルティモード（禅、普通、本気）",
+  "proFeature3": "完全な履歴とカレンダー",
+  "proFeature4": "習慣ごとのカスタム通知",
+  "proFeature5": "将来のアップデートとテーマ",
+  "yearly": "年間",
+  "yearlySubtitle": "お得 • 44%節約",
+  "monthly": "月間",
+  "monthlySubtitle": "いつでも解約可能",
+  "lifetimeOffer": "永久アクセス 39,99€ →",
+  "restorePurchases": "購入を復元",
+  "proActivated": "Pro有効化！🎉",
+  "noPurchasesFound": "購入が見つかりません",
+  "habitLimitReached": "無料の上限に達しました",
+  "upgradeToAddMore": "Proにアップグレードして無制限に",
+  "upgrade": "アップグレード",
+  "proOnly": "Pro",
+  "freeLimitedHistory": "Proで完全な履歴を利用可能"
 }

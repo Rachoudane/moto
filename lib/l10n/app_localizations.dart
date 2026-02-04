@@ -801,6 +801,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not open email client'**
   String get couldNotOpenEmail;
+
+  /// No description provided for @unlockFullPotential.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock your full potential'**
+  String get unlockFullPotential;
+
+  /// No description provided for @proDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Get unlimited habits, all penalty modes, and powerful features to build lasting habits.'**
+  String get proDescription;
+
+  /// No description provided for @proFeature1.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited habits'**
+  String get proFeature1;
+
+  /// No description provided for @proFeature2.
+  ///
+  /// In en, this message translates to:
+  /// **'All penalty modes (Zen, Standard, Hardcore)'**
+  String get proFeature2;
+
+  /// No description provided for @proFeature3.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete history & calendar'**
+  String get proFeature3;
+
+  /// No description provided for @proFeature4.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom notifications per habit'**
+  String get proFeature4;
+
+  /// No description provided for @proFeature5.
+  ///
+  /// In en, this message translates to:
+  /// **'Future updates & themes'**
+  String get proFeature5;
+
+  /// No description provided for @yearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// No description provided for @yearlySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Best value • Save 44%'**
+  String get yearlySubtitle;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @monthlySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime'**
+  String get monthlySubtitle;
+
+  /// No description provided for @lifetimeOffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime access for 39,99€ →'**
+  String get lifetimeOffer;
+
+  /// No description provided for @restorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get restorePurchases;
+
+  /// No description provided for @proActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro activated! 🎉'**
+  String get proActivated;
+
+  /// No description provided for @noPurchasesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No purchases found'**
+  String get noPurchasesFound;
+
+  /// No description provided for @habitLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Free limit reached'**
+  String get habitLimitReached;
+
+  /// No description provided for @upgradeToAddMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro for unlimited habits'**
+  String get upgradeToAddMore;
+
+  /// No description provided for @upgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get upgrade;
+
+  /// No description provided for @proOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get proOnly;
+
+  /// No description provided for @freeLimitedHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Full history available with Pro'**
+  String get freeLimitedHistory;
 }
 
 class _AppLocalizationsDelegate

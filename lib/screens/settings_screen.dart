@@ -8,8 +8,10 @@ import '../main.dart';
 import '../services/language_service.dart';
 import '../services/storage_service.dart';
 import '../services/notification_service.dart';
+import '../services/subscription_service.dart';
 import '../services/theme_service.dart';
 import 'onboarding_screen.dart';
+import 'pro_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Function(Locale) onLanguageChanged;
@@ -31,6 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String _selectedLanguage;
   late bool _isDarkMode;
   bool _isLoading = true;
+  bool _isPro = false;
 
   @override
   void initState() {
@@ -42,9 +45,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _loadSettings() async {
     final language = await LanguageService.getSelectedLanguage();
     final isDark = await ThemeService.isDarkMode();
+    final isPro = await SubscriptionService.isPro();
     setState(() {
       _selectedLanguage = language;
       _isDarkMode = isDark;
+      _isPro = isPro;
       _isLoading = false;
     });
   }
@@ -251,13 +256,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Moto v1.0.0',
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: theme.textPrimary,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              'Moto${_isPro ? " Pro" : ""} v1.0.0',
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: theme.textPrimary,
+                              ),
+                            ),
+                            if (_isPro) ...[
+                              const SizedBox(width: 8),
+                              const Icon(
+                                Icons.star,
+                                color: Color(0xFFE5C07B),
+                                size: 18,
+                              ),
+                            ],
+                          ],
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -272,6 +289,69 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  if (!_isPro)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ProScreen()),
+                            ).then((_) => _loadSettings());
+                          },
+                          borderRadius: BorderRadius.circular(14),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  const Color(0xFFE5C07B).withValues(alpha: 0.2),
+                                  const Color(0xFFE5C07B).withValues(alpha: 0.1),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(
+                                color:
+                                    const Color(0xFFE5C07B).withValues(alpha: 0.3),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.star,
+                                    color: Color(0xFFE5C07B)),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        loc.upgrade,
+                                        style: GoogleFonts.inter(
+                                          color: const Color(0xFFE5C07B),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        loc.unlockFullPotential,
+                                        style: GoogleFonts.inter(
+                                          color: theme.textSecondary,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(Icons.chevron_right,
+                                    color: Color(0xFFE5C07B)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   _buildActionCard(
                     theme: theme,
                     icon: Icons.replay_outlined,

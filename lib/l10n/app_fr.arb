@@ -191,5 +191,25 @@
       "message": {"type": "String"}
     }
   },
-  "couldNotOpenEmail": "Impossible d'ouvrir le client email"
+  "couldNotOpenEmail": "Impossible d'ouvrir le client email",
+  "unlockFullPotential": "Libère tout ton potentiel",
+  "proDescription": "Obtiens des habitudes illimitées, tous les modes de pénalité et des fonctionnalités puissantes pour construire des habitudes durables.",
+  "proFeature1": "Habitudes illimitées",
+  "proFeature2": "Tous les modes de pénalité (Zen, Standard, Hardcore)",
+  "proFeature3": "Historique complet et calendrier",
+  "proFeature4": "Notifications personnalisées par habitude",
+  "proFeature5": "Futures mises à jour et thèmes",
+  "yearly": "Annuel",
+  "yearlySubtitle": "Meilleure offre • Économise 44%",
+  "monthly": "Mensuel",
+  "monthlySubtitle": "Annule quand tu veux",
+  "lifetimeOffer": "Accès à vie pour 39,99€ →",
+  "restorePurchases": "Restaurer les achats",
+  "proActivated": "Pro activé ! 🎉",
+  "noPurchasesFound": "Aucun achat trouvé",
+  "habitLimitReached": "Limite gratuite atteinte",
+  "upgradeToAddMore": "Passe à Pro pour des habitudes illimitées",
+  "upgrade": "Améliorer",
+  "proOnly": "Pro",
+  "freeLimitedHistory": "Historique complet disponible avec Pro"
 }

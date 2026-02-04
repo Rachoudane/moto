@@ -5,6 +5,7 @@ import '../main.dart';
 import '../models/habit.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
+import '../services/subscription_service.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
 
@@ -24,6 +25,20 @@ class HabitDetailScreen extends StatefulWidget {
 
 class _HabitDetailScreenState extends State<HabitDetailScreen> {
   final StorageService _storageService = StorageService();
+  bool _isPro = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProStatus();
+  }
+
+  Future<void> _loadProStatus() async {
+    final isPro = await SubscriptionService.isPro();
+    if (mounted) {
+      setState(() => _isPro = isPro);
+    }
+  }
 
   String _getModeName(AppLocalizations l10n, PenaltyMode mode) {
     switch (mode) {
@@ -801,7 +816,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            HabitCalendar(habit: widget.habit),
+            HabitCalendar(
+              habit: widget.habit,
+              daysToShow: _isPro ? 35 : SubscriptionService.freeHistoryDays,
+            ),
             const SizedBox(height: 32),
             _buildStatCard(
               context,
