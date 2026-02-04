@@ -17,6 +17,7 @@ class Habit {
   PenaltyMode penaltyMode;
   int streak;
   DateTime? lastValidatedDate;
+  DateTime createdAt;
   Map<String, DayStatus> history;
   Map<String, int> streakBeforeAction; // Streak avant chaque action (pour correction)
   bool reminderEnabled;
@@ -30,12 +31,14 @@ class Habit {
     this.penaltyMode = PenaltyMode.standard,
     this.streak = 0,
     this.lastValidatedDate,
+    DateTime? createdAt,
     Map<String, DayStatus>? history,
     Map<String, int>? streakBeforeAction,
     this.reminderEnabled = false,
     this.reminderHour,
     this.reminderMinute,
-  }) : history = history ?? {},
+  }) : createdAt = createdAt ?? DateTime.now(),
+       history = history ?? {},
        streakBeforeAction = streakBeforeAction ?? {};
 
   bool get isValidatedToday {
@@ -175,6 +178,7 @@ class Habit {
     'penaltyMode': penaltyMode.index,
     'streak': streak,
     'lastValidatedDate': lastValidatedDate?.toIso8601String(),
+    'createdAt': createdAt.toIso8601String(),
     'history': history.map((key, value) => MapEntry(key, value.index)),
     'streakBeforeAction': streakBeforeAction,
     'reminderEnabled': reminderEnabled,
@@ -190,6 +194,9 @@ class Habit {
     streak: json['streak'] ?? 0,
     lastValidatedDate: json['lastValidatedDate'] != null
         ? DateTime.parse(json['lastValidatedDate'])
+        : null,
+    createdAt: json['createdAt'] != null
+        ? DateTime.parse(json['createdAt'])
         : null,
     history: (json['history'] as Map<String, dynamic>?)?.map(
       (key, value) => MapEntry(key, DayStatus.values[value as int]),

@@ -59,9 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _checkMissedDays() {
     bool hasChanges = false;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
 
     for (final habit in _habits) {
       if (habit.lastValidatedDate != null && habit.daysMissed > 0) {
+        // Cas normal: habitude déjà validée au moins une fois
         final lastDate = DateTime(
           habit.lastValidatedDate!.year,
           habit.lastValidatedDate!.month,
@@ -74,6 +77,27 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         habit.lastValidatedDate = DateTime.now();
         hasChanges = true;
+      } else if (habit.lastValidatedDate == null) {
+        // Nouvelle habitude jamais validée: vérifier les jours depuis la création
+        final createdDate = DateTime(
+          habit.createdAt.year,
+          habit.createdAt.month,
+          habit.createdAt.day,
+        );
+        final daysSinceCreation = today.difference(createdDate).inDays;
+
+        if (daysSinceCreation > 0) {
+          // Marquer les jours passés (sauf aujourd'hui) comme manqués
+          for (int i = 0; i < daysSinceCreation; i++) {
+            final missedDate = createdDate.add(Duration(days: i));
+            // Ne marquer que si pas déjà dans l'historique
+            if (habit.getStatusForDate(missedDate) == DayStatus.pending) {
+              habit.setStatusForDate(missedDate, DayStatus.skipped);
+              _applyPenalty(habit);
+            }
+          }
+          hasChanges = true;
+        }
       }
     }
 

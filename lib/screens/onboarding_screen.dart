@@ -79,9 +79,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     ];
 
-    return Scaffold(
-      backgroundColor: theme.bg,
-      body: SafeArea(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _completeOnboarding();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: theme.bg,
+        body: SafeArea(
         child: Column(
           children: [
             // Skip button
@@ -178,6 +185,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 
