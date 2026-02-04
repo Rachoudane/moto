@@ -398,4 +398,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get replayOnboarding => '紹介を再生';
+
+  @override
+  String errorGeneric(String message) {
+    return 'エラー：$message';
+  }
+
+  @override
+  String get couldNotOpenEmail => 'メールアプリを開けませんでした';
 }

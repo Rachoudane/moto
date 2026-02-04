@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
@@ -136,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _incrementStreak(String id) {
     final habit = _habits.firstWhere((h) => h.id == id);
     if (!habit.isValidatedToday) {
+      HapticFeedback.mediumImpact();
       setState(() {
         habit.setStreakBeforeAction(DateTime.now(), habit.streak);
         habit.streak++;
@@ -160,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _decrementStreak(String id) {
     final habit = _habits.firstWhere((h) => h.id == id);
     if (!habit.isValidatedToday) {
+      HapticFeedback.lightImpact();
       setState(() {
         habit.setStreakBeforeAction(DateTime.now(), habit.streak);
         _applyPenalty(habit);
@@ -182,6 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _addHabit(String name, bool isQuitting, PenaltyMode penaltyMode) {
+    HapticFeedback.lightImpact();
     setState(() {
       _habits.add(
         Habit(
@@ -196,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _deleteHabit(String id) {
+    HapticFeedback.heavyImpact();
     NotificationService.cancelHabitReminder(id);
     setState(() {
       _habits.removeWhere((h) => h.id == id);

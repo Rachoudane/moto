@@ -137,8 +137,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not open email client')),
+          SnackBar(content: Text(loc.couldNotOpenEmail)),
         );
       }
     }

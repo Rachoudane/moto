@@ -636,7 +636,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       } catch (e) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Erreur: ${e.toString()}')),
+                            SnackBar(content: Text(l10n.errorGeneric(e.toString()))),
                           );
                         }
                       }
@@ -697,7 +697,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Erreur: ${e.toString()}')),
+                          SnackBar(content: Text(l10n.errorGeneric(e.toString()))),
                         );
                       }
                     }

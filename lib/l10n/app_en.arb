@@ -205,5 +205,12 @@
   "onboardingDesc3": "Each completed square becomes a golden trophy — proof of your consistency. Even if you stumble, your trophies stay. You never truly start from zero.",
   "onboardingTitle4": "Choose your path",
   "onboardingDesc4": "🌱 Zen: Progress gently, lose one cell.\n⚡ Standard: Lose your current square.\n🔥 Hardcore: Start over completely.",
-  "replayOnboarding": "Replay introduction"
+  "replayOnboarding": "Replay introduction",
+  "errorGeneric": "Error: {message}",
+  "@errorGeneric": {
+    "placeholders": {
+      "message": {"type": "String"}
+    }
+  },
+  "couldNotOpenEmail": "Could not open email client"
 }

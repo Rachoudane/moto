@@ -789,6 +789,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replay introduction'**
   String get replayOnboarding;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String errorGeneric(String message);
+
+  /// No description provided for @couldNotOpenEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open email client'**
+  String get couldNotOpenEmail;
 }
 
 class _AppLocalizationsDelegate

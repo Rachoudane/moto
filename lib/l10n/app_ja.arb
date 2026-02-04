@@ -184,5 +184,12 @@
   "onboardingDesc3": "完成した正方形は金色のトロフィーになります。つまずいても、トロフィーは消えません。ゼロからやり直すことはありません。",
   "onboardingTitle4": "自分の道を選ぶ",
   "onboardingDesc4": "🌱 禅：優しく進む、1マス失う。\n⚡ 普通：現在の正方形を失う。\n🔥 本気：完全にゼロから。",
-  "replayOnboarding": "紹介を再生"
+  "replayOnboarding": "紹介を再生",
+  "errorGeneric": "エラー：{message}",
+  "@errorGeneric": {
+    "placeholders": {
+      "message": {"type": "String"}
+    }
+  },
+  "couldNotOpenEmail": "メールアプリを開けませんでした"
 }

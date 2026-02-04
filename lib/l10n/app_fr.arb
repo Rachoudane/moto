@@ -184,5 +184,12 @@
   "onboardingDesc3": "Chaque carré complété devient un trophée doré — une preuve de ta constance. Même si tu trébuches, tes trophées restent. Tu ne repars jamais de zéro.",
   "onboardingTitle4": "Choisis ton chemin",
   "onboardingDesc4": "🌱 Zen : Progresse en douceur, perds une case.\n⚡ Standard : Perds le carré en cours.\n🔥 Hardcore : Recommence tout à zéro.",
-  "replayOnboarding": "Revoir l'introduction"
+  "replayOnboarding": "Revoir l'introduction",
+  "errorGeneric": "Erreur : {message}",
+  "@errorGeneric": {
+    "placeholders": {
+      "message": {"type": "String"}
+    }
+  },
+  "couldNotOpenEmail": "Impossible d'ouvrir le client email"
 }

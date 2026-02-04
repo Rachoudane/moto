@@ -402,4 +402,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get replayOnboarding => 'Replay introduction';
+
+  @override
+  String errorGeneric(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get couldNotOpenEmail => 'Could not open email client';
 }
