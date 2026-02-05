@@ -7,6 +7,8 @@ import '../services/subscription_service.dart';
 class ProScreen extends StatelessWidget {
   const ProScreen({super.key});
 
+  static const _proGold = Color(0xFFE5C07B);
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -14,167 +16,195 @@ class ProScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.bg,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.close, color: theme.textPrimary),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 24),
-
-              // Pro badge
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFFE5C07B),
-                      const Color(0xFFE5C07B).withValues(alpha: 0.7),
-                    ],
+              // Close button
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: IconButton(
+                    icon: Icon(Icons.close, color: theme.textSecondary),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  borderRadius: BorderRadius.circular(30),
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
                   children: [
-                    Icon(Icons.star, color: theme.bg, size: 20),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Moto Pro',
-                      style: GoogleFonts.inter(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: theme.bg,
+                    // Visual header with squares
+                    _buildVisualHeader(theme),
+
+                    const SizedBox(height: 32),
+
+                    // Pro badge
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            _proGold,
+                            _proGold.withValues(alpha: 0.8),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: _proGold.withValues(alpha: 0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.star, color: theme.bg, size: 20),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Moto Pro',
+                            style: GoogleFonts.inter(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: theme.bg,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+
+                    const SizedBox(height: 24),
+
+                    Text(
+                      loc.unlockFullPotential,
+                      style: GoogleFonts.inter(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: theme.textPrimary,
+                        height: 1.2,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    Text(
+                      loc.proDescription,
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
+                        color: theme.textSecondary,
+                        height: 1.5,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Features list
+                    _buildFeatureCard(
+                      theme,
+                      icon: Icons.all_inclusive,
+                      title: loc.proFeature1,
+                      subtitle: '3 → ∞',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildFeatureCard(
+                      theme,
+                      icon: Icons.psychology_outlined,
+                      title: loc.proFeature2,
+                      subtitle: '🌱 ⚡ 🔥',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildFeatureCard(
+                      theme,
+                      icon: Icons.calendar_month_outlined,
+                      title: loc.proFeature3,
+                      subtitle: '7 → 365+',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildFeatureCard(
+                      theme,
+                      icon: Icons.notifications_outlined,
+                      title: loc.proFeature4,
+                      subtitle: '⏰',
+                    ),
+                    const SizedBox(height: 12),
+                    _buildFeatureCard(
+                      theme,
+                      icon: Icons.color_lens_outlined,
+                      title: loc.proFeature5,
+                      subtitle: '🌙 ☀️',
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // Pricing section
+                    _buildPricingButton(
+                      context,
+                      theme,
+                      title: loc.yearly,
+                      price: '19,99€',
+                      oldPrice: '35,88€',
+                      badge: '−44%',
+                      subtitle: loc.yearlySubtitle,
+                      isPrimary: true,
+                      onTap: () => _purchase(context, theme, loc, 'yearly'),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    _buildPricingButton(
+                      context,
+                      theme,
+                      title: loc.monthly,
+                      price: '2,99€',
+                      subtitle: loc.monthlySubtitle,
+                      isPrimary: false,
+                      onTap: () => _purchase(context, theme, loc, 'monthly'),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Lifetime offer
+                    TextButton(
+                      onPressed: () =>
+                          _purchase(context, theme, loc, 'lifetime'),
+                      child: Text(
+                        loc.lifetimeOffer,
+                        style: GoogleFonts.inter(
+                          color: _proGold,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // Restore purchases
+                    TextButton(
+                      onPressed: () => _restorePurchases(context, loc),
+                      child: Text(
+                        loc.restorePurchases,
+                        style: GoogleFonts.inter(
+                          color: theme.textSecondary,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),
-
-              const SizedBox(height: 32),
-
-              Text(
-                loc.unlockFullPotential,
-                style: GoogleFonts.inter(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                  color: theme.textPrimary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                loc.proDescription,
-                style: GoogleFonts.inter(
-                  fontSize: 15,
-                  color: theme.textSecondary,
-                  height: 1.6,
-                ),
-                textAlign: TextAlign.center,
-              ),
-
-              const SizedBox(height: 40),
-
-              // Features list
-              _buildFeatureItem(
-                context,
-                theme,
-                Icons.all_inclusive,
-                loc.proFeature1,
-              ),
-              _buildFeatureItem(
-                context,
-                theme,
-                Icons.psychology_outlined,
-                loc.proFeature2,
-              ),
-              _buildFeatureItem(
-                context,
-                theme,
-                Icons.calendar_month_outlined,
-                loc.proFeature3,
-              ),
-              _buildFeatureItem(
-                context,
-                theme,
-                Icons.notifications_outlined,
-                loc.proFeature4,
-              ),
-              _buildFeatureItem(
-                context,
-                theme,
-                Icons.color_lens_outlined,
-                loc.proFeature5,
-              ),
-
-              const SizedBox(height: 48),
-
-              // Pricing buttons
-              _buildPricingButton(
-                context,
-                theme,
-                title: loc.yearly,
-                price: '19,99€',
-                oldPrice: '35,88€',
-                badge: '−44%',
-                subtitle: loc.yearlySubtitle,
-                isPrimary: true,
-                onTap: () => _purchase(context, theme, loc, 'yearly'),
-              ),
-
-              const SizedBox(height: 12),
-
-              _buildPricingButton(
-                context,
-                theme,
-                title: loc.monthly,
-                price: '2,99€',
-                subtitle: loc.monthlySubtitle,
-                isPrimary: false,
-                onTap: () => _purchase(context, theme, loc, 'monthly'),
-              ),
-
-              const SizedBox(height: 12),
-
-              TextButton(
-                onPressed: () => _purchase(context, theme, loc, 'lifetime'),
-                child: Text(
-                  loc.lifetimeOffer,
-                  style: GoogleFonts.inter(
-                    color: const Color(0xFFE5C07B),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Restore purchases
-              TextButton(
-                onPressed: () => _restorePurchases(context, loc),
-                child: Text(
-                  loc.restorePurchases,
-                  style: GoogleFonts.inter(
-                    color: theme.textSecondary,
-                    fontSize: 13,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -182,29 +212,136 @@ class ProScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureItem(
-    BuildContext context,
-    MotoTheme theme,
-    IconData icon,
-    String text,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+  Widget _buildVisualHeader(MotoTheme theme) {
+    return SizedBox(
+      height: 100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // Trophy squares
+          _buildMiniTrophy(theme, 1),
+          const SizedBox(width: 6),
+          _buildMiniTrophy(theme, 2),
+          const SizedBox(width: 8),
+          // Current growing square
+          _buildGrowingSquare(theme, 3),
+          const SizedBox(width: 8),
+          // Future potential
+          Opacity(
+            opacity: 0.3,
+            child: _buildGrowingSquare(theme, 4),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMiniTrophy(MotoTheme theme, int size) {
+    final cellSize = 8.0;
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: theme.cardBg,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: SizedBox(
+        width: size * cellSize + (size - 1) * 2,
+        height: size * cellSize + (size - 1) * 2,
+        child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: size,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
+          ),
+          itemCount: size * size,
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                color: _proGold,
+                borderRadius: BorderRadius.circular(1),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGrowingSquare(MotoTheme theme, int size) {
+    final cellSize = 10.0;
+    final filled = (size * size * 0.6).floor();
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: theme.cardBg,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: SizedBox(
+        width: size * cellSize + (size - 1) * 2,
+        height: size * cellSize + (size - 1) * 2,
+        child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: size,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
+          ),
+          itemCount: size * size,
+          itemBuilder: (context, index) {
+            return Container(
+              decoration: BoxDecoration(
+                color:
+                    index < filled ? theme.accentGreen : theme.emptySquare,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFeatureCard(
+    MotoTheme theme, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.cardBg,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: theme.borderColor),
+      ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: theme.accentGreen.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              color: _proGold.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: theme.accentGreen, size: 20),
+            child: Icon(icon, color: _proGold, size: 22),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              text,
-              style: GoogleFonts.inter(fontSize: 15, color: theme.textPrimary),
+              title,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: theme.textPrimary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Text(
+            subtitle,
+            style: GoogleFonts.inter(
+              fontSize: 14,
+              color: theme.textSecondary,
             ),
           ),
         ],
@@ -227,14 +364,23 @@ class ProScreen extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: isPrimary ? theme.accentGreen : theme.cardBg,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(16),
             border: isPrimary ? null : Border.all(color: theme.borderColor),
+            boxShadow: isPrimary
+                ? [
+                    BoxShadow(
+                      color: theme.accentGreen.withValues(alpha: 0.3),
+                      blurRadius: 20,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : null,
           ),
           child: Row(
             children: [
@@ -242,21 +388,46 @@ class ProScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: isPrimary ? theme.bg : theme.textPrimary,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.inter(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: isPrimary ? theme.bg : theme.textPrimary,
+                          ),
+                        ),
+                        if (isPrimary) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.bg.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              '⭐ Best',
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: theme.bg,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       subtitle,
                       style: GoogleFonts.inter(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: isPrimary
-                            ? theme.bg.withValues(alpha: 0.7)
+                            ? theme.bg.withValues(alpha: 0.8)
                             : theme.textSecondary,
                       ),
                     ),
@@ -279,7 +450,7 @@ class ProScreen extends StatelessWidget {
                   Text(
                     price,
                     style: GoogleFonts.inter(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.w700,
                       color: isPrimary ? theme.bg : theme.textPrimary,
                     ),
@@ -289,18 +460,18 @@ class ProScreen extends StatelessWidget {
                       margin: const EdgeInsets.only(top: 4),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
-                        vertical: 2,
+                        vertical: 3,
                       ),
                       decoration: BoxDecoration(
                         color: isPrimary
-                            ? theme.bg.withValues(alpha: 0.15)
+                            ? theme.bg.withValues(alpha: 0.2)
                             : theme.accentGreen.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         badge,
                         style: GoogleFonts.inter(
-                          fontSize: 11,
+                          fontSize: 12,
                           fontWeight: FontWeight.w600,
                           color: isPrimary ? theme.bg : theme.accentGreen,
                         ),

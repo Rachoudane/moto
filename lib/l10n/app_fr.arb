@@ -184,6 +184,9 @@
   "onboardingDesc3": "Chaque carré complété devient un trophée doré — une preuve de ta constance. Même si tu trébuches, tes trophées restent. Tu ne repars jamais de zéro.",
   "onboardingTitle4": "Choisis ton chemin",
   "onboardingDesc4": "🌱 Zen : Progresse en douceur, perds une case.\n⚡ Standard : Perds le carré en cours.\n🔥 Hardcore : Recommence tout à zéro.",
+  "onboardingTitle5": "Va plus loin avec Pro",
+  "onboardingDesc5": "Débloque des habitudes illimitées, tous les modes, les rappels et plus encore. Ou commence gratuitement — tu peux améliorer à tout moment.",
+  "continueFree": "Continuer gratuitement",
   "replayOnboarding": "Revoir l'introduction",
   "errorGeneric": "Erreur : {message}",
   "@errorGeneric": {

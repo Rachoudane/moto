@@ -398,6 +398,16 @@ class AppLocalizationsJa extends AppLocalizations {
       '🌱 禅：優しく進む、1マス失う。\n⚡ 普通：現在の正方形を失う。\n🔥 本気：完全にゼロから。';
 
   @override
+  String get onboardingTitle5 => 'Proでさらに先へ';
+
+  @override
+  String get onboardingDesc5 =>
+      '無制限の習慣、すべてのモード、リマインダーなどを解放。または無料で始めて、いつでもアップグレード可能。';
+
+  @override
+  String get continueFree => '無料で続ける';
+
+  @override
   String get replayOnboarding => '紹介を再生';
 
   @override

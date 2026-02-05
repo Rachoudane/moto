@@ -404,6 +404,16 @@ class AppLocalizationsFr extends AppLocalizations {
       '🌱 Zen : Progresse en douceur, perds une case.\n⚡ Standard : Perds le carré en cours.\n🔥 Hardcore : Recommence tout à zéro.';
 
   @override
+  String get onboardingTitle5 => 'Va plus loin avec Pro';
+
+  @override
+  String get onboardingDesc5 =>
+      'Débloque des habitudes illimitées, tous les modes, les rappels et plus encore. Ou commence gratuitement — tu peux améliorer à tout moment.';
+
+  @override
+  String get continueFree => 'Continuer gratuitement';
+
+  @override
   String get replayOnboarding => 'Revoir l\'introduction';
 
   @override

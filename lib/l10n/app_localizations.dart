@@ -784,6 +784,24 @@ abstract class AppLocalizations {
   /// **'🌱 Zen: Progress gently, lose one cell.\n⚡ Standard: Lose your current square.\n🔥 Hardcore: Start over completely.'**
   String get onboardingDesc4;
 
+  /// No description provided for @onboardingTitle5.
+  ///
+  /// In en, this message translates to:
+  /// **'Go further with Pro'**
+  String get onboardingTitle5;
+
+  /// No description provided for @onboardingDesc5.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock unlimited habits, all penalty modes, reminders, and more. Or start free — you can upgrade anytime.'**
+  String get onboardingDesc5;
+
+  /// No description provided for @continueFree.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Free'**
+  String get continueFree;
+
   /// No description provided for @replayOnboarding.
   ///
   /// In en, this message translates to:

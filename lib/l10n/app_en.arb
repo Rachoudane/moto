@@ -205,6 +205,9 @@
   "onboardingDesc3": "Each completed square becomes a golden trophy — proof of your consistency. Even if you stumble, your trophies stay. You never truly start from zero.",
   "onboardingTitle4": "Choose your path",
   "onboardingDesc4": "🌱 Zen: Progress gently, lose one cell.\n⚡ Standard: Lose your current square.\n🔥 Hardcore: Start over completely.",
+  "onboardingTitle5": "Go further with Pro",
+  "onboardingDesc5": "Unlock unlimited habits, all penalty modes, reminders, and more. Or start free — you can upgrade anytime.",
+  "continueFree": "Continue Free",
   "replayOnboarding": "Replay introduction",
   "errorGeneric": "Error: {message}",
   "@errorGeneric": {

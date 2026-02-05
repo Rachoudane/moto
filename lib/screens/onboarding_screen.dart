@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'home_screen.dart';
+import 'pro_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final Function(Locale)? onLanguageChanged;
@@ -77,7 +78,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         description: loc.onboardingDesc4,
         child: _buildModesVisual(theme, loc),
       ),
+      _OnboardingPage(
+        title: loc.onboardingTitle5,
+        description: loc.onboardingDesc5,
+        child: _buildProVisual(theme, loc),
+        isProPage: true,
+      ),
     ];
+
+    final isLastPage = _currentPage == pages.length - 1;
 
     return PopScope(
       canPop: false,
@@ -89,103 +98,165 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Scaffold(
         backgroundColor: theme.bg,
         body: SafeArea(
-        child: Column(
-          children: [
-            // Skip button
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextButton(
-                  onPressed: _completeOnboarding,
-                  child: Text(
-                    loc.skip,
-                    style: GoogleFonts.inter(
-                      color: theme.textSecondary,
-                      fontWeight: FontWeight.w500,
+          child: Column(
+            children: [
+              // Skip button
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: TextButton(
+                    onPressed: _completeOnboarding,
+                    child: Text(
+                      loc.skip,
+                      style: GoogleFonts.inter(
+                        color: theme.textSecondary,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            // Page content
-            Expanded(
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
-                children: pages,
-              ),
-            ),
-
-            // Page indicators
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  pages.length,
-                  (index) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: _currentPage == index ? 24 : 8,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: _currentPage == index
-                          ? theme.accentGreen
-                          : theme.emptySquare,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // Next/Start button
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_currentPage == pages.length - 1) {
-                      _completeOnboarding();
-                    } else {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
+              // Page content
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.accentGreen,
-                    foregroundColor: theme.bg,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: Text(
-                    _currentPage == pages.length - 1
-                        ? loc.getStarted
-                        : loc.next,
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                  children: pages,
+                ),
+              ),
+
+              // Page indicators
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    pages.length,
+                    (index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: _currentPage == index ? 24 : 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: _currentPage == index
+                            ? (index == pages.length - 1
+                                ? const Color(0xFFE5C07B)
+                                : theme.accentGreen)
+                            : theme.emptySquare,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+
+              // Buttons
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
+                child: isLastPage
+                    ? Column(
+                        children: [
+                          // Try Pro button
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ProScreen(),
+                                  ),
+                                ).then((_) => _completeOnboarding());
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFE5C07B),
+                                foregroundColor: theme.bg,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                elevation: 0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.star, size: 20),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Moto Pro',
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          // Continue free button
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: _completeOnboarding,
+                              style: TextButton.styleFrom(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              child: Text(
+                                loc.continueFree,
+                                style: GoogleFonts.inter(
+                                  color: theme.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.accentGreen,
+                            foregroundColor: theme.bg,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            loc.next,
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 
@@ -349,17 +420,61 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
+
+  Widget _buildProVisual(MotoTheme theme, AppLocalizations loc) {
+    const proGold = Color(0xFFE5C07B);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Pro features grid
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildProFeatureIcon(theme, Icons.all_inclusive, proGold),
+            const SizedBox(width: 16),
+            _buildProFeatureIcon(theme, Icons.psychology_outlined, proGold),
+            const SizedBox(width: 16),
+            _buildProFeatureIcon(theme, Icons.notifications_outlined, proGold),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildProFeatureIcon(theme, Icons.calendar_month_outlined, proGold),
+            const SizedBox(width: 16),
+            _buildProFeatureIcon(theme, Icons.color_lens_outlined, proGold),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProFeatureIcon(MotoTheme theme, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
+      ),
+      child: Icon(icon, color: color, size: 28),
+    );
+  }
 }
 
 class _OnboardingPage extends StatelessWidget {
   final String title;
   final String description;
   final Widget child;
+  final bool isProPage;
 
   const _OnboardingPage({
     required this.title,
     required this.description,
     required this.child,
+    this.isProPage = false,
   });
 
   @override
@@ -381,7 +496,7 @@ class _OnboardingPage extends StatelessWidget {
             style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.w700,
-              color: theme.textPrimary,
+              color: isProPage ? const Color(0xFFE5C07B) : theme.textPrimary,
             ),
             textAlign: TextAlign.center,
           ),
