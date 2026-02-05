@@ -84,12 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
           habit.lastValidatedDate!.month,
           habit.lastValidatedDate!.day,
         );
-        for (int i = 1; i <= habit.daysMissed; i++) {
+        final missedDays = habit.daysMissed;
+        for (int i = 1; i <= missedDays; i++) {
           final missedDate = lastDate.add(Duration(days: i));
           habit.setStatusForDate(missedDate, DayStatus.skipped);
           _applyPenalty(habit);
         }
-        habit.lastValidatedDate = DateTime.now();
+        // Set to the last missed day (yesterday), not today, so user can still vote today
+        habit.lastValidatedDate = lastDate.add(Duration(days: missedDays));
         hasChanges = true;
       } else if (habit.lastValidatedDate == null) {
         // Nouvelle habitude jamais validée: vérifier les jours depuis la création
