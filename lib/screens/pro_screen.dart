@@ -2,12 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../services/iap_service.dart';
 import '../services/subscription_service.dart';
 
-class ProScreen extends StatelessWidget {
+class ProScreen extends StatefulWidget {
   const ProScreen({super.key});
 
+  @override
+  State<ProScreen> createState() => _ProScreenState();
+}
+
+class _ProScreenState extends State<ProScreen> {
   static const _proGold = Color(0xFFE5C07B);
+
+  bool _isLoadingPrices = true;
+  String? _yearlyPrice;
+  String? _monthlyPrice;
+  String? _lifetimePrice;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrices();
+  }
+
+  Future<void> _loadPrices() async {
+    // Initialize IAP and load prices from store
+    await IAPService.initialize();
+
+    if (mounted) {
+      setState(() {
+        _yearlyPrice = IAPService.yearlyPrice;
+        _monthlyPrice = IAPService.monthlyPrice;
+        _lifetimePrice = IAPService.lifetimePrice;
+        _isLoadingPrices = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,12 +182,11 @@ class ProScreen extends StatelessWidget {
                       context,
                       theme,
                       title: loc.yearly,
-                      price: '19,99€',
-                      oldPrice: '35,88€',
-                      badge: '−44%',
+                      price: _yearlyPrice,
                       subtitle: loc.yearlySubtitle,
                       isPrimary: true,
-                      onTap: () => _purchase(context, theme, loc, 'yearly'),
+                      isLoading: _isLoadingPrices,
+                      onTap: () => _purchase(context, theme, loc, IAPService.yearlyProductId),
                     ),
 
                     const SizedBox(height: 12),
@@ -165,25 +195,51 @@ class ProScreen extends StatelessWidget {
                       context,
                       theme,
                       title: loc.monthly,
-                      price: '2,99€',
+                      price: _monthlyPrice,
                       subtitle: loc.monthlySubtitle,
                       isPrimary: false,
-                      onTap: () => _purchase(context, theme, loc, 'monthly'),
+                      isLoading: _isLoadingPrices,
+                      onTap: () => _purchase(context, theme, loc, IAPService.monthlyProductId),
                     ),
 
                     const SizedBox(height: 16),
 
                     // Lifetime offer
                     TextButton(
-                      onPressed: () =>
-                          _purchase(context, theme, loc, 'lifetime'),
-                      child: Text(
-                        loc.lifetimeOffer,
-                        style: GoogleFonts.inter(
-                          color: _proGold,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
+                      onPressed: () => _purchase(context, theme, loc, IAPService.lifetimeProductId),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            loc.lifetimeOffer,
+                            style: GoogleFonts.inter(
+                              color: _proGold,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                          ),
+                          if (_isLoadingPrices)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: SizedBox(
+                                width: 12,
+                                height: 12,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: _proGold,
+                                ),
+                              ),
+                            )
+                          else if (_lifetimePrice != null)
+                            Text(
+                              ' $_lifetimePrice',
+                              style: GoogleFonts.inter(
+                                color: _proGold,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
 
@@ -238,7 +294,7 @@ class ProScreen extends StatelessWidget {
   }
 
   Widget _buildMiniTrophy(MotoTheme theme, int size) {
-    final cellSize = 8.0;
+    const cellSize = 8.0;
     return Container(
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
@@ -270,7 +326,7 @@ class ProScreen extends StatelessWidget {
   }
 
   Widget _buildGrowingSquare(MotoTheme theme, int size) {
-    final cellSize = 10.0;
+    const cellSize = 10.0;
     final filled = (size * size * 0.6).floor();
     return Container(
       padding: const EdgeInsets.all(3),
@@ -292,8 +348,7 @@ class ProScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
               decoration: BoxDecoration(
-                color:
-                    index < filled ? theme.accentGreen : theme.emptySquare,
+                color: index < filled ? theme.accentGreen : theme.emptySquare,
                 borderRadius: BorderRadius.circular(2),
               ),
             );
@@ -353,11 +408,10 @@ class ProScreen extends StatelessWidget {
     BuildContext context,
     MotoTheme theme, {
     required String title,
-    required String price,
-    String? oldPrice,
-    String? badge,
+    required String? price,
     required String subtitle,
     required bool isPrimary,
+    required bool isLoading,
     required VoidCallback onTap,
   }) {
     return Material(
@@ -434,51 +488,24 @@ class ProScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  if (oldPrice != null)
-                    Text(
-                      oldPrice,
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        color: (isPrimary ? theme.bg : theme.textSecondary)
-                            .withValues(alpha: 0.6),
-                        decoration: TextDecoration.lineThrough,
-                      ),
-                    ),
-                  Text(
-                    price,
-                    style: GoogleFonts.inter(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: isPrimary ? theme.bg : theme.textPrimary,
-                    ),
+              if (isLoading)
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: isPrimary ? theme.bg : theme.textSecondary,
                   ),
-                  if (badge != null)
-                    Container(
-                      margin: const EdgeInsets.only(top: 4),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isPrimary
-                            ? theme.bg.withValues(alpha: 0.2)
-                            : theme.accentGreen.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        badge,
-                        style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: isPrimary ? theme.bg : theme.accentGreen,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+                )
+              else
+                Text(
+                  price ?? '---',
+                  style: GoogleFonts.inter(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: isPrimary ? theme.bg : theme.textPrimary,
+                  ),
+                ),
             ],
           ),
         ),
@@ -490,11 +517,12 @@ class ProScreen extends StatelessWidget {
     BuildContext context,
     MotoTheme theme,
     AppLocalizations loc,
-    String type,
+    String productId,
   ) async {
-    // TODO: Implement real purchase with RevenueCat or in_app_purchase
-    // For now, just simulate a purchase for testing
+    // TODO: Replace with real IAP purchase
+    // final success = await IAPService.purchase(productId);
 
+    // For now, show test dialog
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -505,7 +533,7 @@ class ProScreen extends StatelessWidget {
           style: GoogleFonts.inter(color: theme.textPrimary),
         ),
         content: Text(
-          'Activate Pro for testing?\n(In production, this will connect to the store)',
+          'Activate Pro for testing?\n(Product: $productId)',
           style: GoogleFonts.inter(color: theme.textSecondary),
         ),
         actions: [
@@ -545,9 +573,9 @@ class ProScreen extends StatelessWidget {
     BuildContext context,
     AppLocalizations loc,
   ) async {
-    // TODO: Implement real restore with RevenueCat or in_app_purchase
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(loc.noPurchasesFound)));
+    // TODO: Implement with IAPService.restorePurchases()
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(loc.noPurchasesFound)),
+    );
   }
 }

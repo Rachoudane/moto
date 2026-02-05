@@ -451,7 +451,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get yearly => 'Annuel';
 
   @override
-  String get yearlySubtitle => 'Seulement 1,66€/mois';
+  String get yearlySubtitle => 'Meilleur rapport';
 
   @override
   String get monthly => 'Mensuel';
@@ -460,7 +460,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get monthlySubtitle => 'Annule quand tu veux';
 
   @override
-  String get lifetimeOffer => 'Accès à vie pour 39,99€ →';
+  String get lifetimeOffer => 'Accès à vie →';
 
   @override
   String get restorePurchases => 'Restaurer les achats';

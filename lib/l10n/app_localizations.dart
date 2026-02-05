@@ -871,7 +871,7 @@ abstract class AppLocalizations {
   /// No description provided for @yearlySubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Only 1,66€/month'**
+  /// **'Best value'**
   String get yearlySubtitle;
 
   /// No description provided for @monthly.
@@ -889,7 +889,7 @@ abstract class AppLocalizations {
   /// No description provided for @lifetimeOffer.
   ///
   /// In en, this message translates to:
-  /// **'Lifetime access for 39,99€ →'**
+  /// **'Lifetime access →'**
   String get lifetimeOffer;
 
   /// No description provided for @restorePurchases.

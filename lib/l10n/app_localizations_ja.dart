@@ -444,7 +444,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get yearly => '年間';
 
   @override
-  String get yearlySubtitle => '月額わずか1,66€';
+  String get yearlySubtitle => '最もお得';
 
   @override
   String get monthly => '月間';
@@ -453,7 +453,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get monthlySubtitle => 'いつでも解約可能';
 
   @override
-  String get lifetimeOffer => '永久アクセス 39,99€ →';
+  String get lifetimeOffer => '永久アクセス →';
 
   @override
   String get restorePurchases => '購入を復元';
