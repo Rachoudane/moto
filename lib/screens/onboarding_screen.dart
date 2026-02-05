@@ -81,8 +81,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _OnboardingPage(
         title: loc.onboardingTitle5,
         description: loc.onboardingDesc5,
-        child: _buildProVisual(theme, loc),
         isProPage: true,
+        child: _buildProVisual(theme, loc),
       ),
     ];
 
@@ -146,8 +146,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       decoration: BoxDecoration(
                         color: _currentPage == index
                             ? (index == pages.length - 1
-                                ? const Color(0xFFE5C07B)
-                                : theme.accentGreen)
+                                  ? const Color(0xFFE5C07B)
+                                  : theme.accentGreen)
                             : theme.emptySquare,
                         borderRadius: BorderRadius.circular(4),
                       ),
@@ -177,8 +177,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFFE5C07B),
                                 foregroundColor: theme.bg,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -207,8 +208,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             child: TextButton(
                               onPressed: _completeOnboarding,
                               style: TextButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -395,7 +397,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildModeCard(
-      MotoTheme theme, String emoji, String label, Color color) {
+    MotoTheme theme,
+    String emoji,
+    String label,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -486,10 +492,7 @@ class _OnboardingPage extends StatelessWidget {
       child: Column(
         children: [
           const Spacer(),
-          SizedBox(
-            height: 200,
-            child: child,
-          ),
+          SizedBox(height: 200, child: child),
           const Spacer(),
           Text(
             title,
