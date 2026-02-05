@@ -461,6 +461,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get upgradeToAddMore => 'Proにアップグレードして無制限に';
 
   @override
+  String get penaltyModeProTitle => 'Proモード';
+
+  @override
+  String get penaltyModeProDescription => '禅モードと本気モードはProで利用可能。さまざまな挑戦レベルを試そう！';
+
+  @override
+  String get reminderProTitle => 'Pro機能';
+
+  @override
+  String get reminderProDescription => '習慣ごとのカスタムリマインダーはProで利用可能。毎日を逃さない！';
+
+  @override
   String get upgrade => 'アップグレード';
 
   @override

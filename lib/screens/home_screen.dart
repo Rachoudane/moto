@@ -229,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadProStatus();
   }
 
-  void _showUpgradeDialog() {
+  void _showUpgradeDialog({String? title, String? description}) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<MotoTheme>()!;
 
@@ -244,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                l10n.habitLimitReached,
+                title ?? l10n.habitLimitReached,
                 style: GoogleFonts.inter(
                   color: theme.textPrimary,
                   fontSize: 16,
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         content: Text(
-          l10n.upgradeToAddMore,
+          description ?? l10n.upgradeToAddMore,
           style: GoogleFonts.inter(color: theme.textSecondary),
         ),
         actions: [
@@ -545,7 +545,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final isAvailable = _isModeAvailable(mode);
 
     return GestureDetector(
-      onTap: isAvailable ? onTap : _showUpgradeDialog,
+      onTap: isAvailable
+          ? onTap
+          : () {
+              final l10n = AppLocalizations.of(context)!;
+              _showUpgradeDialog(
+                title: l10n.penaltyModeProTitle,
+                description: l10n.penaltyModeProDescription,
+              );
+            },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -678,7 +686,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         isDarkMode: widget.isDarkMode,
                                       ),
                                     ),
-                                  );
+                                  ).then((_) => _loadProStatus());
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(

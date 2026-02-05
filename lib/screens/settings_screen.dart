@@ -376,6 +376,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     borderColor: theme.danger.withValues(alpha: 0.3),
                     onTap: _showResetConfirmation,
                   ),
+                  const SizedBox(height: 12),
+                  _buildActionCard(
+                    theme: theme,
+                    icon: _isPro ? Icons.star : Icons.star_border,
+                    iconColor: const Color(0xFFE5C07B),
+                    iconBgColor: const Color(0xFFE5C07B).withValues(alpha: 0.1),
+                    title: '🧪 Toggle Pro (Debug)',
+                    subtitle: _isPro ? 'Currently: Pro' : 'Currently: Free',
+                    onTap: () async {
+                      await SubscriptionService.togglePro();
+                      _loadSettings();
+                    },
+                  ),
                   const SizedBox(height: 40),
                 ],
               ),

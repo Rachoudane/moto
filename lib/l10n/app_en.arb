@@ -230,6 +230,10 @@
   "noPurchasesFound": "No purchases found",
   "habitLimitReached": "Free limit reached",
   "upgradeToAddMore": "Upgrade to Pro for unlimited habits",
+  "penaltyModeProTitle": "Pro mode",
+  "penaltyModeProDescription": "Zen and Hardcore modes are available with Pro. Try different challenge levels!",
+  "reminderProTitle": "Pro feature",
+  "reminderProDescription": "Custom reminders for each habit are available with Pro. Never miss a day!",
   "upgrade": "Upgrade",
   "proOnly": "Pro",
   "freeLimitedHistory": "Full history available with Pro"

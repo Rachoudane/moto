@@ -904,6 +904,30 @@ abstract class AppLocalizations {
   /// **'Upgrade to Pro for unlimited habits'**
   String get upgradeToAddMore;
 
+  /// No description provided for @penaltyModeProTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro mode'**
+  String get penaltyModeProTitle;
+
+  /// No description provided for @penaltyModeProDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Zen and Hardcore modes are available with Pro. Try different challenge levels!'**
+  String get penaltyModeProDescription;
+
+  /// No description provided for @reminderProTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro feature'**
+  String get reminderProTitle;
+
+  /// No description provided for @reminderProDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom reminders for each habit are available with Pro. Never miss a day!'**
+  String get reminderProDescription;
+
   /// No description provided for @upgrade.
   ///
   /// In en, this message translates to:

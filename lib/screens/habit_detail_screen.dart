@@ -8,6 +8,7 @@ import '../services/storage_service.dart';
 import '../services/subscription_service.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
+import 'pro_screen.dart';
 
 class HabitDetailScreen extends StatefulWidget {
   final Habit habit;
@@ -547,6 +548,66 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     );
   }
 
+  bool _isModeAvailable(PenaltyMode mode) {
+    if (_isPro) return true;
+    return mode == PenaltyMode.standard;
+  }
+
+  void _showUpgradeDialog({String? title, String? description}) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: theme.cardBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            const Icon(Icons.star, color: Color(0xFFE5C07B)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                title ?? l10n.habitLimitReached,
+                style: GoogleFonts.inter(
+                  color: theme.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          description ?? l10n.upgradeToAddMore,
+          style: GoogleFonts.inter(color: theme.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              l10n.cancel,
+              style: GoogleFonts.inter(color: theme.textSecondary),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProScreen()),
+              ).then((_) => _loadProStatus());
+            },
+            child: Text(
+              l10n.upgrade,
+              style: GoogleFonts.inter(color: theme.accentGreen),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildModeButton(
     StateSetter setModalState,
     MotoTheme theme, {
@@ -557,8 +618,18 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     required VoidCallback onTap,
   }) {
     final isSelected = mode == currentMode;
+    final isAvailable = _isModeAvailable(mode);
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: isAvailable
+          ? onTap
+          : () {
+              final l10n = AppLocalizations.of(context)!;
+              _showUpgradeDialog(
+                title: l10n.penaltyModeProTitle,
+                description: l10n.penaltyModeProDescription,
+              );
+            },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -567,19 +638,25 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           borderRadius: BorderRadius.circular(10),
           border: isSelected ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2)) : null,
         ),
-        child: Column(
-          children: [
-            Text(emoji, style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                color: isSelected ? theme.textPrimary : theme.textSecondary,
+        child: Opacity(
+          opacity: isAvailable ? 1.0 : 0.5,
+          child: Column(
+            children: [
+              Text(
+                isAvailable ? emoji : '🔒',
+                style: const TextStyle(fontSize: 18),
               ),
-            ),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+                  color: isSelected ? theme.textPrimary : theme.textSecondary,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -624,11 +701,39 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       color: theme.textPrimary,
                     ),
                   ),
+                  if (!_isPro) ...[
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE5C07B).withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'PRO',
+                        style: GoogleFonts.inter(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFFE5C07B),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
               Switch(
                 value: habit.reminderEnabled,
                 onChanged: (value) async {
+                  // Pro feature gate
+                  if (value && !_isPro) {
+                    final l10n = AppLocalizations.of(context)!;
+                    _showUpgradeDialog(
+                      title: l10n.reminderProTitle,
+                      description: l10n.reminderProDescription,
+                    );
+                    return;
+                  }
+
                   if (value) {
                     final hasPermission = await NotificationService.requestPermission();
                     if (!hasPermission) {

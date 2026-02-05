@@ -467,6 +467,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upgradeToAddMore => 'Upgrade to Pro for unlimited habits';
 
   @override
+  String get penaltyModeProTitle => 'Pro mode';
+
+  @override
+  String get penaltyModeProDescription =>
+      'Zen and Hardcore modes are available with Pro. Try different challenge levels!';
+
+  @override
+  String get reminderProTitle => 'Pro feature';
+
+  @override
+  String get reminderProDescription =>
+      'Custom reminders for each habit are available with Pro. Never miss a day!';
+
+  @override
   String get upgrade => 'Upgrade';
 
   @override
