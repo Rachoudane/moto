@@ -16,6 +16,7 @@ class _ProScreenState extends State<ProScreen> {
   static const _proGold = Color(0xFFE5C07B);
 
   bool _isLoadingPrices = true;
+  bool _isPurchasing = false;
   String? _yearlyPrice;
   String? _monthlyPrice;
   String? _lifetimePrice;
@@ -24,6 +25,39 @@ class _ProScreenState extends State<ProScreen> {
   void initState() {
     super.initState();
     _loadPrices();
+    _setupPurchaseCallback();
+  }
+
+  void _setupPurchaseCallback() {
+    IAPService().onPurchaseResult = (success, error) {
+      if (!mounted) return;
+
+      setState(() => _isPurchasing = false);
+
+      if (success) {
+        Navigator.pop(context, true);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.proActivated),
+            backgroundColor: Theme.of(context).extension<MotoTheme>()!.accentGreen,
+          ),
+        );
+      } else if (error != null) {
+        // Show error (but not for user cancellation)
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error),
+            backgroundColor: Theme.of(context).extension<MotoTheme>()!.danger,
+          ),
+        );
+      }
+    };
+  }
+
+  @override
+  void dispose() {
+    IAPService().onPurchaseResult = null;
+    super.dispose();
   }
 
   Future<void> _loadPrices() async {
@@ -47,223 +81,238 @@ class _ProScreenState extends State<ProScreen> {
 
     return Scaffold(
       backgroundColor: theme.bg,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Close button
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: IconButton(
-                    icon: Icon(Icons.close, color: theme.textSecondary),
-                    onPressed: () => Navigator.pop(context),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Close button
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: IconButton(
+                        icon: Icon(Icons.close, color: theme.textSecondary),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ),
                   ),
-                ),
-              ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    // Visual header with squares
-                    _buildVisualHeader(theme),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        // Visual header with squares
+                        _buildVisualHeader(theme),
 
-                    const SizedBox(height: 32),
+                        const SizedBox(height: 32),
 
-                    // Pro badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            _proGold,
-                            _proGold.withValues(alpha: 0.8),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: _proGold.withValues(alpha: 0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 4),
+                        // Pro badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.star, color: theme.bg, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Moto Pro',
-                            style: GoogleFonts.inter(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: theme.bg,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                _proGold,
+                                _proGold.withValues(alpha: 0.8),
+                              ],
                             ),
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: _proGold.withValues(alpha: 0.3),
+                                blurRadius: 20,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    Text(
-                      loc.unlockFullPotential,
-                      style: GoogleFonts.inter(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w700,
-                        color: theme.textPrimary,
-                        height: 1.2,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    Text(
-                      loc.proDescription,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        color: theme.textSecondary,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Features list
-                    _buildFeatureCard(
-                      theme,
-                      icon: Icons.all_inclusive,
-                      title: loc.proFeature1,
-                      subtitle: '3 → ∞',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildFeatureCard(
-                      theme,
-                      icon: Icons.psychology_outlined,
-                      title: loc.proFeature2,
-                      subtitle: '🌱 ⚡ 🔥',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildFeatureCard(
-                      theme,
-                      icon: Icons.calendar_month_outlined,
-                      title: loc.proFeature3,
-                      subtitle: '7 → 365+',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildFeatureCard(
-                      theme,
-                      icon: Icons.notifications_outlined,
-                      title: loc.proFeature4,
-                      subtitle: '⏰',
-                    ),
-                    const SizedBox(height: 12),
-                    _buildFeatureCard(
-                      theme,
-                      icon: Icons.color_lens_outlined,
-                      title: loc.proFeature5,
-                      subtitle: '🌙 ☀️',
-                    ),
-
-                    const SizedBox(height: 40),
-
-                    // Pricing section
-                    _buildPricingButton(
-                      context,
-                      theme,
-                      title: loc.yearly,
-                      price: _yearlyPrice,
-                      subtitle: loc.yearlySubtitle,
-                      isPrimary: true,
-                      isLoading: _isLoadingPrices,
-                      onTap: () => _purchase(context, theme, loc, IAPService.yearlyProductId),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    _buildPricingButton(
-                      context,
-                      theme,
-                      title: loc.monthly,
-                      price: _monthlyPrice,
-                      subtitle: loc.monthlySubtitle,
-                      isPrimary: false,
-                      isLoading: _isLoadingPrices,
-                      onTap: () => _purchase(context, theme, loc, IAPService.monthlyProductId),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Lifetime offer
-                    TextButton(
-                      onPressed: () => _purchase(context, theme, loc, IAPService.lifetimeProductId),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            loc.lifetimeOffer,
-                            style: GoogleFonts.inter(
-                              color: _proGold,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
-                          ),
-                          if (_isLoadingPrices)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: SizedBox(
-                                width: 12,
-                                height: 12,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: _proGold,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.star, color: theme.bg, size: 20),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Moto Pro',
+                                style: GoogleFonts.inter(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: theme.bg,
                                 ),
                               ),
-                            )
-                          else if (_lifetimePrice != null)
-                            Text(
-                              ' $_lifetimePrice',
-                              style: GoogleFonts.inter(
-                                color: _proGold,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    // Restore purchases
-                    TextButton(
-                      onPressed: () => _restorePurchases(context, loc),
-                      child: Text(
-                        loc.restorePurchases,
-                        style: GoogleFonts.inter(
-                          color: theme.textSecondary,
-                          fontSize: 13,
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 32),
-                  ],
+                        const SizedBox(height: 24),
+
+                        Text(
+                          loc.unlockFullPotential,
+                          style: GoogleFonts.inter(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            color: theme.textPrimary,
+                            height: 1.2,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        Text(
+                          loc.proDescription,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            color: theme.textSecondary,
+                            height: 1.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+
+                        const SizedBox(height: 32),
+
+                        // Features list
+                        _buildFeatureCard(
+                          theme,
+                          icon: Icons.all_inclusive,
+                          title: loc.proFeature1,
+                          subtitle: '3 → ∞',
+                        ),
+                        const SizedBox(height: 12),
+                        _buildFeatureCard(
+                          theme,
+                          icon: Icons.psychology_outlined,
+                          title: loc.proFeature2,
+                          subtitle: '🌱 ⚡ 🔥',
+                        ),
+                        const SizedBox(height: 12),
+                        _buildFeatureCard(
+                          theme,
+                          icon: Icons.calendar_month_outlined,
+                          title: loc.proFeature3,
+                          subtitle: '7 → 365+',
+                        ),
+                        const SizedBox(height: 12),
+                        _buildFeatureCard(
+                          theme,
+                          icon: Icons.notifications_outlined,
+                          title: loc.proFeature4,
+                          subtitle: '⏰',
+                        ),
+                        const SizedBox(height: 12),
+                        _buildFeatureCard(
+                          theme,
+                          icon: Icons.color_lens_outlined,
+                          title: loc.proFeature5,
+                          subtitle: '🌙 ☀️',
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        // Pricing section
+                        _buildPricingButton(
+                          context,
+                          theme,
+                          title: loc.yearly,
+                          price: _yearlyPrice,
+                          subtitle: loc.yearlySubtitle,
+                          isPrimary: true,
+                          isLoading: _isLoadingPrices,
+                          onTap: () => _purchase(IAPService.yearlyProductId),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        _buildPricingButton(
+                          context,
+                          theme,
+                          title: loc.monthly,
+                          price: _monthlyPrice,
+                          subtitle: loc.monthlySubtitle,
+                          isPrimary: false,
+                          isLoading: _isLoadingPrices,
+                          onTap: () => _purchase(IAPService.monthlyProductId),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Lifetime offer
+                        TextButton(
+                          onPressed: () => _purchase(IAPService.lifetimeProductId),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                loc.lifetimeOffer,
+                                style: GoogleFonts.inter(
+                                  color: _proGold,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              if (_isLoadingPrices)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: SizedBox(
+                                    width: 12,
+                                    height: 12,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: _proGold,
+                                    ),
+                                  ),
+                                )
+                              else if (_lifetimePrice != null)
+                                Text(
+                                  ' $_lifetimePrice',
+                                  style: GoogleFonts.inter(
+                                    color: _proGold,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        // Restore purchases
+                        TextButton(
+                          onPressed: () => _restorePurchases(context, loc),
+                          child: Text(
+                            loc.restorePurchases,
+                            style: GoogleFonts.inter(
+                              color: theme.textSecondary,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 32),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Loading overlay
+          if (_isPurchasing)
+            Container(
+              color: Colors.black54,
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: _proGold,
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -417,7 +466,7 @@ class _ProScreenState extends State<ProScreen> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: _isPurchasing ? null : onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
           width: double.infinity,
@@ -513,59 +562,31 @@ class _ProScreenState extends State<ProScreen> {
     );
   }
 
-  Future<void> _purchase(
-    BuildContext context,
-    MotoTheme theme,
-    AppLocalizations loc,
-    String productId,
-  ) async {
-    // TODO: Replace with real IAP purchase
-    // final success = await IAPService.purchase(productId);
+  Future<void> _purchase(String productId) async {
+    if (_isPurchasing) return;
 
-    // For now, show test dialog
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: theme.cardBg,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          '🧪 Test Mode',
-          style: GoogleFonts.inter(color: theme.textPrimary),
-        ),
-        content: Text(
-          'Activate Pro for testing?\n(Product: $productId)',
-          style: GoogleFonts.inter(color: theme.textSecondary),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(
-              loc.cancel,
-              style: GoogleFonts.inter(color: theme.textSecondary),
-            ),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(
-              'Activate',
-              style: GoogleFonts.inter(color: theme.accentGreen),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      await SubscriptionService.setPro(true);
-      if (context.mounted) {
-        Navigator.pop(context, true);
+    // Check if product is available
+    if (IAPService.getProduct(productId) == null) {
+      // Products not loaded yet, show error
+      if (mounted) {
+        final theme = Theme.of(context).extension<MotoTheme>()!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(loc.proActivated),
-            backgroundColor: theme.accentGreen,
+            content: const Text('Products not available. Please try again.'),
+            backgroundColor: theme.danger,
           ),
         );
       }
+      return;
+    }
+
+    setState(() => _isPurchasing = true);
+
+    // Initiate purchase - result will come via callback
+    final started = await IAPService.purchase(productId);
+
+    if (!started && mounted) {
+      setState(() => _isPurchasing = false);
     }
   }
 
@@ -573,9 +594,34 @@ class _ProScreenState extends State<ProScreen> {
     BuildContext context,
     AppLocalizations loc,
   ) async {
-    // TODO: Implement with IAPService.restorePurchases()
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(loc.noPurchasesFound)),
-    );
+    if (_isPurchasing) return;
+
+    setState(() => _isPurchasing = true);
+
+    await IAPService.restorePurchases();
+
+    // Check if user is now pro
+    await Future.delayed(const Duration(seconds: 2)); // Give time for restore
+    final isPro = await SubscriptionService.isPro();
+
+    if (!mounted) return;
+
+    setState(() => _isPurchasing = false);
+
+    final theme = Theme.of(this.context).extension<MotoTheme>()!;
+
+    if (isPro) {
+      Navigator.pop(this.context, true);
+      ScaffoldMessenger.of(this.context).showSnackBar(
+        SnackBar(
+          content: Text(loc.proActivated),
+          backgroundColor: theme.accentGreen,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(this.context).showSnackBar(
+        SnackBar(content: Text(loc.noPurchasesFound)),
+      );
+    }
   }
 }

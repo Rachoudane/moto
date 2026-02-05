@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'l10n/app_localizations.dart';
 import 'screens/splash_screen.dart';
+import 'services/iap_service.dart';
 import 'services/language_service.dart';
 import 'services/notification_service.dart';
 import 'services/theme_service.dart';
@@ -10,6 +11,8 @@ import 'services/theme_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initialize();
+  // Initialize IAP in background (don't block app startup)
+  IAPService.initialize();
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
   );

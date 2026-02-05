@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'subscription_service.dart';
+
 /// In-App Purchase Service for Moto Pro
 ///
 /// Product IDs should match those configured in:
@@ -5,6 +10,11 @@
 /// - App Store Connect (for iOS)
 
 class IAPService {
+  // Singleton instance
+  static final IAPService _instance = IAPService._internal();
+  factory IAPService() => _instance;
+  IAPService._internal();
+
   // Product IDs - configure these in your store consoles
   static const String yearlyProductId = 'moto_pro_yearly';
   static const String monthlyProductId = 'moto_pro_monthly';
@@ -16,10 +26,19 @@ class IAPService {
     lifetimeProductId,
   ];
 
-  // Cached product details (prices from store)
-  static Map<String, ProductInfo> _products = {};
+  // Instance of InAppPurchase
+  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
+
+  // Stream subscription for purchase updates
+  StreamSubscription<List<PurchaseDetails>>? _subscription;
+
+  // Cached product details
+  static final Map<String, ProductDetails> _products = {};
   static bool _isInitialized = false;
   static bool _isLoading = false;
+
+  // Callback for purchase status updates
+  Function(bool success, String? error)? onPurchaseResult;
 
   /// Initialize IAP and load products
   static Future<void> initialize() async {
@@ -27,36 +46,88 @@ class IAPService {
     _isLoading = true;
 
     try {
-      // TODO: Implement with in_app_purchase package
-      //
-      // final bool available = await InAppPurchase.instance.isAvailable();
-      // if (!available) {
-      //   _isLoading = false;
-      //   return;
-      // }
-      //
-      // final ProductDetailsResponse response =
-      //     await InAppPurchase.instance.queryProductDetails(productIds.toSet());
-      //
-      // for (final product in response.productDetails) {
-      //   _products[product.id] = ProductInfo(
-      //     id: product.id,
-      //     price: product.price,
-      //     rawPrice: product.rawPrice,
-      //     currencyCode: product.currencyCode,
-      //   );
-      // }
+      final instance = IAPService();
+
+      // Check if IAP is available
+      final bool available = await instance._inAppPurchase.isAvailable();
+      if (!available) {
+        _isLoading = false;
+        return;
+      }
+
+      // Listen to purchase updates
+      instance._subscription = instance._inAppPurchase.purchaseStream.listen(
+        instance._handlePurchaseUpdates,
+        onDone: () => instance._subscription?.cancel(),
+        onError: (error) => debugPrint('IAP Stream Error: $error'),
+      );
+
+      // Load product details
+      final ProductDetailsResponse response =
+          await instance._inAppPurchase.queryProductDetails(productIds.toSet());
+
+      if (response.notFoundIDs.isNotEmpty) {
+        debugPrint('Products not found: ${response.notFoundIDs}');
+      }
+
+      for (final product in response.productDetails) {
+        _products[product.id] = product;
+      }
 
       _isInitialized = true;
     } catch (e) {
-      // Handle initialization error
+      debugPrint('IAP initialization error: $e');
     } finally {
       _isLoading = false;
     }
   }
 
+  /// Handle purchase updates from the stream
+  Future<void> _handlePurchaseUpdates(List<PurchaseDetails> purchaseDetailsList) async {
+    for (final purchase in purchaseDetailsList) {
+      switch (purchase.status) {
+        case PurchaseStatus.pending:
+          // Show loading indicator
+          break;
+
+        case PurchaseStatus.purchased:
+        case PurchaseStatus.restored:
+          // Verify purchase (in production, verify with your backend)
+          final valid = await _verifyPurchase(purchase);
+          if (valid) {
+            await SubscriptionService.setPro(true);
+            onPurchaseResult?.call(true, null);
+          } else {
+            onPurchaseResult?.call(false, 'Purchase verification failed');
+          }
+          break;
+
+        case PurchaseStatus.error:
+          onPurchaseResult?.call(false, purchase.error?.message ?? 'Purchase failed');
+          break;
+
+        case PurchaseStatus.canceled:
+          onPurchaseResult?.call(false, null); // null error = user cancelled
+          break;
+      }
+
+      // Complete the purchase
+      if (purchase.pendingCompletePurchase) {
+        await _inAppPurchase.completePurchase(purchase);
+      }
+    }
+  }
+
+  /// Verify purchase (implement server-side verification in production)
+  Future<bool> _verifyPurchase(PurchaseDetails purchase) async {
+    // In production, verify the purchase with your backend server
+    // For now, we trust the local verification
+    return purchase.status == PurchaseStatus.purchased ||
+           purchase.status == PurchaseStatus.restored;
+  }
+
   /// Get product info by ID
-  static ProductInfo? getProduct(String productId) {
+  static ProductDetails? getProduct(String productId) {
     return _products[productId];
   }
 
@@ -77,42 +148,34 @@ class IAPService {
 
   /// Purchase a product
   static Future<bool> purchase(String productId) async {
-    // TODO: Implement with in_app_purchase package
-    //
-    // final product = _products[productId];
-    // if (product == null) return false;
-    //
-    // final PurchaseParam purchaseParam = PurchaseParam(
-    //   productDetails: product.details,
-    // );
-    //
-    // if (productId == lifetimeProductId) {
-    //   return InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-    // } else {
-    //   return InAppPurchase.instance.buyNonConsumable(purchaseParam: purchaseParam);
-    // }
+    final product = _products[productId];
+    if (product == null) {
+      debugPrint('Product not found: $productId');
+      return false;
+    }
 
-    return false;
+    final PurchaseParam purchaseParam = PurchaseParam(
+      productDetails: product,
+    );
+
+    try {
+      // Both subscriptions and lifetime are non-consumable
+      return await IAPService()._inAppPurchase.buyNonConsumable(
+        purchaseParam: purchaseParam,
+      );
+    } catch (e) {
+      debugPrint('Purchase error: $e');
+      return false;
+    }
   }
 
   /// Restore purchases
   static Future<void> restorePurchases() async {
-    // TODO: Implement with in_app_purchase package
-    // await InAppPurchase.instance.restorePurchases();
+    await IAPService()._inAppPurchase.restorePurchases();
   }
-}
 
-/// Product information from the store
-class ProductInfo {
-  final String id;
-  final String price; // Localized price string (e.g., "$9.99", "9,99 €")
-  final double rawPrice; // Raw price value
-  final String currencyCode; // e.g., "USD", "EUR"
-
-  const ProductInfo({
-    required this.id,
-    required this.price,
-    required this.rawPrice,
-    required this.currencyCode,
-  });
+  /// Dispose resources
+  static void dispose() {
+    IAPService()._subscription?.cancel();
+  }
 }
