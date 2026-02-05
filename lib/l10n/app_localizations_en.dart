@@ -48,13 +48,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hardcore => 'Hardcore';
 
   @override
-  String get zenDescription => 'Lose 1 cell on failure';
+  String get zenDescription =>
+      'Gentle progress — miss a day, lose just 1 point. Perfect for building habits without pressure.';
 
   @override
-  String get standardDescription => 'Lose current square on failure';
+  String get standardDescription =>
+      'Balanced challenge — miss a day, drop to the previous level. Keeps you motivated without being harsh.';
 
   @override
-  String get hardcoreDescription => 'Back to zero on failure';
+  String get hardcoreDescription =>
+      'No mercy — miss a day, start over from zero. For those who thrive under pressure.';
 
   @override
   String get create => 'Create';

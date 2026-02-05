@@ -48,13 +48,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hardcore => '本気';
 
   @override
-  String get zenDescription => '失敗で1マス失う';
+  String get zenDescription => '穏やかな進歩 — 1日休んでも1ポイントだけ減少。プレッシャーなく習慣を作りたい方に。';
 
   @override
-  String get standardDescription => '失敗で現在の正方形を失う';
+  String get standardDescription =>
+      'バランスの取れた挑戦 — 1日休むと前のレベルに戻る。厳しすぎずモチベーションを維持。';
 
   @override
-  String get hardcoreDescription => '失敗でゼロに戻る';
+  String get hardcoreDescription => '容赦なし — 1日休むとゼロからやり直し。プレッシャーの中で力を発揮する方向け。';
 
   @override
   String get create => '作成';

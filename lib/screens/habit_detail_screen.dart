@@ -328,36 +328,51 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      _buildModeButton(
-                        setModalState,
-                        modalTheme,
-                        mode: PenaltyMode.zen,
-                        currentMode: penaltyMode,
-                        emoji: '🌱',
-                        label: l10n.zen,
-                        onTap: () => setModalState(() => penaltyMode = PenaltyMode.zen),
+                      Expanded(
+                        child: _buildModeButton(
+                          setModalState,
+                          modalTheme,
+                          mode: PenaltyMode.zen,
+                          currentMode: penaltyMode,
+                          emoji: '🌱',
+                          label: l10n.zen,
+                          onTap: () => setModalState(() => penaltyMode = PenaltyMode.zen),
+                        ),
                       ),
                       const SizedBox(width: 8),
-                      _buildModeButton(
-                        setModalState,
-                        modalTheme,
-                        mode: PenaltyMode.standard,
-                        currentMode: penaltyMode,
-                        emoji: '⚡',
-                        label: l10n.standard,
-                        onTap: () => setModalState(() => penaltyMode = PenaltyMode.standard),
+                      Expanded(
+                        child: _buildModeButton(
+                          setModalState,
+                          modalTheme,
+                          mode: PenaltyMode.standard,
+                          currentMode: penaltyMode,
+                          emoji: '⚡',
+                          label: l10n.standard,
+                          onTap: () => setModalState(() => penaltyMode = PenaltyMode.standard),
+                        ),
                       ),
                       const SizedBox(width: 8),
-                      _buildModeButton(
-                        setModalState,
-                        modalTheme,
-                        mode: PenaltyMode.hardcore,
-                        currentMode: penaltyMode,
-                        emoji: '🔥',
-                        label: l10n.hardcore,
-                        onTap: () => setModalState(() => penaltyMode = PenaltyMode.hardcore),
+                      Expanded(
+                        child: _buildModeButton(
+                          setModalState,
+                          modalTheme,
+                          mode: PenaltyMode.hardcore,
+                          currentMode: penaltyMode,
+                          emoji: '🔥',
+                          label: l10n.hardcore,
+                          onTap: () => setModalState(() => penaltyMode = PenaltyMode.hardcore),
+                        ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _getModeDescription(l10n, penaltyMode),
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      height: 1.4,
+                      color: modalTheme.textSecondary.withValues(alpha: 0.7),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   // Section correction du jour
@@ -542,31 +557,29 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     required VoidCallback onTap,
   }) {
     final isSelected = mode == currentMode;
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: isSelected ? theme.textPrimary.withValues(alpha: 0.1) : theme.bg,
-            borderRadius: BorderRadius.circular(10),
-            border: isSelected ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2)) : null,
-          ),
-          child: Column(
-            children: [
-              Text(emoji, style: const TextStyle(fontSize: 18)),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                  color: isSelected ? theme.textPrimary : theme.textSecondary,
-                ),
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? theme.textPrimary.withValues(alpha: 0.1) : theme.bg,
+          borderRadius: BorderRadius.circular(10),
+          border: isSelected ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2)) : null,
+        ),
+        child: Column(
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+                color: isSelected ? theme.textPrimary : theme.textSecondary,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

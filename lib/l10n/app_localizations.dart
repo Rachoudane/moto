@@ -181,19 +181,19 @@ abstract class AppLocalizations {
   /// No description provided for @zenDescription.
   ///
   /// In en, this message translates to:
-  /// **'Lose 1 cell on failure'**
+  /// **'Gentle progress — miss a day, lose just 1 point. Perfect for building habits without pressure.'**
   String get zenDescription;
 
   /// No description provided for @standardDescription.
   ///
   /// In en, this message translates to:
-  /// **'Lose current square on failure'**
+  /// **'Balanced challenge — miss a day, drop to the previous level. Keeps you motivated without being harsh.'**
   String get standardDescription;
 
   /// No description provided for @hardcoreDescription.
   ///
   /// In en, this message translates to:
-  /// **'Back to zero on failure'**
+  /// **'No mercy — miss a day, start over from zero. For those who thrive under pressure.'**
   String get hardcoreDescription;
 
   /// No description provided for @create.

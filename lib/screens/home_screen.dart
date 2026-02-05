@@ -433,40 +433,48 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
                   Row(
                     children: [
-                      _buildModeButton(
-                        setModalState,
-                        modalTheme,
-                        mode: PenaltyMode.zen,
-                        currentMode: penaltyMode,
-                        emoji: '🌱',
-                        label: l10n.zen,
-                        onTap: () =>
-                            setModalState(() => penaltyMode = PenaltyMode.zen),
-                      ),
-                      const SizedBox(width: 8),
-                      _buildModeButton(
-                        setModalState,
-                        modalTheme,
-                        mode: PenaltyMode.standard,
-                        currentMode: penaltyMode,
-                        emoji: '⚡',
-                        label: l10n.standard,
-                        onTap: () => setModalState(
-                          () => penaltyMode = PenaltyMode.standard,
+                      Expanded(
+                        child: _buildModeButton(
+                          setModalState,
+                          modalTheme,
+                          mode: PenaltyMode.zen,
+                          currentMode: penaltyMode,
+                          emoji: '🌱',
+                          label: l10n.zen,
+                          onTap: () => setModalState(
+                            () => penaltyMode = PenaltyMode.zen,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      _buildModeButton(
-                        setModalState,
-                        modalTheme,
-                        mode: PenaltyMode.hardcore,
-                        currentMode: penaltyMode,
-                        emoji: '🔥',
-                        label: l10n.hardcore,
-                        onTap: () => setModalState(
-                          () => penaltyMode = PenaltyMode.hardcore,
+                      Expanded(
+                        child: _buildModeButton(
+                          setModalState,
+                          modalTheme,
+                          mode: PenaltyMode.standard,
+                          currentMode: penaltyMode,
+                          emoji: '⚡',
+                          label: l10n.standard,
+                          onTap: () => setModalState(
+                            () => penaltyMode = PenaltyMode.standard,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _buildModeButton(
+                          setModalState,
+                          modalTheme,
+                          mode: PenaltyMode.hardcore,
+                          currentMode: penaltyMode,
+                          emoji: '🔥',
+                          label: l10n.hardcore,
+                          onTap: () => setModalState(
+                            () => penaltyMode = PenaltyMode.hardcore,
+                          ),
                         ),
                       ),
                     ],
@@ -476,9 +484,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     _getModeDescription(l10n, penaltyMode),
                     style: GoogleFonts.inter(
                       fontSize: 12,
+                      height: 1.4,
                       color: modalTheme.textSecondary.withValues(alpha: 0.7),
                     ),
                   ),
+
                   const SizedBox(height: 24),
 
                   SizedBox(
@@ -534,53 +544,37 @@ class _HomeScreenState extends State<HomeScreen> {
     final isSelected = mode == currentMode;
     final isAvailable = _isModeAvailable(mode);
 
-    return Expanded(
-      child: GestureDetector(
-        onTap: isAvailable ? onTap : _showUpgradeDialog,
+    return GestureDetector(
+      onTap: isAvailable ? onTap : _showUpgradeDialog,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.textPrimary.withValues(alpha: 0.1)
+              : theme.bg,
+          borderRadius: BorderRadius.circular(10),
+          border: isSelected
+              ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2))
+              : null,
+        ),
         child: Opacity(
           opacity: isAvailable ? 1.0 : 0.5,
-          child: Stack(
+          child: Column(
             children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? theme.textPrimary.withValues(alpha: 0.1)
-                      : theme.bg,
-                  borderRadius: BorderRadius.circular(10),
-                  border: isSelected
-                      ? Border.all(
-                          color: theme.textPrimary.withValues(alpha: 0.2))
-                      : null,
-                ),
-                child: Column(
-                  children: [
-                    Text(emoji, style: const TextStyle(fontSize: 18)),
-                    const SizedBox(height: 4),
-                    Text(
-                      label,
-                      style: GoogleFonts.inter(
-                        fontSize: 12,
-                        fontWeight:
-                            isSelected ? FontWeight.w500 : FontWeight.w400,
-                        color:
-                            isSelected ? theme.textPrimary : theme.textSecondary,
-                      ),
-                    ),
-                  ],
+              Text(
+                isAvailable ? emoji : '🔒',
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+                  color: isSelected ? theme.textPrimary : theme.textSecondary,
                 ),
               ),
-              if (!isAvailable)
-                Positioned(
-                  top: 4,
-                  right: 4,
-                  child: Icon(
-                    Icons.lock,
-                    size: 12,
-                    color: theme.textSecondary,
-                  ),
-                ),
             ],
           ),
         ),

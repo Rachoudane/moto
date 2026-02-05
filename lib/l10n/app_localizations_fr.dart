@@ -48,13 +48,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hardcore => 'Hardcore';
 
   @override
-  String get zenDescription => 'Perd 1 case en cas d\'échec';
+  String get zenDescription =>
+      'Progression douce — un jour raté, seulement 1 point perdu. Idéal pour construire ses habitudes sans pression.';
 
   @override
-  String get standardDescription => 'Perd le carré en cours en cas d\'échec';
+  String get standardDescription =>
+      'Défi équilibré — un jour raté, retour au niveau précédent. Motivant sans être trop sévère.';
 
   @override
-  String get hardcoreDescription => 'Retour à zéro en cas d\'échec';
+  String get hardcoreDescription =>
+      'Sans pitié — un jour raté, tout recommencer à zéro. Pour ceux qui aiment les défis extrêmes.';
 
   @override
   String get create => 'Créer';
