@@ -70,6 +70,61 @@ class _SettingsScreenState extends State<SettingsScreen> {
     widget.onThemeChanged(isDark);
   }
 
+  void _showUpgradeDialog({String? title, String? description}) {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: theme.cardBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            const Icon(Icons.star, color: Color(0xFFE5C07B)),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                title ?? loc.habitLimitReached,
+                style: GoogleFonts.inter(
+                  color: theme.textPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          description ?? loc.upgradeToAddMore,
+          style: GoogleFonts.inter(color: theme.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              loc.cancel,
+              style: GoogleFonts.inter(color: theme.textSecondary),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProScreen()),
+              ).then((_) => _loadSettings());
+            },
+            child: Text(
+              loc.upgrade,
+              style: GoogleFonts.inter(color: theme.accentGreen),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _showResetConfirmation() async {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<MotoTheme>()!;
@@ -437,6 +492,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.light_mode_outlined,
               label: loc.lightMode,
               isSelected: !_isDarkMode,
+              isProOnly: true,
               onTap: () => _changeTheme(false),
             ),
           ),
@@ -451,9 +507,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
+    bool isProOnly = false,
   }) {
+    final isLocked = isProOnly && !_isPro;
+    final loc = AppLocalizations.of(context)!;
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: isLocked
+          ? () => _showUpgradeDialog(
+                title: loc.themeProTitle,
+                description: loc.themeProDescription,
+              )
+          : onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -461,24 +526,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
           color: isSelected ? currentTheme.accentGreen.withValues(alpha: 0.15) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 20,
-              color: isSelected ? currentTheme.accentGreen : currentTheme.textSecondary,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+        child: Opacity(
+          opacity: isLocked ? 0.5 : 1.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                isLocked ? Icons.lock : icon,
+                size: 20,
                 color: isSelected ? currentTheme.accentGreen : currentTheme.textSecondary,
               ),
-            ),
-          ],
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? currentTheme.accentGreen : currentTheme.textSecondary,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

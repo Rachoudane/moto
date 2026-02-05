@@ -473,6 +473,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reminderProDescription => '習慣ごとのカスタムリマインダーはProで利用可能。毎日を逃さない！';
 
   @override
+  String get themeProTitle => 'Proテーマ';
+
+  @override
+  String get themeProDescription => 'ライトモードと将来のテーマはProで利用可能。体験をカスタマイズしよう！';
+
+  @override
   String get upgrade => 'アップグレード';
 
   @override

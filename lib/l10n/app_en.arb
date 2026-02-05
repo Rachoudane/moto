@@ -234,6 +234,8 @@
   "penaltyModeProDescription": "Zen and Hardcore modes are available with Pro. Try different challenge levels!",
   "reminderProTitle": "Pro feature",
   "reminderProDescription": "Custom reminders for each habit are available with Pro. Never miss a day!",
+  "themeProTitle": "Pro theme",
+  "themeProDescription": "Light mode and future themes are available with Pro. Customize your experience!",
   "upgrade": "Upgrade",
   "proOnly": "Pro",
   "freeLimitedHistory": "Full history available with Pro"

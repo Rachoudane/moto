@@ -482,6 +482,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les rappels personnalisés par habitude sont disponibles avec Pro. Ne rate plus jamais un jour !';
 
   @override
+  String get themeProTitle => 'Thème Pro';
+
+  @override
+  String get themeProDescription =>
+      'Le mode clair et les futurs thèmes sont disponibles avec Pro. Personnalise ton expérience !';
+
+  @override
   String get upgrade => 'Améliorer';
 
   @override

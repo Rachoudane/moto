@@ -213,6 +213,8 @@
   "penaltyModeProDescription": "Les modes Zen et Hardcore sont disponibles avec Pro. Essaie différents niveaux de défi !",
   "reminderProTitle": "Fonction Pro",
   "reminderProDescription": "Les rappels personnalisés par habitude sont disponibles avec Pro. Ne rate plus jamais un jour !",
+  "themeProTitle": "Thème Pro",
+  "themeProDescription": "Le mode clair et les futurs thèmes sont disponibles avec Pro. Personnalise ton expérience !",
   "upgrade": "Améliorer",
   "proOnly": "Pro",
   "freeLimitedHistory": "Historique complet disponible avec Pro"

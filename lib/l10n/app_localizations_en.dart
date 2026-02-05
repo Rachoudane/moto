@@ -481,6 +481,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Custom reminders for each habit are available with Pro. Never miss a day!';
 
   @override
+  String get themeProTitle => 'Pro theme';
+
+  @override
+  String get themeProDescription =>
+      'Light mode and future themes are available with Pro. Customize your experience!';
+
+  @override
   String get upgrade => 'Upgrade';
 
   @override

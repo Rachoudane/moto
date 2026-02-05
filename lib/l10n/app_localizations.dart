@@ -928,6 +928,18 @@ abstract class AppLocalizations {
   /// **'Custom reminders for each habit are available with Pro. Never miss a day!'**
   String get reminderProDescription;
 
+  /// No description provided for @themeProTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro theme'**
+  String get themeProTitle;
+
+  /// No description provided for @themeProDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Light mode and future themes are available with Pro. Customize your experience!'**
+  String get themeProDescription;
+
   /// No description provided for @upgrade.
   ///
   /// In en, this message translates to:
