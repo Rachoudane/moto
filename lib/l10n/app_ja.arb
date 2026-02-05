@@ -204,6 +204,13 @@
   "proFeature5": "将来のアップデートとテーマ",
   "yearly": "年間",
   "yearlySubtitle": "最もお得",
+  "perMonth": "/月",
+  "savePercent": "{percent}%オフ",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
   "monthly": "月間",
   "monthlySubtitle": "いつでも解約可能",
   "lifetimeOffer": "永久アクセス →",

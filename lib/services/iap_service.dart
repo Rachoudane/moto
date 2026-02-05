@@ -140,6 +140,38 @@ class IAPService {
   /// Get lifetime product price (localized string from store)
   static String? get lifetimePrice => _products[lifetimeProductId]?.price;
 
+  /// Get raw prices for calculations
+  static double? get yearlyRawPrice => _products[yearlyProductId]?.rawPrice;
+  static double? get monthlyRawPrice => _products[monthlyProductId]?.rawPrice;
+
+  /// Get currency symbol from yearly product (or any available)
+  static String? get currencySymbol {
+    final product = _products[yearlyProductId] ??
+                    _products[monthlyProductId] ??
+                    _products[lifetimeProductId];
+    return product?.currencySymbol;
+  }
+
+  /// Calculate savings percentage (yearly vs 12 months of monthly)
+  static int? get yearlySavingsPercent {
+    final yearly = yearlyRawPrice;
+    final monthly = monthlyRawPrice;
+    if (yearly == null || monthly == null || monthly == 0) return null;
+    final yearlyEquivalent = monthly * 12;
+    final savings = ((yearlyEquivalent - yearly) / yearlyEquivalent * 100).round();
+    return savings > 0 ? savings : null;
+  }
+
+  /// Get monthly equivalent price for yearly subscription
+  static String? get yearlyPerMonthPrice {
+    final yearly = yearlyRawPrice;
+    final symbol = currencySymbol;
+    if (yearly == null || symbol == null) return null;
+    final perMonth = yearly / 12;
+    // Format with 2 decimal places
+    return '$symbol${perMonth.toStringAsFixed(2)}';
+  }
+
   /// Check if products are loaded
   static bool get isReady => _isInitialized && _products.isNotEmpty;
 

@@ -874,6 +874,18 @@ abstract class AppLocalizations {
   /// **'Best value'**
   String get yearlySubtitle;
 
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'/mo'**
+  String get perMonth;
+
+  /// No description provided for @savePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Save {percent}%'**
+  String savePercent(int percent);
+
   /// No description provided for @monthly.
   ///
   /// In en, this message translates to:

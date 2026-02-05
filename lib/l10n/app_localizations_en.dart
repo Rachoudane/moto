@@ -453,6 +453,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yearlySubtitle => 'Best value';
 
   @override
+  String get perMonth => '/mo';
+
+  @override
+  String savePercent(int percent) {
+    return 'Save $percent%';
+  }
+
+  @override
   String get monthly => 'Monthly';
 
   @override

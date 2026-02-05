@@ -447,6 +447,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get yearlySubtitle => '最もお得';
 
   @override
+  String get perMonth => '/月';
+
+  @override
+  String savePercent(int percent) {
+    return '$percent%オフ';
+  }
+
+  @override
   String get monthly => '月間';
 
   @override

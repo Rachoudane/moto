@@ -225,6 +225,13 @@
   "proFeature5": "Future updates & themes",
   "yearly": "Yearly",
   "yearlySubtitle": "Best value",
+  "perMonth": "/mo",
+  "savePercent": "Save {percent}%",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
   "monthly": "Monthly",
   "monthlySubtitle": "Cancel anytime",
   "lifetimeOffer": "Lifetime access →",

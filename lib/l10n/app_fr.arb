@@ -204,6 +204,13 @@
   "proFeature5": "Futures mises à jour et thèmes",
   "yearly": "Annuel",
   "yearlySubtitle": "Meilleur rapport",
+  "perMonth": "/mois",
+  "savePercent": "-{percent}%",
+  "@savePercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
   "monthly": "Mensuel",
   "monthlySubtitle": "Annule quand tu veux",
   "lifetimeOffer": "Accès à vie →",

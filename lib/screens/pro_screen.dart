@@ -20,6 +20,8 @@ class _ProScreenState extends State<ProScreen> {
   String? _yearlyPrice;
   String? _monthlyPrice;
   String? _lifetimePrice;
+  String? _yearlyPerMonth;
+  int? _yearlySavingsPercent;
 
   @override
   void initState() {
@@ -69,6 +71,8 @@ class _ProScreenState extends State<ProScreen> {
         _yearlyPrice = IAPService.yearlyPrice;
         _monthlyPrice = IAPService.monthlyPrice;
         _lifetimePrice = IAPService.lifetimePrice;
+        _yearlyPerMonth = IAPService.yearlyPerMonthPrice;
+        _yearlySavingsPercent = IAPService.yearlySavingsPercent;
         _isLoadingPrices = false;
       });
     }
@@ -214,15 +218,10 @@ class _ProScreenState extends State<ProScreen> {
                         const SizedBox(height: 40),
 
                         // Pricing section
-                        _buildPricingButton(
+                        _buildYearlyPricingButton(
                           context,
                           theme,
-                          title: loc.yearly,
-                          price: _yearlyPrice,
-                          subtitle: loc.yearlySubtitle,
-                          isPrimary: true,
-                          isLoading: _isLoadingPrices,
-                          onTap: () => _purchase(IAPService.yearlyProductId),
+                          loc,
                         ),
 
                         const SizedBox(height: 12),
@@ -449,6 +448,114 @@ class _ProScreenState extends State<ProScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildYearlyPricingButton(
+    BuildContext context,
+    MotoTheme theme,
+    AppLocalizations loc,
+  ) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: _isPurchasing ? null : () => _purchase(IAPService.yearlyProductId),
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: theme.accentGreen,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: theme.accentGreen.withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          loc.yearly,
+                          style: GoogleFonts.inter(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: theme.bg,
+                          ),
+                        ),
+                        if (_yearlySavingsPercent != null) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.bg.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              loc.savePercent(_yearlySavingsPercent!),
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: theme.bg,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    if (_yearlyPerMonth != null && !_isLoadingPrices)
+                      Text(
+                        '$_yearlyPerMonth${loc.perMonth}',
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: theme.bg.withValues(alpha: 0.8),
+                        ),
+                      )
+                    else
+                      Text(
+                        loc.yearlySubtitle,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: theme.bg.withValues(alpha: 0.8),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (_isLoadingPrices)
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: theme.bg,
+                  ),
+                )
+              else
+                Text(
+                  _yearlyPrice ?? '---',
+                  style: GoogleFonts.inter(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: theme.bg,
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
