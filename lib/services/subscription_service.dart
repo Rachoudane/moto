@@ -14,10 +14,4 @@ class SubscriptionService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_isProKey, value);
   }
-
-  // For testing purposes - remove in production
-  static Future<void> togglePro() async {
-    final current = await isPro();
-    await setPro(!current);
-  }
 }
