@@ -65,14 +65,22 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
   String _getDayName(AppLocalizations l10n, int day) {
     switch (day) {
-      case 0: return l10n.monday;
-      case 1: return l10n.tuesday;
-      case 2: return l10n.wednesday;
-      case 3: return l10n.thursday;
-      case 4: return l10n.friday;
-      case 5: return l10n.saturday;
-      case 6: return l10n.sunday;
-      default: return '';
+      case 0:
+        return l10n.monday;
+      case 1:
+        return l10n.tuesday;
+      case 2:
+        return l10n.wednesday;
+      case 3:
+        return l10n.thursday;
+      case 4:
+        return l10n.friday;
+      case 5:
+        return l10n.saturday;
+      case 6:
+        return l10n.sunday;
+      default:
+        return '';
     }
   }
 
@@ -120,7 +128,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     }
   }
 
-  Future<void> _correctTodayStatus(DayStatus newStatus, StateSetter setModalState) async {
+  Future<void> _correctTodayStatus(
+    DayStatus newStatus,
+    StateSetter setModalState,
+  ) async {
     final habit = widget.habit;
     final todayStatus = habit.getStatusForDate(DateTime.now());
 
@@ -242,7 +253,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 left: 24,
                 right: 24,
                 top: 24,
-                bottom: MediaQuery.of(context).viewInsets.bottom + MediaQuery.of(context).viewPadding.bottom + 24,
+                bottom:
+                    MediaQuery.of(context).viewInsets.bottom +
+                    MediaQuery.of(context).viewPadding.bottom +
+                    24,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -262,7 +276,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     style: GoogleFonts.inter(color: modalTheme.textPrimary),
                     decoration: InputDecoration(
                       hintText: l10n.habitName,
-                      hintStyle: GoogleFonts.inter(color: modalTheme.textSecondary),
+                      hintStyle: GoogleFonts.inter(
+                        color: modalTheme.textSecondary,
+                      ),
                       filled: true,
                       fillColor: modalTheme.bg,
                       border: OutlineInputBorder(
@@ -282,15 +298,30 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                             duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: !isQuitting ? modalTheme.accentGreen.withValues(alpha: 0.2) : modalTheme.bg,
+                              color: !isQuitting
+                                  ? modalTheme.accentGreen.withValues(
+                                      alpha: 0.2,
+                                    )
+                                  : modalTheme.bg,
                               borderRadius: BorderRadius.circular(10),
-                              border: !isQuitting ? Border.all(color: modalTheme.accentGreen.withValues(alpha: 0.4)) : null,
+                              border: !isQuitting
+                                  ? Border.all(
+                                      color: modalTheme.accentGreen.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                    )
+                                  : null,
                             ),
                             child: Center(
-                              child: Text(l10n.toDo, style: GoogleFonts.inter(
-                                color: !isQuitting ? modalTheme.accentGreen : modalTheme.textSecondary,
-                                fontWeight: FontWeight.w500,
-                              )),
+                              child: Text(
+                                l10n.toDo,
+                                style: GoogleFonts.inter(
+                                  color: !isQuitting
+                                      ? modalTheme.accentGreen
+                                      : modalTheme.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -303,15 +334,28 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                             duration: const Duration(milliseconds: 300),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: isQuitting ? modalTheme.danger.withValues(alpha: 0.2) : modalTheme.bg,
+                              color: isQuitting
+                                  ? modalTheme.danger.withValues(alpha: 0.2)
+                                  : modalTheme.bg,
                               borderRadius: BorderRadius.circular(10),
-                              border: isQuitting ? Border.all(color: modalTheme.danger.withValues(alpha: 0.4)) : null,
+                              border: isQuitting
+                                  ? Border.all(
+                                      color: modalTheme.danger.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                    )
+                                  : null,
                             ),
                             child: Center(
-                              child: Text(l10n.toQuit, style: GoogleFonts.inter(
-                                color: isQuitting ? modalTheme.danger : modalTheme.textSecondary,
-                                fontWeight: FontWeight.w500,
-                              )),
+                              child: Text(
+                                l10n.toQuit,
+                                style: GoogleFonts.inter(
+                                  color: isQuitting
+                                      ? modalTheme.danger
+                                      : modalTheme.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -337,7 +381,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           currentMode: penaltyMode,
                           emoji: '🌱',
                           label: l10n.zen,
-                          onTap: () => setModalState(() => penaltyMode = PenaltyMode.zen),
+                          onTap: () => setModalState(
+                            () => penaltyMode = PenaltyMode.zen,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -349,7 +395,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           currentMode: penaltyMode,
                           emoji: '⚡',
                           label: l10n.standard,
-                          onTap: () => setModalState(() => penaltyMode = PenaltyMode.standard),
+                          onTap: () => setModalState(
+                            () => penaltyMode = PenaltyMode.standard,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -361,7 +409,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                           currentMode: penaltyMode,
                           emoji: '🔥',
                           label: l10n.hardcore,
-                          onTap: () => setModalState(() => penaltyMode = PenaltyMode.hardcore),
+                          onTap: () => setModalState(
+                            () => penaltyMode = PenaltyMode.hardcore,
+                          ),
                         ),
                       ),
                     ],
@@ -379,7 +429,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   // Section correction du jour
                   Builder(
                     builder: (context) {
-                      final todayStatus = widget.habit.getStatusForDate(DateTime.now());
+                      final todayStatus = widget.habit.getStatusForDate(
+                        DateTime.now(),
+                      );
                       if (todayStatus == DayStatus.pending) {
                         return const SizedBox.shrink();
                       }
@@ -403,7 +455,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: isValidated
-                                    ? modalTheme.accentGreen.withValues(alpha: 0.3)
+                                    ? modalTheme.accentGreen.withValues(
+                                        alpha: 0.3,
+                                      )
                                     : modalTheme.danger.withValues(alpha: 0.3),
                               ),
                             ),
@@ -416,20 +470,28 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                       height: 32,
                                       decoration: BoxDecoration(
                                         color: isValidated
-                                            ? modalTheme.accentGreen.withValues(alpha: 0.2)
-                                            : modalTheme.danger.withValues(alpha: 0.2),
+                                            ? modalTheme.accentGreen.withValues(
+                                                alpha: 0.2,
+                                              )
+                                            : modalTheme.danger.withValues(
+                                                alpha: 0.2,
+                                              ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Icon(
                                         isValidated ? Icons.check : Icons.close,
-                                        color: isValidated ? modalTheme.accentGreen : modalTheme.danger,
+                                        color: isValidated
+                                            ? modalTheme.accentGreen
+                                            : modalTheme.danger,
                                         size: 18,
                                       ),
                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
-                                        isValidated ? l10n.todayValidated : l10n.todaySkipped,
+                                        isValidated
+                                            ? l10n.todayValidated
+                                            : l10n.todaySkipped,
                                         style: GoogleFonts.inter(
                                           color: modalTheme.textPrimary,
                                           fontWeight: FontWeight.w500,
@@ -442,29 +504,45 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                                 GestureDetector(
                                   onTap: () async {
                                     await _correctTodayStatus(
-                                      isValidated ? DayStatus.skipped : DayStatus.validated,
+                                      isValidated
+                                          ? DayStatus.skipped
+                                          : DayStatus.validated,
                                       setModalState,
                                     );
                                   },
                                   child: Container(
                                     width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: isValidated
-                                          ? modalTheme.danger.withValues(alpha: 0.15)
-                                          : modalTheme.accentGreen.withValues(alpha: 0.15),
+                                          ? modalTheme.danger.withValues(
+                                              alpha: 0.15,
+                                            )
+                                          : modalTheme.accentGreen.withValues(
+                                              alpha: 0.15,
+                                            ),
                                       borderRadius: BorderRadius.circular(8),
                                       border: Border.all(
                                         color: isValidated
-                                            ? modalTheme.danger.withValues(alpha: 0.3)
-                                            : modalTheme.accentGreen.withValues(alpha: 0.3),
+                                            ? modalTheme.danger.withValues(
+                                                alpha: 0.3,
+                                              )
+                                            : modalTheme.accentGreen.withValues(
+                                                alpha: 0.3,
+                                              ),
                                       ),
                                     ),
                                     child: Center(
                                       child: Text(
-                                        isValidated ? l10n.markAsSkipped : l10n.markAsValidated,
+                                        isValidated
+                                            ? l10n.markAsSkipped
+                                            : l10n.markAsValidated,
                                         style: GoogleFonts.inter(
-                                          color: isValidated ? modalTheme.danger : modalTheme.accentGreen,
+                                          color: isValidated
+                                              ? modalTheme.danger
+                                              : modalTheme.accentGreen,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 13,
                                         ),
@@ -492,7 +570,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
                           // Save to storage
                           final allHabits = await _storageService.loadHabits();
-                          final habitIndex = allHabits.indexWhere((h) => h.id == widget.habit.id);
+                          final habitIndex = allHabits.indexWhere(
+                            (h) => h.id == widget.habit.id,
+                          );
                           if (habitIndex != -1) {
                             allHabits[habitIndex] = widget.habit;
                             await _storageService.saveHabits(allHabits);
@@ -536,7 +616,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         decoration: BoxDecoration(
                           color: modalTheme.danger.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: modalTheme.danger.withValues(alpha: 0.3)),
+                          border: Border.all(
+                            color: modalTheme.danger.withValues(alpha: 0.3),
+                          ),
                         ),
                         child: Center(
                           child: Text(
@@ -645,9 +727,13 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? theme.textPrimary.withValues(alpha: 0.1) : theme.bg,
+          color: isSelected
+              ? theme.textPrimary.withValues(alpha: 0.1)
+              : theme.bg,
           borderRadius: BorderRadius.circular(10),
-          border: isSelected ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2)) : null,
+          border: isSelected
+              ? Border.all(color: theme.textPrimary.withValues(alpha: 0.2))
+              : null,
         ),
         child: Opacity(
           opacity: isAvailable ? 1.0 : 0.5,
@@ -680,8 +766,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     final locale = Localizations.localeOf(context).languageCode;
 
     String timeText = l10n.noReminder;
-    if (habit.reminderEnabled && habit.reminderHour != null && habit.reminderMinute != null) {
-      timeText = "${habit.reminderHour!.toString().padLeft(2, '0')}:${habit.reminderMinute!.toString().padLeft(2, '0')}";
+    if (habit.reminderEnabled &&
+        habit.reminderHour != null &&
+        habit.reminderMinute != null) {
+      timeText =
+          "${habit.reminderHour!.toString().padLeft(2, '0')}:${habit.reminderMinute!.toString().padLeft(2, '0')}";
     }
 
     return Container(
@@ -715,7 +804,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   if (!_isPro) ...[
                     const SizedBox(width: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE5C07B).withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(4),
@@ -746,7 +838,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   }
 
                   if (value) {
-                    final hasPermission = await NotificationService.requestPermission();
+                    final hasPermission =
+                        await NotificationService.requestPermission();
                     if (!hasPermission) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -759,7 +852,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
                   // Load all habits, modify this one, and save
                   final allHabits = await _storageService.loadHabits();
-                  final habitIndex = allHabits.indexWhere((h) => h.id == widget.habit.id);
+                  final habitIndex = allHabits.indexWhere(
+                    (h) => h.id == widget.habit.id,
+                  );
 
                   if (habitIndex != -1) {
                     allHabits[habitIndex].reminderEnabled = value;
@@ -769,7 +864,8 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
                     if (!value) {
                       NotificationService.cancelHabitReminder(widget.habit.id);
-                    } else if (allHabits[habitIndex].reminderHour != null && allHabits[habitIndex].reminderMinute != null) {
+                    } else if (allHabits[habitIndex].reminderHour != null &&
+                        allHabits[habitIndex].reminderMinute != null) {
                       try {
                         await NotificationService.scheduleHabitReminder(
                           habit: allHabits[habitIndex],
@@ -780,7 +876,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                       } catch (e) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(l10n.errorGeneric(e.toString()))),
+                            SnackBar(
+                              content: Text(l10n.errorGeneric(e.toString())),
+                            ),
                           );
                         }
                       }
@@ -788,7 +886,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
                     await _storageService.saveHabits(allHabits);
                   }
-
                 },
                 activeTrackColor: theme.accentGreen,
               ),
@@ -820,7 +917,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 if (time != null) {
                   // Load all habits, modify this one, and save
                   final allHabits = await _storageService.loadHabits();
-                  final habitIndex = allHabits.indexWhere((h) => h.id == widget.habit.id);
+                  final habitIndex = allHabits.indexWhere(
+                    (h) => h.id == widget.habit.id,
+                  );
 
                   if (habitIndex != -1) {
                     allHabits[habitIndex].reminderHour = time.hour;
@@ -841,7 +940,9 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     } catch (e) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.errorGeneric(e.toString()))),
+                          SnackBar(
+                            content: Text(l10n.errorGeneric(e.toString())),
+                          ),
                         );
                       }
                     }
@@ -851,7 +952,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 16,
+                ),
                 decoration: BoxDecoration(
                   color: theme.emptySquare,
                   borderRadius: BorderRadius.circular(8),
@@ -892,11 +996,20 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          widget.habit.name,
-          style: GoogleFonts.inter(
-            color: theme.textPrimary,
-            fontWeight: FontWeight.w600,
+        title: SizedBox(
+          height: kToolbarHeight,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.habit.name,
+                style: GoogleFonts.inter(
+                  color: theme.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
         ),
         leading: IconButton(
@@ -917,15 +1030,24 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           children: [
             if (widget.habit.isQuitting)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: theme.danger.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: theme.danger.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: theme.danger.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Text(
                   l10n.toQuit,
-                  style: GoogleFonts.inter(color: theme.danger, fontSize: 12, fontWeight: FontWeight.w500),
+                  style: GoogleFonts.inter(
+                    color: theme.danger,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             const SizedBox(height: 28),
@@ -1069,9 +1191,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       decoration: BoxDecoration(
         color: theme.cardBg,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: theme.borderColor.withValues(alpha: 0.5),
-        ),
+        border: Border.all(color: theme.borderColor.withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1120,9 +1240,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       decoration: BoxDecoration(
         color: theme.cardBg,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: theme.borderColor.withValues(alpha: 0.5),
-        ),
+        border: Border.all(color: theme.borderColor.withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1140,11 +1258,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   ),
                 ),
               ),
-              Icon(
-                icon,
-                size: 16,
-                color: iconColor,
-              ),
+              Icon(icon, size: 16, color: iconColor),
             ],
           ),
           const SizedBox(height: 8),
