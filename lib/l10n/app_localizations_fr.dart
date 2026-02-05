@@ -438,7 +438,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get yearly => 'Annuel';
 
   @override
-  String get yearlySubtitle => 'Meilleure offre • Économise 44%';
+  String get yearlySubtitle => 'Seulement 1,66€/mois';
 
   @override
   String get monthly => 'Mensuel';

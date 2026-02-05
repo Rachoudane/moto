@@ -437,7 +437,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yearly => 'Yearly';
 
   @override
-  String get yearlySubtitle => 'Best value • Save 44%';
+  String get yearlySubtitle => 'Only 1,66€/month';
 
   @override
   String get monthly => 'Monthly';

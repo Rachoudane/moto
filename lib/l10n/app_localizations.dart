@@ -853,7 +853,7 @@ abstract class AppLocalizations {
   /// No description provided for @yearlySubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Best value • Save 44%'**
+  /// **'Only 1,66€/month'**
   String get yearlySubtitle;
 
   /// No description provided for @monthly.

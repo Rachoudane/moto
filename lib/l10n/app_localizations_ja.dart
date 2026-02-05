@@ -433,7 +433,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get yearly => '年間';
 
   @override
-  String get yearlySubtitle => 'お得 • 44%節約';
+  String get yearlySubtitle => '月額わずか1,66€';
 
   @override
   String get monthly => '月間';

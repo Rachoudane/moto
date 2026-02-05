@@ -128,6 +128,8 @@ class ProScreen extends StatelessWidget {
                 theme,
                 title: loc.yearly,
                 price: '19,99€',
+                oldPrice: '35,88€',
+                badge: '−44%',
                 subtitle: loc.yearlySubtitle,
                 isPrimary: true,
                 onTap: () => _purchase(context, theme, loc, 'yearly'),
@@ -215,6 +217,8 @@ class ProScreen extends StatelessWidget {
     MotoTheme theme, {
     required String title,
     required String price,
+    String? oldPrice,
+    String? badge,
     required String subtitle,
     required bool isPrimary,
     required VoidCallback onTap,
@@ -259,13 +263,50 @@ class ProScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(
-                price,
-                style: GoogleFonts.inter(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: isPrimary ? theme.bg : theme.textPrimary,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (oldPrice != null)
+                    Text(
+                      oldPrice,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: (isPrimary ? theme.bg : theme.textSecondary)
+                            .withValues(alpha: 0.6),
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  Text(
+                    price,
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: isPrimary ? theme.bg : theme.textPrimary,
+                    ),
+                  ),
+                  if (badge != null)
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isPrimary
+                            ? theme.bg.withValues(alpha: 0.15)
+                            : theme.accentGreen.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        badge,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: isPrimary ? theme.bg : theme.accentGreen,
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ],
           ),
