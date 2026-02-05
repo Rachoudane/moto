@@ -43,33 +43,45 @@ class HabitCard extends StatelessWidget {
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) async {
         return await showDialog<bool>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            backgroundColor: theme.cardBg,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            title: Text(
-              l10n.deleteHabit,
-              style: GoogleFonts.inter(color: theme.textPrimary, fontWeight: FontWeight.w600),
-            ),
-            content: Text(
-              l10n.deleteHabitConfirm(habit.streak),
-              style: GoogleFonts.inter(color: theme.textSecondary),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx, false),
-                child: Text(l10n.cancel, style: GoogleFonts.inter(color: theme.textSecondary)),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(ctx, true),
-                child: Text(
-                  l10n.delete,
-                  style: GoogleFonts.inter(color: theme.danger, fontWeight: FontWeight.w600),
+              context: context,
+              builder: (ctx) => AlertDialog(
+                backgroundColor: theme.cardBg,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                title: Text(
+                  l10n.deleteHabit,
+                  style: GoogleFonts.inter(
+                    color: theme.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                content: Text(
+                  l10n.deleteHabitConfirm(habit.streak),
+                  style: GoogleFonts.inter(color: theme.textSecondary),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, false),
+                    child: Text(
+                      l10n.cancel,
+                      style: GoogleFonts.inter(color: theme.textSecondary),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, true),
+                    child: Text(
+                      l10n.delete,
+                      style: GoogleFonts.inter(
+                        color: theme.danger,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ) ?? false;
+            ) ??
+            false;
       },
       background: Container(
         alignment: Alignment.centerRight,
@@ -86,10 +98,8 @@ class HabitCard extends StatelessWidget {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HabitDetailScreen(
-                habit: habit,
-                onUpdate: onUpdate,
-              ),
+              builder: (context) =>
+                  HabitDetailScreen(habit: habit, onUpdate: onUpdate),
             ),
           );
           onUpdate();
@@ -116,7 +126,7 @@ class HabitCard extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             color: theme.textPrimary,
                           ),
-                          overflow: TextOverflow.ellipsis,
+                          overflow: TextOverflow.clip,
                         ),
                         const SizedBox(height: 6),
                         Row(
@@ -131,7 +141,10 @@ class HabitCard extends StatelessWidget {
                             if (habit.isQuitting) ...[
                               const SizedBox(width: 8),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4,
+                                  vertical: 1,
+                                ),
                                 decoration: BoxDecoration(
                                   color: theme.danger.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(3),
@@ -184,7 +197,11 @@ class HabitCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: theme.textSecondary.withValues(alpha: 0.3)),
+                              border: Border.all(
+                                color: theme.textSecondary.withValues(
+                                  alpha: 0.3,
+                                ),
+                              ),
                             ),
                             child: Center(
                               child: Text(
@@ -212,7 +229,9 @@ class HabitCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: theme.accentGreen.withValues(alpha: 0.5)),
+                              border: Border.all(
+                                color: theme.accentGreen.withValues(alpha: 0.5),
+                              ),
                             ),
                             child: Center(
                               child: Text(

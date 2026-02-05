@@ -483,15 +483,26 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (name.trim().isNotEmpty) {
-                          setState(() {
-                            widget.habit.name = name.trim();
-                            widget.habit.isQuitting = isQuitting;
-                            widget.habit.penaltyMode = penaltyMode;
-                          });
+                          // Update the habit object
+                          widget.habit.name = name.trim();
+                          widget.habit.isQuitting = isQuitting;
+                          widget.habit.penaltyMode = penaltyMode;
+
+                          // Save to storage
+                          final allHabits = await _storageService.loadHabits();
+                          final habitIndex = allHabits.indexWhere((h) => h.id == widget.habit.id);
+                          if (habitIndex != -1) {
+                            allHabits[habitIndex] = widget.habit;
+                            await _storageService.saveHabits(allHabits);
+                          }
+
+                          setState(() {});
                           widget.onUpdate();
-                          Navigator.pop(context);
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                          }
                         }
                       },
                       child: Container(
