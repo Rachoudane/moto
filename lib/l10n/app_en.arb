@@ -248,5 +248,6 @@
   "themeProDescription": "Light mode and future themes are available with Pro. Customize your experience!",
   "upgrade": "Upgrade",
   "proOnly": "Pro",
-  "freeLimitedHistory": "Full history available with Pro"
+  "freeLimitedHistory": "Full history available with Pro",
+  "productNotAvailable": "Product not available. Try installing from Play Store or run in release mode."
 }

@@ -504,4 +504,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get freeLimitedHistory => 'Proで完全な履歴を利用可能';
+
+  @override
+  String get productNotAvailable =>
+      '商品が利用できません。Play Storeからインストールするか、リリースモードで実行してください。';
 }

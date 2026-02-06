@@ -227,5 +227,6 @@
   "themeProDescription": "Le mode clair et les futurs thèmes sont disponibles avec Pro. Personnalise ton expérience !",
   "upgrade": "Améliorer",
   "proOnly": "Pro",
-  "freeLimitedHistory": "Historique complet disponible avec Pro"
+  "freeLimitedHistory": "Historique complet disponible avec Pro",
+  "productNotAvailable": "Produit non disponible. Essayez d'installer depuis le Play Store ou lancez en mode release."
 }

@@ -516,9 +516,10 @@ class _ProScreenState extends State<ProScreen> {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    if (_yearlyPerMonth != null && !_isLoadingPrices)
+                    // Show yearly price prominently, then per-month below
+                    if (_isLoadingPrices)
                       Text(
-                        '$_yearlyPerMonth${loc.perMonth}',
+                        loc.yearlySubtitle,
                         style: GoogleFonts.inter(
                           fontSize: 13,
                           color: theme.bg.withValues(alpha: 0.8),
@@ -526,10 +527,11 @@ class _ProScreenState extends State<ProScreen> {
                       )
                     else
                       Text(
-                        loc.yearlySubtitle,
+                        _yearlyPrice ?? '---',
                         style: GoogleFonts.inter(
-                          fontSize: 13,
-                          color: theme.bg.withValues(alpha: 0.8),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                          color: theme.bg,
                         ),
                       ),
                   ],
@@ -544,13 +546,14 @@ class _ProScreenState extends State<ProScreen> {
                     color: theme.bg,
                   ),
                 )
-              else
+              else if (_yearlyPerMonth != null)
+                // Show per-month on the right side
                 Text(
-                  _yearlyPrice ?? '---',
+                  '$_yearlyPerMonth${loc.perMonth}',
                   style: GoogleFonts.inter(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: theme.bg,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: theme.bg.withValues(alpha: 0.9),
                   ),
                 ),
             ],
@@ -677,9 +680,10 @@ class _ProScreenState extends State<ProScreen> {
       // Products not loaded yet, show error
       if (mounted) {
         final theme = Theme.of(context).extension<MotoTheme>()!;
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Products not available. Please try again.'),
+            content: Text(loc.productNotAvailable),
             backgroundColor: theme.danger,
           ),
         );

@@ -987,6 +987,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Full history available with Pro'**
   String get freeLimitedHistory;
+
+  /// No description provided for @productNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Product not available. Try installing from Play Store or run in release mode.'**
+  String get productNotAvailable;
 }
 
 class _AppLocalizationsDelegate

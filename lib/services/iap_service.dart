@@ -162,14 +162,44 @@ class IAPService {
     return savings > 0 ? savings : null;
   }
 
-  /// Get monthly equivalent price for yearly subscription
+  /// Get monthly equivalent price for yearly subscription (formatted like store prices)
   static String? get yearlyPerMonthPrice {
     final yearly = yearlyRawPrice;
-    final symbol = currencySymbol;
-    if (yearly == null || symbol == null) return null;
+    final product = _products[yearlyProductId];
+    if (yearly == null || product == null) return null;
     final perMonth = yearly / 12;
-    // Format with 2 decimal places
-    return '$symbol${perMonth.toStringAsFixed(2)}';
+
+    // Use the store's price format as a template
+    // This ensures consistent decimal separators and currency position
+    final storePrice = product.price; // e.g., "19,99 €" or "€19.99"
+    final rawPrice = product.rawPrice; // e.g., 19.99
+
+    // Format perMonth with 2 decimal places
+    final perMonthFormatted = perMonth.toStringAsFixed(2);
+
+    // Replace the original price number with the per-month value
+    // Handle both comma and dot decimal separators
+    final rawPriceStr = rawPrice.toStringAsFixed(2);
+    final rawPriceComma = rawPriceStr.replaceAll('.', ',');
+
+    // Try to replace in the store price format
+    String result = storePrice;
+    if (storePrice.contains(rawPriceStr)) {
+      result = storePrice.replaceFirst(rawPriceStr, perMonthFormatted);
+    } else if (storePrice.contains(rawPriceComma)) {
+      // Store uses comma, so convert our result too
+      result = storePrice.replaceFirst(rawPriceComma, perMonthFormatted.replaceAll('.', ','));
+    } else {
+      // Fallback: just use symbol + value
+      final symbol = currencySymbol;
+      if (symbol != null) {
+        result = '$symbol${perMonthFormatted.replaceAll('.', ',')}';
+      } else {
+        result = perMonthFormatted.replaceAll('.', ',');
+      }
+    }
+
+    return result;
   }
 
   /// Check if products are loaded

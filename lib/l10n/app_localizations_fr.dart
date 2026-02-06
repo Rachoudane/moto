@@ -514,4 +514,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get freeLimitedHistory => 'Historique complet disponible avec Pro';
+
+  @override
+  String get productNotAvailable =>
+      'Produit non disponible. Essayez d\'installer depuis le Play Store ou lancez en mode release.';
 }
