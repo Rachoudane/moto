@@ -100,24 +100,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              // Skip button
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: TextButton(
-                    onPressed: _completeOnboarding,
-                    child: Text(
-                      loc.skip,
-                      style: GoogleFonts.inter(
-                        color: theme.textSecondary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
               // Page content
               Expanded(
                 child: PageView(
