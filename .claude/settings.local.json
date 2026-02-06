@@ -7,7 +7,8 @@
       "Bash(flutter analyze:*)",
       "Bash(flutter gen-l10n:*)",
       "Bash(flutter pub add:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(del \"c:\\\\Users\\\\Marou\\\\Documents\\\\Dev\\\\moto\\\\lib\\\\services\\\\demo_data.dart\")"
     ]
   }
 }

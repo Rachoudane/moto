@@ -686,7 +686,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         isDarkMode: widget.isDarkMode,
                                       ),
                                     ),
-                                  ).then((_) => _loadProStatus());
+                                  ).then((_) {
+                                    _loadHabits();
+                                    _loadProStatus();
+                                  });
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(
