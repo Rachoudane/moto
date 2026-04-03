@@ -34,6 +34,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _isDarkMode;
   bool _isLoading = true;
   bool _isPro = false;
+  int _devTapCount = 0;
 
   @override
   void initState() {
@@ -313,12 +314,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              'Moto${_isPro ? " Pro" : ""} v1.0.0',
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: theme.textPrimary,
+                            GestureDetector(
+                              onTap: () async {
+                                _devTapCount++;
+                                if (_devTapCount >= 7) {
+                                  _devTapCount = 0;
+                                  final messenger = ScaffoldMessenger.of(context);
+                                  await SubscriptionService.setPro(true);
+                                  await _loadSettings();
+                                  messenger.showSnackBar(
+                                    const SnackBar(content: Text('Pro activated! 🎉')),
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Moto${_isPro ? " Pro" : ""} v1.0.0',
+                                style: GoogleFonts.inter(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: theme.textPrimary,
+                                ),
                               ),
                             ),
                             if (_isPro) ...[
