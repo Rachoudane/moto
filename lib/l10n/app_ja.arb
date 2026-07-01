@@ -362,6 +362,8 @@
   "editHistoryProDescription": "7日より前の日付の編集はProで利用可能です。無料アカウントは直近1週間を修正できます。",
   "clearDay": "この日をクリア",
 
+  "dailyQuoteNotification": "今日の一言",
+  "dailyQuoteNotificationDescription": "毎朝8時にモチベーションの一言をお届け。全ユーザー無料。",
   "quietHours": "静かな時間帯",
   "quietHoursDescription": "この時間帯はリマインダーが送信されません",
   "quietHoursStart": "開始",

@@ -383,6 +383,8 @@
   "editHistoryProDescription": "Editing dates older than 7 days is available with Pro. Free accounts can correct the last week.",
   "clearDay": "Clear this day",
 
+  "dailyQuoteNotification": "Daily quote",
+  "dailyQuoteNotificationDescription": "One motivational thought every morning at 8:00, free for everyone",
   "quietHours": "Quiet hours",
   "quietHoursDescription": "Reminders won't be sent during this window",
   "quietHoursStart": "Start",

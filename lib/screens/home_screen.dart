@@ -166,10 +166,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     _checkMissedDays();
     // Reschedule reminders after frame is built (to get locale)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        final locale = Localizations.localeOf(context).languageCode;
-        NotificationService.rescheduleAllReminders(_habits, locale);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final locale = Localizations.localeOf(context).languageCode;
+      NotificationService.rescheduleAllReminders(_habits, locale);
+      if (await NotificationService.isDailyQuoteEnabled()) {
+        await NotificationService.requestPermission();
+        NotificationService.scheduleDailyQuoteNotification(locale);
       }
     });
   }

@@ -832,6 +832,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get clearDay => 'この日をクリア';
 
   @override
+  String get dailyQuoteNotification => '今日の一言';
+
+  @override
+  String get dailyQuoteNotificationDescription =>
+      '毎朝8時にモチベーションの一言をお届け。全ユーザー無料。';
+
+  @override
   String get quietHours => '静かな時間帯';
 
   @override

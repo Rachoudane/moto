@@ -40,6 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _quietHoursEnabled = false;
   int _quietHoursStart = 22 * 60;
   int _quietHoursEnd = 7 * 60;
+  bool _dailyQuoteEnabled = true;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final habits = await StorageService().loadHabits();
     final (quietEnabled, quietStart, quietEnd) =
         await NotificationService.getQuietHours();
+    final dailyQuoteEnabled = await NotificationService.isDailyQuoteEnabled();
     setState(() {
       _selectedLanguage = language;
       _isDarkMode = isDark;
@@ -63,8 +65,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _quietHoursEnabled = quietEnabled;
       _quietHoursStart = quietStart;
       _quietHoursEnd = quietEnd;
+      _dailyQuoteEnabled = dailyQuoteEnabled;
       _isLoading = false;
     });
+  }
+
+  Future<void> _toggleDailyQuote(bool value) async {
+    setState(() => _dailyQuoteEnabled = value);
+    if (value) {
+      await NotificationService.requestPermission();
+    }
+    await NotificationService.setDailyQuoteEnabled(value, _selectedLanguage);
   }
 
   String _formatMinutes(int minutes) {
@@ -434,6 +445,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // Section Notifications
                   _buildSectionTitle(loc.notifications, theme),
                   const SizedBox(height: 16),
+                  _buildDailyQuoteCard(theme, loc),
+                  const SizedBox(height: 12),
                   _buildQuietHoursCard(theme, loc),
                   const SizedBox(height: 12),
                   _buildActionCard(
@@ -608,6 +621,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
         fontWeight: FontWeight.w600,
         color: theme.textSecondary,
         letterSpacing: 0.5,
+      ),
+    );
+  }
+
+  Widget _buildDailyQuoteCard(MotoTheme theme, AppLocalizations loc) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.cardBg,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: theme.borderColor),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  loc.dailyQuoteNotification,
+                  style: GoogleFonts.inter(
+                    color: theme.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  loc.dailyQuoteNotificationDescription,
+                  style: GoogleFonts.inter(
+                    color: theme.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: _dailyQuoteEnabled,
+            onChanged: _toggleDailyQuote,
+            activeTrackColor: theme.accentGreen,
+          ),
+        ],
       ),
     );
   }

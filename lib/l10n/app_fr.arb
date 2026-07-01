@@ -362,6 +362,8 @@
   "editHistoryProDescription": "Modifier des dates de plus de 7 jours est disponible avec Pro. Les comptes gratuits peuvent corriger la dernière semaine.",
   "clearDay": "Effacer ce jour",
 
+  "dailyQuoteNotification": "Citation du jour",
+  "dailyQuoteNotificationDescription": "Une pensée motivante chaque matin à 8h00, gratuit pour tous",
   "quietHours": "Heures silencieuses",
   "quietHoursDescription": "Les rappels ne seront pas envoyés pendant cette période",
   "quietHoursStart": "Début",

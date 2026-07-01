@@ -858,6 +858,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearDay => 'Clear this day';
 
   @override
+  String get dailyQuoteNotification => 'Daily quote';
+
+  @override
+  String get dailyQuoteNotificationDescription =>
+      'One motivational thought every morning at 8:00, free for everyone';
+
+  @override
   String get quietHours => 'Quiet hours';
 
   @override

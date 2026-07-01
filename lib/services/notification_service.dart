@@ -6,6 +6,7 @@ import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/habit.dart';
+import 'motivation_service.dart';
 import 'reminder_messages.dart';
 
 class NotificationService {
@@ -15,6 +16,10 @@ class NotificationService {
   static const String _quietHoursEnabledKey = 'quiet_hours_enabled';
   static const String _quietHoursStartKey = 'quiet_hours_start_minutes';
   static const String _quietHoursEndKey = 'quiet_hours_end_minutes';
+  static const String _dailyQuoteEnabledKey = 'daily_quote_enabled';
+  static const int _dailyQuoteNotificationId = 999998;
+  static const int dailyQuoteHour = 8;
+  static const int dailyQuoteMinute = 0;
 
   static Future<void> initialize() async {
     tz_data.initializeTimeZones();
@@ -77,6 +82,82 @@ class NotificationService {
       prefs.getBool(_quietHoursEnabledKey) ?? false,
       prefs.getInt(_quietHoursStartKey) ?? 22 * 60,
       prefs.getInt(_quietHoursEndKey) ?? 7 * 60,
+    );
+  }
+
+  /// Free for everyone (unlike per-habit reminders, which are Pro-gated),
+  /// defaults to on.
+  static Future<bool> isDailyQuoteEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_dailyQuoteEnabledKey) ?? true;
+  }
+
+  static Future<void> setDailyQuoteEnabled(bool enabled, String locale) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_dailyQuoteEnabledKey, enabled);
+    if (enabled) {
+      await scheduleDailyQuoteNotification(locale);
+    } else {
+      await _notifications.cancel(id: _dailyQuoteNotificationId);
+    }
+  }
+
+  /// Schedules tomorrow's (or today's, if not yet past) quote notification
+  /// at a fixed daily time, pre-computed from the deterministic quote
+  /// calendar. Not a recurring OS-level alarm — the content is fixed at
+  /// schedule time, so this should be called again on every app launch
+  /// (and after any relevant setting change) to keep the upcoming quote
+  /// fresh. If the app isn't opened for several days, the same quote will
+  /// keep repeating each morning until the app is reopened.
+  static Future<void> scheduleDailyQuoteNotification(String locale) async {
+    await _notifications.cancel(id: _dailyQuoteNotificationId);
+
+    if (!await isDailyQuoteEnabled()) return;
+
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      dailyQuoteHour,
+      dailyQuoteMinute,
+    );
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
+    final quote = MotivationService.getQuoteForDate(scheduledDate, locale);
+    final exactAvailable = await requestExactAlarmPermission();
+
+    await _notifications.zonedSchedule(
+      id: _dailyQuoteNotificationId,
+      title: '元 Moto',
+      body: quote,
+      scheduledDate: scheduledDate,
+      notificationDetails: NotificationDetails(
+        android: AndroidNotificationDetails(
+          'daily_quote',
+          'Daily Quote',
+          channelDescription: 'A daily motivational quote',
+          importance: Importance.defaultImportance,
+          priority: Priority.defaultPriority,
+          color: const Color(0xFF7DD3A8),
+          colorized: true,
+          styleInformation: BigTextStyleInformation(
+            quote,
+            contentTitle: '元 Moto',
+          ),
+        ),
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: false,
+          presentSound: true,
+        ),
+      ),
+      androidScheduleMode: exactAvailable
+          ? AndroidScheduleMode.exactAllowWhileIdle
+          : AndroidScheduleMode.inexactAllowWhileIdle,
     );
   }
 

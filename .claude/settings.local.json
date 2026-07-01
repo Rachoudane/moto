@@ -21,7 +21,8 @@
       "Bash(tee /tmp/flutter_run.log)",
       "Bash(echo \"Launched in background with PID $!\")",
       "Read(//tmp/**)",
-      "PowerShell(Get-Process | Where-Object { $_.ProcessName -match \"moto\" } | Select-Object Id, ProcessName, MainWindowTitle)"
+      "PowerShell(Get-Process | Where-Object { $_.ProcessName -match \"moto\" } | Select-Object Id, ProcessName, MainWindowTitle)",
+      "Bash(flutter build *)"
     ]
   }
 }

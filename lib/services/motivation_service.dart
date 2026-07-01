@@ -312,10 +312,14 @@ class MotivationService {
   /// Returns today's quote formatted for the given [locale] (en/fr/ja).
   /// Deterministic per calendar day — stable all day, changes at midnight,
   /// no persistence required.
-  static String getTodayQuote(String locale) {
-    final now = DateTime.now();
-    final dayOfYear = DateTime(now.year, now.month, now.day)
-        .difference(DateTime(now.year, 1, 1))
+  static String getTodayQuote(String locale) => getQuoteForDate(DateTime.now(), locale);
+
+  /// Same deterministic mapping as [getTodayQuote], but for an arbitrary
+  /// [date] — used to pre-compute tomorrow's quote when scheduling the
+  /// daily quote notification a day ahead.
+  static String getQuoteForDate(DateTime date, String locale) {
+    final dayOfYear = DateTime(date.year, date.month, date.day)
+        .difference(DateTime(date.year, 1, 1))
         .inDays;
     final quote = _quotes[dayOfYear % _quotes.length];
     switch (locale) {

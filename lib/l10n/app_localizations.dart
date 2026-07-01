@@ -1558,6 +1558,18 @@ abstract class AppLocalizations {
   /// **'Clear this day'**
   String get clearDay;
 
+  /// No description provided for @dailyQuoteNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily quote'**
+  String get dailyQuoteNotification;
+
+  /// No description provided for @dailyQuoteNotificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'One motivational thought every morning at 8:00, free for everyone'**
+  String get dailyQuoteNotificationDescription;
+
   /// No description provided for @quietHours.
   ///
   /// In en, this message translates to:
