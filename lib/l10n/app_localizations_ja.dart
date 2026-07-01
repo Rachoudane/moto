@@ -508,4 +508,391 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get productNotAvailable =>
       '商品が利用できません。Play Storeからインストールするか、リリースモードで実行してください。';
+
+  @override
+  String get badgesTitle => 'バッジ';
+
+  @override
+  String badgesUnlockedCount(int count, int total) {
+    return '$total個中$count個解除済み';
+  }
+
+  @override
+  String get badgeUnlockedTitle => 'バッジ解除';
+
+  @override
+  String badgeUnlockedOn(String date) {
+    return '$dateに解除';
+  }
+
+  @override
+  String get badgeSecretLockedName => '？？？';
+
+  @override
+  String get badgeSecretLockedHint => '続けよう — これは達成した時に明かされる。';
+
+  @override
+  String get badgeStreak7Name => '週間の戦士';
+
+  @override
+  String get badgeStreak7Desc => '習慣で7日間の連続記録を達成した。';
+
+  @override
+  String get badgeStreak30Name => '勢いの構築者';
+
+  @override
+  String get badgeStreak30Desc => '30日間の連続記録を達成。本物の習慣が形成されている。';
+
+  @override
+  String get badgeStreak100Name => '百人隊長';
+
+  @override
+  String get badgeStreak100Desc => '100日連続。これが今のあなただ。';
+
+  @override
+  String get badgeStreak365Name => '一巡り';
+
+  @override
+  String get badgeStreak365Desc => '一年間、一日ずつ。';
+
+  @override
+  String get badgeSquare1Name => '最初の石';
+
+  @override
+  String get badgeSquare1Desc => '初めての1×1の正方形を完成させた。';
+
+  @override
+  String get badgeSquare2Name => '土台完成';
+
+  @override
+  String get badgeSquare2Desc => '2×2の正方形を完成させた。';
+
+  @override
+  String get badgeSquare3Name => '積み上げ中';
+
+  @override
+  String get badgeSquare3Desc => '3×3の正方形を完成させた。';
+
+  @override
+  String get badgeSquare5Name => '建築家';
+
+  @override
+  String get badgeSquare5Desc => '5×5の正方形を完成させた。';
+
+  @override
+  String get badgeSquare8Name => '棟梁';
+
+  @override
+  String get badgeSquare8Desc => '8×8の正方形を完成させた。';
+
+  @override
+  String get badgeCells10Name => 'はじめの一歩';
+
+  @override
+  String get badgeCells10Desc => '全習慣合わせて合計10日達成。';
+
+  @override
+  String get badgeCells50Name => '着実な歩み';
+
+  @override
+  String get badgeCells50Desc => '合計50日達成。';
+
+  @override
+  String get badgeCells100Name => '百日クラブ';
+
+  @override
+  String get badgeCells100Desc => '合計100日達成。';
+
+  @override
+  String get badgeCells500Name => '鋼の意志';
+
+  @override
+  String get badgeCells500Desc => '合計500日達成。';
+
+  @override
+  String get badgeCells1000Name => '伝説';
+
+  @override
+  String get badgeCells1000Desc => '合計1000日達成。並外れている。';
+
+  @override
+  String get badgeHabits3Name => 'マルチタスカー';
+
+  @override
+  String get badgeHabits3Desc => '同時に3つの習慣を管理中。';
+
+  @override
+  String get badgeHabits5Name => 'ジャグラー';
+
+  @override
+  String get badgeHabits5Desc => '同時に5つの習慣を管理中。';
+
+  @override
+  String get badgeHabits10Name => '習慣コレクター';
+
+  @override
+  String get badgeHabits10Desc => '同時に10の習慣を管理中。';
+
+  @override
+  String get badgeEarlyBirdName => '早起き鳥';
+
+  @override
+  String get badgeEarlyBirdDesc => '午前7時前に習慣を達成した。';
+
+  @override
+  String get badgeNightOwlName => '夜更かしフクロウ';
+
+  @override
+  String get badgeNightOwlDesc => '午後10時以降に習慣を達成した。';
+
+  @override
+  String get badgeWeekendWarriorName => '週末の戦士';
+
+  @override
+  String get badgeWeekendWarriorDesc => '土曜日と日曜日の両方を継続した。';
+
+  @override
+  String get badgeComebackName => 'カムバック';
+
+  @override
+  String get badgeComebackDesc => '3日以上連続で休んだ後、達成に戻ってきた。';
+
+  @override
+  String get badgePerfectWeekName => '完璧な一週間';
+
+  @override
+  String get badgePerfectWeekDesc => '7日連続、失敗ゼロ。';
+
+  @override
+  String get badgePerfectMonthName => '完璧な一ヶ月';
+
+  @override
+  String get badgePerfectMonthDesc => '30日連続、失敗ゼロ。';
+
+  @override
+  String get badgeHardcoreSurvivorName => '本気モードの生存者';
+
+  @override
+  String get badgeHardcoreSurvivorDesc => '本気モードで30日間リセットなしに生き延びた。';
+
+  @override
+  String get badgeZenMasterName => '禅マスター';
+
+  @override
+  String get badgeZenMasterDesc => '禅モードで100日達成。';
+
+  @override
+  String get badgeSecretPerfectionistName => '完璧主義者';
+
+  @override
+  String get badgeSecretPerfectionistDesc => '20回以上の記録で一度も欠かしたことがない。';
+
+  @override
+  String get badgeSecretMultitaskerName => '五輪の集中';
+
+  @override
+  String get badgeSecretMultitaskerDesc => '同時に5つの習慣で連続記録を維持した。';
+
+  @override
+  String get shareMyProgress => '進捗をシェア';
+
+  @override
+  String get shareFindOnAppStore => 'App Storeで「Moto」を検索してください。';
+
+  @override
+  String get shareAppMsg1 => 'Motoで良い習慣を築いています。ひとマスずつ。🧱 一緒に築こう。';
+
+  @override
+  String get shareAppMsg2 => '習慣が本当に続くアプリを見つけた：Moto。継続を目に見える成長に変えてくれる。🌱';
+
+  @override
+  String get shareAppMsg3 => 'Motoは毎日の習慣を、実際に成長が見えるものに変えてくれた。試してみて。元';
+
+  @override
+  String get shareAppMsg4 => '連続記録に怒られることもなく、ただ一緒に成長する正方形があるだけ。Motoは試す価値あり。🧩';
+
+  @override
+  String get shareAppMsg5 => 'Motoで、一日ずつ達成しながら自分の基盤を築いています。一緒にどう？';
+
+  @override
+  String get shareAppMsg6 => 'この習慣トラッカーは、継続を本気で勝ちたいゲームに変えてくれた。Moto。🏆';
+
+  @override
+  String get shareAppMsg7 => '毎日の小さな行動が、成長する正方形として見える。それがMoto。試してみて。';
+
+  @override
+  String shareProgressMsg1(String habitName, int streak) {
+    return '「$habitName」で$streakマス達成中。Motoで一日ずつ基盤を築いています。🧱';
+  }
+
+  @override
+  String shareProgressMsg2(String habitName, int streak) {
+    return '「$habitName」が少しずつ形になってきた — Motoで現在$streakマス。🌱';
+  }
+
+  @override
+  String shareProgressMsg3(String habitName, int streak) {
+    return '「$habitName」で$streak日達成。Motoが私を正直にさせてくれる。元';
+  }
+
+  @override
+  String shareProgressMsg4(String habitName, int streak) {
+    return '「$habitName」がマスごとに成長していくのを見ている — Motoで$streakマス。';
+  }
+
+  @override
+  String shareProgressMsg5(String habitName, int streak) {
+    return '「$habitName」の記録がMotoで$streakマスに到達。小さな一歩が本当の進歩に。';
+  }
+
+  @override
+  String shareBadgeMsg1(String badgeName) {
+    return 'Motoで「$badgeName」バッジを解除した！🏆';
+  }
+
+  @override
+  String shareBadgeMsg2(String badgeName) {
+    return '新しいトロフィー解除：Motoの「$badgeName」。気分がいい。元';
+  }
+
+  @override
+  String shareBadgeMsg3(String badgeName) {
+    return '継続が実を結んだ — Motoで「$badgeName」バッジを獲得！';
+  }
+
+  @override
+  String shareBadgeMsg4(String badgeName) {
+    return '「$badgeName」— Motoで解除。小さな積み重ねが実を結ぶ証拠がまた一つ。';
+  }
+
+  @override
+  String shareBadgeMsg5(String badgeName) {
+    return 'Motoから「$badgeName」バッジをもらった。この調子で。🌱';
+  }
+
+  @override
+  String shareSquareMsg1(String habitName, int level) {
+    return 'Motoで「$habitName」の$level×$levelの正方形を完成させた！🧱';
+  }
+
+  @override
+  String shareSquareMsg2(String habitName, int level) {
+    return '「$habitName」がレベルアップ — Motoで$level×$levelの正方形が完成。';
+  }
+
+  @override
+  String shareSquareMsg3(String habitName, int level) {
+    return 'またトロフィー獲得：「$habitName」で$level×$level。Motoが証明してくれる。元';
+  }
+
+  @override
+  String shareSquareMsg4(String habitName, int level) {
+    return '正方形完成！「$habitName」で$level×$level — 一日ずつ積み上げた結果。';
+  }
+
+  @override
+  String shareSquareMsg5(String habitName, int level) {
+    return '「$habitName」がMotoで$level×$levelの正方形に到達。継続が目に見える形に。';
+  }
+
+  @override
+  String squareCompletedCelebration(int count) {
+    return '🎉 正方形完成！$count×$countを完成させた。';
+  }
+
+  @override
+  String streakMilestoneCelebration(int streak) {
+    return '🔥 $streak日連続達成！この勢いを続けよう。';
+  }
+
+  @override
+  String get proDowngradeTitle => 'Proサブスクリプションが終了しました';
+
+  @override
+  String get proDowngradeDescription =>
+      '心配いりません — すべての習慣と履歴は安全です。現在は無料プランに戻っています。いつでも再登録してすべてを再び解放できます。';
+
+  @override
+  String get proPromoCardTitle => 'Proでさらに先へ';
+
+  @override
+  String get proPromoCardSubtitle => '無制限の習慣、完全な履歴など。';
+
+  @override
+  String get proSocialProof => '何千人もの人がMoto Proでより良い習慣を築いています';
+
+  @override
+  String get editHistoryProTitle => '全履歴を編集';
+
+  @override
+  String get editHistoryProDescription =>
+      '7日より前の日付の編集はProで利用可能です。無料アカウントは直近1週間を修正できます。';
+
+  @override
+  String get clearDay => 'この日をクリア';
+
+  @override
+  String get quietHours => '静かな時間帯';
+
+  @override
+  String get quietHoursDescription => 'この時間帯はリマインダーが送信されません';
+
+  @override
+  String get quietHoursStart => '開始';
+
+  @override
+  String get quietHoursEnd => '終了';
+
+  @override
+  String get sendTestNotification => 'テスト通知を送信';
+
+  @override
+  String get sendTestNotificationDescription => 'リマインダーが正しく機能しているか確認';
+
+  @override
+  String get testNotificationBody =>
+      'これはMotoからのテスト通知です。これが見えていれば、リマインダーは正常に機能しています！🔔';
+
+  @override
+  String get testNotificationSent => 'テスト通知を送信しました';
+
+  @override
+  String reminderGentle1(String habit) {
+    return 'プレッシャーはいらない — 今日、準備ができたときに$habitをしよう。';
+  }
+
+  @override
+  String reminderGentle2(String habit) {
+    return 'そっと一言：$habitがあなたを待っています。';
+  }
+
+  @override
+  String reminderGentle3(String habit) {
+    return '今日、少し時間ができたときに、$habitに取り組んでみて。';
+  }
+
+  @override
+  String reminderPlayful1(String habit) {
+    return 'ねえ。$habitから連絡があったよ。会いたいって。';
+  }
+
+  @override
+  String reminderPlayful2(String habit) {
+    return 'あなたの正方形が成長を待っている。今日は$habitで育ててあげよう。';
+  }
+
+  @override
+  String reminderPlayful3(String habit) {
+    return 'どんでん返し：今日は$habitにぴったりの日だ。';
+  }
+
+  @override
+  String reminderWeekendVibe(String habit) {
+    return '週末でも、$habitは休まない。';
+  }
+
+  @override
+  String reminderStreakMilestone(String habit, int streak) {
+    return '$habitで$streak日達成。ここで止まらないで。';
+  }
 }

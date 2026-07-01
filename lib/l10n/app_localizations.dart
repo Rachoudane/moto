@@ -993,6 +993,666 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Product not available. Try installing from Play Store or run in release mode.'**
   String get productNotAvailable;
+
+  /// No description provided for @badgesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get badgesTitle;
+
+  /// No description provided for @badgesUnlockedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} unlocked'**
+  String badgesUnlockedCount(int count, int total);
+
+  /// No description provided for @badgeUnlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'BADGE UNLOCKED'**
+  String get badgeUnlockedTitle;
+
+  /// No description provided for @badgeUnlockedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked on {date}'**
+  String badgeUnlockedOn(String date);
+
+  /// No description provided for @badgeSecretLockedName.
+  ///
+  /// In en, this message translates to:
+  /// **'???'**
+  String get badgeSecretLockedName;
+
+  /// No description provided for @badgeSecretLockedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep going — this one reveals itself when you earn it.'**
+  String get badgeSecretLockedHint;
+
+  /// No description provided for @badgeStreak7Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Week Warrior'**
+  String get badgeStreak7Name;
+
+  /// No description provided for @badgeStreak7Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reached a 7-day streak on a habit.'**
+  String get badgeStreak7Desc;
+
+  /// No description provided for @badgeStreak30Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Momentum Builder'**
+  String get badgeStreak30Name;
+
+  /// No description provided for @badgeStreak30Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reached a 30-day streak. Real habits are forming.'**
+  String get badgeStreak30Desc;
+
+  /// No description provided for @badgeStreak100Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Centurion'**
+  String get badgeStreak100Name;
+
+  /// No description provided for @badgeStreak100Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'100 consecutive days. This is who you are now.'**
+  String get badgeStreak100Desc;
+
+  /// No description provided for @badgeStreak365Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Circle'**
+  String get badgeStreak365Name;
+
+  /// No description provided for @badgeStreak365Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'A full year, one day at a time.'**
+  String get badgeStreak365Desc;
+
+  /// No description provided for @badgeSquare1Name.
+  ///
+  /// In en, this message translates to:
+  /// **'First Stone'**
+  String get badgeSquare1Name;
+
+  /// No description provided for @badgeSquare1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed your first 1×1 square.'**
+  String get badgeSquare1Desc;
+
+  /// No description provided for @badgeSquare2Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundation Laid'**
+  String get badgeSquare2Name;
+
+  /// No description provided for @badgeSquare2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed a 2×2 square.'**
+  String get badgeSquare2Desc;
+
+  /// No description provided for @badgeSquare3Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Building Up'**
+  String get badgeSquare3Name;
+
+  /// No description provided for @badgeSquare3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed a 3×3 square.'**
+  String get badgeSquare3Desc;
+
+  /// No description provided for @badgeSquare5Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Architect'**
+  String get badgeSquare5Name;
+
+  /// No description provided for @badgeSquare5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed a 5×5 square.'**
+  String get badgeSquare5Desc;
+
+  /// No description provided for @badgeSquare8Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Builder'**
+  String get badgeSquare8Name;
+
+  /// No description provided for @badgeSquare8Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed an 8×8 square.'**
+  String get badgeSquare8Desc;
+
+  /// No description provided for @badgeCells10Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting Started'**
+  String get badgeCells10Name;
+
+  /// No description provided for @badgeCells10Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'10 total validated days across all habits.'**
+  String get badgeCells10Desc;
+
+  /// No description provided for @badgeCells50Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady Hands'**
+  String get badgeCells50Name;
+
+  /// No description provided for @badgeCells50Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'50 total validated days.'**
+  String get badgeCells50Desc;
+
+  /// No description provided for @badgeCells100Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Century Club'**
+  String get badgeCells100Name;
+
+  /// No description provided for @badgeCells100Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'100 total validated days.'**
+  String get badgeCells100Desc;
+
+  /// No description provided for @badgeCells500Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Iron Will'**
+  String get badgeCells500Name;
+
+  /// No description provided for @badgeCells500Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'500 total validated days.'**
+  String get badgeCells500Desc;
+
+  /// No description provided for @badgeCells1000Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Legend'**
+  String get badgeCells1000Name;
+
+  /// No description provided for @badgeCells1000Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'1000 total validated days. Extraordinary.'**
+  String get badgeCells1000Desc;
+
+  /// No description provided for @badgeHabits3Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Multitasker'**
+  String get badgeHabits3Name;
+
+  /// No description provided for @badgeHabits3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking 3 habits at once.'**
+  String get badgeHabits3Desc;
+
+  /// No description provided for @badgeHabits5Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Juggler'**
+  String get badgeHabits5Name;
+
+  /// No description provided for @badgeHabits5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking 5 habits at once.'**
+  String get badgeHabits5Desc;
+
+  /// No description provided for @badgeHabits10Name.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit Collector'**
+  String get badgeHabits10Name;
+
+  /// No description provided for @badgeHabits10Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking 10 habits at once.'**
+  String get badgeHabits10Desc;
+
+  /// No description provided for @badgeEarlyBirdName.
+  ///
+  /// In en, this message translates to:
+  /// **'Early Bird'**
+  String get badgeEarlyBirdName;
+
+  /// No description provided for @badgeEarlyBirdDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Validated a habit before 7am.'**
+  String get badgeEarlyBirdDesc;
+
+  /// No description provided for @badgeNightOwlName.
+  ///
+  /// In en, this message translates to:
+  /// **'Night Owl'**
+  String get badgeNightOwlName;
+
+  /// No description provided for @badgeNightOwlDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Validated a habit at 10pm or later.'**
+  String get badgeNightOwlDesc;
+
+  /// No description provided for @badgeWeekendWarriorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekend Warrior'**
+  String get badgeWeekendWarriorName;
+
+  /// No description provided for @badgeWeekendWarriorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stayed consistent on both Saturday and Sunday.'**
+  String get badgeWeekendWarriorDesc;
+
+  /// No description provided for @badgeComebackName.
+  ///
+  /// In en, this message translates to:
+  /// **'The Comeback'**
+  String get badgeComebackName;
+
+  /// No description provided for @badgeComebackDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Returned and validated after missing 3+ days in a row.'**
+  String get badgeComebackDesc;
+
+  /// No description provided for @badgePerfectWeekName.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Week'**
+  String get badgePerfectWeekName;
+
+  /// No description provided for @badgePerfectWeekDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days in a row, zero misses.'**
+  String get badgePerfectWeekDesc;
+
+  /// No description provided for @badgePerfectMonthName.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Month'**
+  String get badgePerfectMonthName;
+
+  /// No description provided for @badgePerfectMonthDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'30 days in a row, zero misses.'**
+  String get badgePerfectMonthDesc;
+
+  /// No description provided for @badgeHardcoreSurvivorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hardcore Survivor'**
+  String get badgeHardcoreSurvivorName;
+
+  /// No description provided for @badgeHardcoreSurvivorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Survived 30 days on Hardcore mode without a reset.'**
+  String get badgeHardcoreSurvivorDesc;
+
+  /// No description provided for @badgeZenMasterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Zen Master'**
+  String get badgeZenMasterName;
+
+  /// No description provided for @badgeZenMasterDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'100 validated days on Zen mode.'**
+  String get badgeZenMasterDesc;
+
+  /// No description provided for @badgeSecretPerfectionistName.
+  ///
+  /// In en, this message translates to:
+  /// **'The Perfectionist'**
+  String get badgeSecretPerfectionistName;
+
+  /// No description provided for @badgeSecretPerfectionistDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Never missed a single day across 20+ entries.'**
+  String get badgeSecretPerfectionistDesc;
+
+  /// No description provided for @badgeSecretMultitaskerName.
+  ///
+  /// In en, this message translates to:
+  /// **'Five-Ring Focus'**
+  String get badgeSecretMultitaskerName;
+
+  /// No description provided for @badgeSecretMultitaskerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept 5 habits alive with an active streak at the same time.'**
+  String get badgeSecretMultitaskerDesc;
+
+  /// No description provided for @shareMyProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Share my progress'**
+  String get shareMyProgress;
+
+  /// No description provided for @shareFindOnAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Search \"Moto\" on the App Store.'**
+  String get shareFindOnAppStore;
+
+  /// No description provided for @shareAppMsg1.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'m building better habits with Moto — one square at a time. 🧱 Come build yours.'**
+  String get shareAppMsg1;
+
+  /// No description provided for @shareAppMsg2.
+  ///
+  /// In en, this message translates to:
+  /// **'Found an app that actually makes habits stick: Moto. Turns your consistency into visual progress. 🌱'**
+  String get shareAppMsg2;
+
+  /// No description provided for @shareAppMsg3.
+  ///
+  /// In en, this message translates to:
+  /// **'Moto turned my daily habits into something I can actually see grow. Try it. 元'**
+  String get shareAppMsg3;
+
+  /// No description provided for @shareAppMsg4.
+  ///
+  /// In en, this message translates to:
+  /// **'No streak-shaming, just squares that grow with you. Moto is worth a look. 🧩'**
+  String get shareAppMsg4;
+
+  /// No description provided for @shareAppMsg5.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve been building my foundation, one validated day at a time, with Moto. Join me?'**
+  String get shareAppMsg5;
+
+  /// No description provided for @shareAppMsg6.
+  ///
+  /// In en, this message translates to:
+  /// **'This habit tracker made consistency feel like a game I actually want to win. Moto. 🏆'**
+  String get shareAppMsg6;
+
+  /// No description provided for @shareAppMsg7.
+  ///
+  /// In en, this message translates to:
+  /// **'Small daily actions, visualized as growing squares. That\'s Moto — give it a shot.'**
+  String get shareAppMsg7;
+
+  /// No description provided for @shareProgressMsg1.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} cells and counting on \"{habitName}\" with Moto. Building my foundation, one day at a time. 🧱'**
+  String shareProgressMsg1(String habitName, int streak);
+
+  /// No description provided for @shareProgressMsg2.
+  ///
+  /// In en, this message translates to:
+  /// **'Day by day, \"{habitName}\" is turning into something real — {streak} cells so far on Moto. 🌱'**
+  String shareProgressMsg2(String habitName, int streak);
+
+  /// No description provided for @shareProgressMsg3.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} validated days on \"{habitName}\". Moto is keeping me honest. 元'**
+  String shareProgressMsg3(String habitName, int streak);
+
+  /// No description provided for @shareProgressMsg4.
+  ///
+  /// In en, this message translates to:
+  /// **'Watching \"{habitName}\" grow square by square — {streak} cells in on Moto.'**
+  String shareProgressMsg4(String habitName, int streak);
+
+  /// No description provided for @shareProgressMsg5.
+  ///
+  /// In en, this message translates to:
+  /// **'My \"{habitName}\" streak just hit {streak} cells on Moto. Small steps, real progress.'**
+  String shareProgressMsg5(String habitName, int streak);
+
+  /// No description provided for @shareBadgeMsg1.
+  ///
+  /// In en, this message translates to:
+  /// **'Just unlocked the \"{badgeName}\" badge on Moto! 🏆'**
+  String shareBadgeMsg1(String badgeName);
+
+  /// No description provided for @shareBadgeMsg2.
+  ///
+  /// In en, this message translates to:
+  /// **'New trophy unlocked: \"{badgeName}\" on Moto. Feels good. 元'**
+  String shareBadgeMsg2(String badgeName);
+
+  /// No description provided for @shareBadgeMsg3.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency paid off — earned the \"{badgeName}\" badge on Moto!'**
+  String shareBadgeMsg3(String badgeName);
+
+  /// No description provided for @shareBadgeMsg4.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{badgeName}\" — unlocked on Moto. One more proof the small stuff adds up.'**
+  String shareBadgeMsg4(String badgeName);
+
+  /// No description provided for @shareBadgeMsg5.
+  ///
+  /// In en, this message translates to:
+  /// **'Moto just gave me the \"{badgeName}\" badge. Onward. 🌱'**
+  String shareBadgeMsg5(String badgeName);
+
+  /// No description provided for @shareSquareMsg1.
+  ///
+  /// In en, this message translates to:
+  /// **'Just completed a {level}×{level} square on \"{habitName}\" with Moto! 🧱'**
+  String shareSquareMsg1(String habitName, int level);
+
+  /// No description provided for @shareSquareMsg2.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{habitName}\" leveled up — {level}×{level} square complete on Moto.'**
+  String shareSquareMsg2(String habitName, int level);
+
+  /// No description provided for @shareSquareMsg3.
+  ///
+  /// In en, this message translates to:
+  /// **'Another trophy earned: {level}×{level} on \"{habitName}\". Moto keeps the proof. 元'**
+  String shareSquareMsg3(String habitName, int level);
+
+  /// No description provided for @shareSquareMsg4.
+  ///
+  /// In en, this message translates to:
+  /// **'Square complete! {level}×{level} on \"{habitName}\" — built one validated day at a time.'**
+  String shareSquareMsg4(String habitName, int level);
+
+  /// No description provided for @shareSquareMsg5.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{habitName}\" just hit a {level}×{level} square on Moto. Consistency, visualized.'**
+  String shareSquareMsg5(String habitName, int level);
+
+  /// No description provided for @squareCompletedCelebration.
+  ///
+  /// In en, this message translates to:
+  /// **'🎉 Square completed! You just finished a {count}×{count}.'**
+  String squareCompletedCelebration(int count);
+
+  /// No description provided for @streakMilestoneCelebration.
+  ///
+  /// In en, this message translates to:
+  /// **'🔥 {streak}-day streak! Keep the momentum going.'**
+  String streakMilestoneCelebration(int streak);
+
+  /// No description provided for @proDowngradeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Pro subscription has ended'**
+  String get proDowngradeTitle;
+
+  /// No description provided for @proDowngradeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No worries — all your habits and history are safe. You\'re back on the free plan for now. Resubscribe anytime to unlock everything again.'**
+  String get proDowngradeDescription;
+
+  /// No description provided for @proPromoCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Go further with Pro'**
+  String get proPromoCardTitle;
+
+  /// No description provided for @proPromoCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited habits, full history, and more.'**
+  String get proPromoCardSubtitle;
+
+  /// No description provided for @proSocialProof.
+  ///
+  /// In en, this message translates to:
+  /// **'Join thousands building better habits with Moto Pro'**
+  String get proSocialProof;
+
+  /// No description provided for @editHistoryProTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit full history'**
+  String get editHistoryProTitle;
+
+  /// No description provided for @editHistoryProDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing dates older than 7 days is available with Pro. Free accounts can correct the last week.'**
+  String get editHistoryProDescription;
+
+  /// No description provided for @clearDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear this day'**
+  String get clearDay;
+
+  /// No description provided for @quietHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get quietHours;
+
+  /// No description provided for @quietHoursDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders won\'t be sent during this window'**
+  String get quietHoursDescription;
+
+  /// No description provided for @quietHoursStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get quietHoursStart;
+
+  /// No description provided for @quietHoursEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get quietHoursEnd;
+
+  /// No description provided for @sendTestNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Send test notification'**
+  String get sendTestNotification;
+
+  /// No description provided for @sendTestNotificationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your reminders are working correctly'**
+  String get sendTestNotificationDescription;
+
+  /// No description provided for @testNotificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a test notification from Moto. If you can see this, reminders are working! 🔔'**
+  String get testNotificationBody;
+
+  /// No description provided for @testNotificationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Test notification sent'**
+  String get testNotificationSent;
+
+  /// No description provided for @reminderGentle1.
+  ///
+  /// In en, this message translates to:
+  /// **'No pressure — just {habit}, whenever you\'re ready today.'**
+  String reminderGentle1(String habit);
+
+  /// No description provided for @reminderGentle2.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle nudge: {habit} is waiting for you.'**
+  String reminderGentle2(String habit);
+
+  /// No description provided for @reminderGentle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Whenever you get a moment today, {habit} would love the attention.'**
+  String reminderGentle3(String habit);
+
+  /// No description provided for @reminderPlayful1.
+  ///
+  /// In en, this message translates to:
+  /// **'Psst. {habit} called. It misses you.'**
+  String reminderPlayful1(String habit);
+
+  /// No description provided for @reminderPlayful2.
+  ///
+  /// In en, this message translates to:
+  /// **'Your square is waiting to grow. Feed it some {habit} today.'**
+  String reminderPlayful2(String habit);
+
+  /// No description provided for @reminderPlayful3.
+  ///
+  /// In en, this message translates to:
+  /// **'Plot twist: today is a great day for {habit}.'**
+  String reminderPlayful3(String habit);
+
+  /// No description provided for @reminderWeekendVibe.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekend or not, {habit} doesn\'t take days off.'**
+  String reminderWeekendVibe(String habit);
+
+  /// No description provided for @reminderStreakMilestone.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} days strong on {habit}. Don\'t stop now.'**
+  String reminderStreakMilestone(String habit, int streak);
 }
 
 class _AppLocalizationsDelegate

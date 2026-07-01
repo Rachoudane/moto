@@ -7,11 +7,13 @@ import '../models/habit.dart';
 class HabitCalendar extends StatelessWidget {
   final Habit habit;
   final int daysToShow;
+  final void Function(DateTime date)? onDayTap;
 
   const HabitCalendar({
     super.key,
     required this.habit,
     this.daysToShow = 35,
+    this.onDayTap,
   });
 
   @override
@@ -87,7 +89,7 @@ class HabitCalendar extends StatelessWidget {
                 final isDark = Theme.of(context).brightness == Brightness.dark;
                 final validatedTextColor = isDark ? const Color(0xFF0A0A0A) : const Color(0xFF0A0A0A);
 
-                return Container(
+                final cell = Container(
                   width: cellSize,
                   height: cellSize,
                   decoration: BoxDecoration(
@@ -111,6 +113,12 @@ class HabitCalendar extends StatelessWidget {
                       ),
                     ),
                   ),
+                );
+
+                if (isFuture || onDayTap == null) return cell;
+                return GestureDetector(
+                  onTap: () => onDayTap!(date),
+                  child: cell,
                 );
               }).toList(),
             ),

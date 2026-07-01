@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/habit.dart';
@@ -106,65 +107,25 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     return level - 1;
   }
 
-  void _applyPenalty(Habit habit) {
-    switch (habit.penaltyMode) {
-      case PenaltyMode.zen:
-        if (habit.streak > 0) habit.streak--;
-        break;
-      case PenaltyMode.standard:
-        int level = 1;
-        int total = 0;
-        while (total + level * level <= habit.streak) {
-          total += level * level;
-          level++;
-        }
-        if (habit.streak > total) {
-          habit.streak = total;
-        }
-        break;
-      case PenaltyMode.hardcore:
-        habit.streak = 0;
-        break;
-    }
-  }
-
-  Future<void> _correctTodayStatus(
+  /// Applies a new day status to [date] and recalculates the streak from
+  /// scratch by replaying the full history. Used both for correcting today's
+  /// status and for editing arbitrary past dates (Pro / within free window).
+  Future<void> _editDayStatus(
+    DateTime date,
     DayStatus newStatus,
     StateSetter setModalState,
   ) async {
     final habit = widget.habit;
-    final todayStatus = habit.getStatusForDate(DateTime.now());
-
-    if (todayStatus == newStatus) return;
-
-    // Récupérer le streak avant l'action originale
-    final streakBefore = habit.getStreakBeforeAction(DateTime.now());
 
     setState(() {
-      if (newStatus == DayStatus.validated) {
-        // Raté → Validé : restaurer le streak d'avant puis +1
-        if (streakBefore != null) {
-          habit.streak = streakBefore + 1;
-        } else {
-          // Fallback si pas de données (anciennes habitudes)
-          habit.streak++;
-        }
-        habit.lastValidatedDate = DateTime.now();
-        habit.setStatusForDate(DateTime.now(), DayStatus.validated);
-      } else if (newStatus == DayStatus.skipped) {
-        // Validé → Raté : restaurer le streak d'avant puis appliquer la pénalité
-        if (streakBefore != null) {
-          habit.streak = streakBefore;
-        } else {
-          // Fallback : annuler le +1
-          if (habit.streak > 0) habit.streak--;
-        }
-        _applyPenalty(habit);
-        habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
+      if (newStatus == DayStatus.pending) {
+        habit.history.remove(_dateKey(date));
+      } else {
+        habit.setStatusForDate(date, newStatus);
       }
+      habit.recalculateStreak();
     });
 
-    // Sauvegarder
     final allHabits = await _storageService.loadHabits();
     final habitIndex = allHabits.indexWhere((h) => h.id == habit.id);
     if (habitIndex != -1) {
@@ -174,6 +135,140 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
     setModalState(() {});
     widget.onUpdate();
+  }
+
+  String _dateKey(DateTime date) =>
+      "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+
+  void _handleDayTap(DateTime date) {
+    final today = DateTime.now();
+    final todayNorm = DateTime(today.year, today.month, today.day);
+    final daysAgo = todayNorm.difference(date).inDays;
+
+    if (!_isPro && daysAgo > SubscriptionService.freeHistoryDays) {
+      final l10n = AppLocalizations.of(context)!;
+      _showUpgradeDialog(
+        title: l10n.editHistoryProTitle,
+        description: l10n.editHistoryProDescription,
+      );
+      return;
+    }
+
+    _showEditDaySheet(date);
+  }
+
+  void _showEditDaySheet(DateTime date) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+    final locale = Localizations.localeOf(context).toString();
+    final currentStatus = widget.habit.getStatusForDate(date);
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: theme.cardBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    DateFormat.yMMMMEEEEd(locale).format(date),
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: theme.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildDayStatusOption(
+                    theme,
+                    icon: Icons.check,
+                    label: l10n.markAsValidated,
+                    color: theme.accentGreen,
+                    isSelected: currentStatus == DayStatus.validated,
+                    onTap: () => _editDayStatus(
+                      date,
+                      DayStatus.validated,
+                      setModalState,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  _buildDayStatusOption(
+                    theme,
+                    icon: Icons.close,
+                    label: l10n.markAsSkipped,
+                    color: theme.danger,
+                    isSelected: currentStatus == DayStatus.skipped,
+                    onTap: () => _editDayStatus(
+                      date,
+                      DayStatus.skipped,
+                      setModalState,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  _buildDayStatusOption(
+                    theme,
+                    icon: Icons.remove_circle_outline,
+                    label: l10n.clearDay,
+                    color: theme.textSecondary,
+                    isSelected: currentStatus == DayStatus.pending,
+                    onTap: () => _editDayStatus(
+                      date,
+                      DayStatus.pending,
+                      setModalState,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildDayStatusOption(
+    MotoTheme theme, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+        decoration: BoxDecoration(
+          color: isSelected ? color.withValues(alpha: 0.15) : theme.bg,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? color.withValues(alpha: 0.4) : theme.borderColor,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: color, size: 20),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                color: theme.textPrimary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showDeleteConfirmation() {
@@ -426,138 +521,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  // Section correction du jour
-                  Builder(
-                    builder: (context) {
-                      final todayStatus = widget.habit.getStatusForDate(
-                        DateTime.now(),
-                      );
-                      if (todayStatus == DayStatus.pending) {
-                        return const SizedBox.shrink();
-                      }
-
-                      final isValidated = todayStatus == DayStatus.validated;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.correctToday,
-                            style: GoogleFonts.inter(
-                              fontSize: 14,
-                              color: modalTheme.textSecondary,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: modalTheme.bg,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isValidated
-                                    ? modalTheme.accentGreen.withValues(
-                                        alpha: 0.3,
-                                      )
-                                    : modalTheme.danger.withValues(alpha: 0.3),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 32,
-                                      height: 32,
-                                      decoration: BoxDecoration(
-                                        color: isValidated
-                                            ? modalTheme.accentGreen.withValues(
-                                                alpha: 0.2,
-                                              )
-                                            : modalTheme.danger.withValues(
-                                                alpha: 0.2,
-                                              ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Icon(
-                                        isValidated ? Icons.check : Icons.close,
-                                        color: isValidated
-                                            ? modalTheme.accentGreen
-                                            : modalTheme.danger,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Text(
-                                        isValidated
-                                            ? l10n.todayValidated
-                                            : l10n.todaySkipped,
-                                        style: GoogleFonts.inter(
-                                          color: modalTheme.textPrimary,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await _correctTodayStatus(
-                                      isValidated
-                                          ? DayStatus.skipped
-                                          : DayStatus.validated,
-                                      setModalState,
-                                    );
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 10,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isValidated
-                                          ? modalTheme.danger.withValues(
-                                              alpha: 0.15,
-                                            )
-                                          : modalTheme.accentGreen.withValues(
-                                              alpha: 0.15,
-                                            ),
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        color: isValidated
-                                            ? modalTheme.danger.withValues(
-                                                alpha: 0.3,
-                                              )
-                                            : modalTheme.accentGreen.withValues(
-                                                alpha: 0.3,
-                                              ),
-                                      ),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        isValidated
-                                            ? l10n.markAsSkipped
-                                            : l10n.markAsValidated,
-                                        style: GoogleFonts.inter(
-                                          color: isValidated
-                                              ? modalTheme.danger
-                                              : modalTheme.accentGreen,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                        ],
-                      );
-                    },
-                  ),
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
@@ -1070,6 +1033,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             HabitCalendar(
               habit: widget.habit,
               daysToShow: _isPro ? 35 : SubscriptionService.freeHistoryDays,
+              onDayTap: _handleDayTap,
             ),
             const SizedBox(height: 32),
             _buildStatCard(

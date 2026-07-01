@@ -518,4 +518,412 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get productNotAvailable =>
       'Produit non disponible. Essayez d\'installer depuis le Play Store ou lancez en mode release.';
+
+  @override
+  String get badgesTitle => 'Badges';
+
+  @override
+  String badgesUnlockedCount(int count, int total) {
+    return '$count sur $total débloqués';
+  }
+
+  @override
+  String get badgeUnlockedTitle => 'BADGE DÉBLOQUÉ';
+
+  @override
+  String badgeUnlockedOn(String date) {
+    return 'Débloqué le $date';
+  }
+
+  @override
+  String get badgeSecretLockedName => '???';
+
+  @override
+  String get badgeSecretLockedHint =>
+      'Continue — celui-ci se révèle quand tu le mérites.';
+
+  @override
+  String get badgeStreak7Name => 'Guerrier de la semaine';
+
+  @override
+  String get badgeStreak7Desc =>
+      'Tu as atteint une série de 7 jours sur une habitude.';
+
+  @override
+  String get badgeStreak30Name => 'Bâtisseur d\'élan';
+
+  @override
+  String get badgeStreak30Desc =>
+      'Série de 30 jours atteinte. De vraies habitudes se forment.';
+
+  @override
+  String get badgeStreak100Name => 'Centurion';
+
+  @override
+  String get badgeStreak100Desc =>
+      '100 jours consécutifs. C\'est qui tu es maintenant.';
+
+  @override
+  String get badgeStreak365Name => 'Boucle complète';
+
+  @override
+  String get badgeStreak365Desc => 'Une année entière, un jour à la fois.';
+
+  @override
+  String get badgeSquare1Name => 'Première pierre';
+
+  @override
+  String get badgeSquare1Desc => 'Tu as complété ton premier carré 1×1.';
+
+  @override
+  String get badgeSquare2Name => 'Fondation posée';
+
+  @override
+  String get badgeSquare2Desc => 'Carré 2×2 complété.';
+
+  @override
+  String get badgeSquare3Name => 'En construction';
+
+  @override
+  String get badgeSquare3Desc => 'Carré 3×3 complété.';
+
+  @override
+  String get badgeSquare5Name => 'Architecte';
+
+  @override
+  String get badgeSquare5Desc => 'Carré 5×5 complété.';
+
+  @override
+  String get badgeSquare8Name => 'Maître bâtisseur';
+
+  @override
+  String get badgeSquare8Desc => 'Carré 8×8 complété.';
+
+  @override
+  String get badgeCells10Name => 'Premiers pas';
+
+  @override
+  String get badgeCells10Desc =>
+      '10 jours validés au total, toutes habitudes confondues.';
+
+  @override
+  String get badgeCells50Name => 'Mains sûres';
+
+  @override
+  String get badgeCells50Desc => '50 jours validés au total.';
+
+  @override
+  String get badgeCells100Name => 'Club du siècle';
+
+  @override
+  String get badgeCells100Desc => '100 jours validés au total.';
+
+  @override
+  String get badgeCells500Name => 'Volonté de fer';
+
+  @override
+  String get badgeCells500Desc => '500 jours validés au total.';
+
+  @override
+  String get badgeCells1000Name => 'Légende';
+
+  @override
+  String get badgeCells1000Desc =>
+      '1000 jours validés au total. Extraordinaire.';
+
+  @override
+  String get badgeHabits3Name => 'Multitâche';
+
+  @override
+  String get badgeHabits3Desc => '3 habitudes suivies en même temps.';
+
+  @override
+  String get badgeHabits5Name => 'Jongleur';
+
+  @override
+  String get badgeHabits5Desc => '5 habitudes suivies en même temps.';
+
+  @override
+  String get badgeHabits10Name => 'Collectionneur d\'habitudes';
+
+  @override
+  String get badgeHabits10Desc => '10 habitudes suivies en même temps.';
+
+  @override
+  String get badgeEarlyBirdName => 'Lève-tôt';
+
+  @override
+  String get badgeEarlyBirdDesc => 'Habitude validée avant 7h du matin.';
+
+  @override
+  String get badgeNightOwlName => 'Oiseau de nuit';
+
+  @override
+  String get badgeNightOwlDesc => 'Habitude validée à 22h ou plus tard.';
+
+  @override
+  String get badgeWeekendWarriorName => 'Guerrier du week-end';
+
+  @override
+  String get badgeWeekendWarriorDesc => 'Constant le samedi et le dimanche.';
+
+  @override
+  String get badgeComebackName => 'Le retour';
+
+  @override
+  String get badgeComebackDesc =>
+      'De retour après 3 jours ratés ou plus d\'affilée.';
+
+  @override
+  String get badgePerfectWeekName => 'Semaine parfaite';
+
+  @override
+  String get badgePerfectWeekDesc => '7 jours d\'affilée, zéro raté.';
+
+  @override
+  String get badgePerfectMonthName => 'Mois parfait';
+
+  @override
+  String get badgePerfectMonthDesc => '30 jours d\'affilée, zéro raté.';
+
+  @override
+  String get badgeHardcoreSurvivorName => 'Survivant Hardcore';
+
+  @override
+  String get badgeHardcoreSurvivorDesc =>
+      '30 jours en mode Hardcore sans réinitialisation.';
+
+  @override
+  String get badgeZenMasterName => 'Maître zen';
+
+  @override
+  String get badgeZenMasterDesc => '100 jours validés en mode Zen.';
+
+  @override
+  String get badgeSecretPerfectionistName => 'Le perfectionniste';
+
+  @override
+  String get badgeSecretPerfectionistDesc =>
+      'Jamais raté un seul jour sur plus de 20 entrées.';
+
+  @override
+  String get badgeSecretMultitaskerName => 'Concentration des cinq anneaux';
+
+  @override
+  String get badgeSecretMultitaskerDesc =>
+      '5 habitudes actives en série au même moment.';
+
+  @override
+  String get shareMyProgress => 'Partager ma progression';
+
+  @override
+  String get shareFindOnAppStore => 'Cherche « Moto » sur l\'App Store.';
+
+  @override
+  String get shareAppMsg1 =>
+      'Je construis de meilleures habitudes avec Moto — une case à la fois. 🧱 Viens construire les tiennes.';
+
+  @override
+  String get shareAppMsg2 =>
+      'J\'ai trouvé une appli qui rend les habitudes vraiment durables : Moto. Elle transforme ta régularité en progrès visuel. 🌱';
+
+  @override
+  String get shareAppMsg3 =>
+      'Moto a transformé mes habitudes quotidiennes en quelque chose que je vois vraiment grandir. Essaie-la. 元';
+
+  @override
+  String get shareAppMsg4 =>
+      'Pas de culpabilisation sur les séries ratées, juste des carrés qui grandissent avec toi. Moto vaut le détour. 🧩';
+
+  @override
+  String get shareAppMsg5 =>
+      'Je construis ma base, un jour validé à la fois, avec Moto. Tu me rejoins ?';
+
+  @override
+  String get shareAppMsg6 =>
+      'Ce tracker d\'habitudes a transformé la régularité en jeu que j\'ai vraiment envie de gagner. Moto. 🏆';
+
+  @override
+  String get shareAppMsg7 =>
+      'De petites actions quotidiennes, visualisées en carrés qui grandissent. Voilà Moto — tente le coup.';
+
+  @override
+  String shareProgressMsg1(String habitName, int streak) {
+    return '$streak cases et ça continue sur « $habitName » avec Moto. Je construis ma base, un jour à la fois. 🧱';
+  }
+
+  @override
+  String shareProgressMsg2(String habitName, int streak) {
+    return 'Jour après jour, « $habitName » devient concret — $streak cases jusqu\'ici sur Moto. 🌱';
+  }
+
+  @override
+  String shareProgressMsg3(String habitName, int streak) {
+    return '$streak jours validés sur « $habitName ». Moto me garde honnête. 元';
+  }
+
+  @override
+  String shareProgressMsg4(String habitName, int streak) {
+    return 'Je regarde « $habitName » grandir case par case — $streak cases sur Moto.';
+  }
+
+  @override
+  String shareProgressMsg5(String habitName, int streak) {
+    return 'Ma série sur « $habitName » vient d\'atteindre $streak cases avec Moto. Petits pas, vrais progrès.';
+  }
+
+  @override
+  String shareBadgeMsg1(String badgeName) {
+    return 'Je viens de débloquer le badge « $badgeName » sur Moto ! 🏆';
+  }
+
+  @override
+  String shareBadgeMsg2(String badgeName) {
+    return 'Nouveau trophée débloqué : « $badgeName » sur Moto. Ça fait du bien. 元';
+  }
+
+  @override
+  String shareBadgeMsg3(String badgeName) {
+    return 'La régularité a payé — badge « $badgeName » obtenu sur Moto !';
+  }
+
+  @override
+  String shareBadgeMsg4(String badgeName) {
+    return '« $badgeName » — débloqué sur Moto. Une preuve de plus que les petites choses s\'additionnent.';
+  }
+
+  @override
+  String shareBadgeMsg5(String badgeName) {
+    return 'Moto vient de me donner le badge « $badgeName ». On continue. 🌱';
+  }
+
+  @override
+  String shareSquareMsg1(String habitName, int level) {
+    return 'Je viens de compléter un carré $level×$level sur « $habitName » avec Moto ! 🧱';
+  }
+
+  @override
+  String shareSquareMsg2(String habitName, int level) {
+    return '« $habitName » a franchi un cap — carré $level×$level complété sur Moto.';
+  }
+
+  @override
+  String shareSquareMsg3(String habitName, int level) {
+    return 'Un trophée de plus : $level×$level sur « $habitName ». Moto garde la preuve. 元';
+  }
+
+  @override
+  String shareSquareMsg4(String habitName, int level) {
+    return 'Carré complété ! $level×$level sur « $habitName » — construit un jour validé à la fois.';
+  }
+
+  @override
+  String shareSquareMsg5(String habitName, int level) {
+    return '« $habitName » vient d\'atteindre un carré $level×$level sur Moto. La régularité, visualisée.';
+  }
+
+  @override
+  String squareCompletedCelebration(int count) {
+    return '🎉 Carré complété ! Tu viens de terminer un $count×$count.';
+  }
+
+  @override
+  String streakMilestoneCelebration(int streak) {
+    return '🔥 Série de $streak jours ! Garde l\'élan.';
+  }
+
+  @override
+  String get proDowngradeTitle => 'Ton abonnement Pro a pris fin';
+
+  @override
+  String get proDowngradeDescription =>
+      'Pas de souci — toutes tes habitudes et ton historique sont en sécurité. Tu es de retour sur le plan gratuit pour l\'instant. Réabonne-toi quand tu veux pour tout redébloquer.';
+
+  @override
+  String get proPromoCardTitle => 'Va plus loin avec Pro';
+
+  @override
+  String get proPromoCardSubtitle =>
+      'Habitudes illimitées, historique complet, et plus.';
+
+  @override
+  String get proSocialProof =>
+      'Rejoins des milliers de personnes qui construisent de meilleures habitudes avec Moto Pro';
+
+  @override
+  String get editHistoryProTitle => 'Modifier tout l\'historique';
+
+  @override
+  String get editHistoryProDescription =>
+      'Modifier des dates de plus de 7 jours est disponible avec Pro. Les comptes gratuits peuvent corriger la dernière semaine.';
+
+  @override
+  String get clearDay => 'Effacer ce jour';
+
+  @override
+  String get quietHours => 'Heures silencieuses';
+
+  @override
+  String get quietHoursDescription =>
+      'Les rappels ne seront pas envoyés pendant cette période';
+
+  @override
+  String get quietHoursStart => 'Début';
+
+  @override
+  String get quietHoursEnd => 'Fin';
+
+  @override
+  String get sendTestNotification => 'Envoyer une notification test';
+
+  @override
+  String get sendTestNotificationDescription =>
+      'Vérifie que tes rappels fonctionnent correctement';
+
+  @override
+  String get testNotificationBody =>
+      'Ceci est une notification test de Moto. Si tu la vois, les rappels fonctionnent ! 🔔';
+
+  @override
+  String get testNotificationSent => 'Notification test envoyée';
+
+  @override
+  String reminderGentle1(String habit) {
+    return 'Pas de pression — juste $habit, quand tu es prêt aujourd\'hui.';
+  }
+
+  @override
+  String reminderGentle2(String habit) {
+    return 'Un petit rappel en douceur : $habit t\'attend.';
+  }
+
+  @override
+  String reminderGentle3(String habit) {
+    return 'Quand tu auras un moment aujourd\'hui, $habit mérite ton attention.';
+  }
+
+  @override
+  String reminderPlayful1(String habit) {
+    return 'Psst. $habit a appelé. Ça lui manque.';
+  }
+
+  @override
+  String reminderPlayful2(String habit) {
+    return 'Ton carré attend de grandir. Nourris-le avec un peu de $habit aujourd\'hui.';
+  }
+
+  @override
+  String reminderPlayful3(String habit) {
+    return 'Coup de théâtre : aujourd\'hui est un jour parfait pour $habit.';
+  }
+
+  @override
+  String reminderWeekendVibe(String habit) {
+    return 'Week-end ou pas, $habit ne prend pas de jour de repos.';
+  }
+
+  @override
+  String reminderStreakMilestone(String habit, int streak) {
+    return '$streak jours solides sur $habit. N\'arrête pas maintenant.';
+  }
 }

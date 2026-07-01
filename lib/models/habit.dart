@@ -19,7 +19,6 @@ class Habit {
   DateTime? lastValidatedDate;
   DateTime createdAt;
   Map<String, DayStatus> history;
-  Map<String, int> streakBeforeAction; // Streak avant chaque action (pour correction)
   bool reminderEnabled;
   int? reminderHour;
   int? reminderMinute;
@@ -33,13 +32,11 @@ class Habit {
     this.lastValidatedDate,
     DateTime? createdAt,
     Map<String, DayStatus>? history,
-    Map<String, int>? streakBeforeAction,
     this.reminderEnabled = false,
     this.reminderHour,
     this.reminderMinute,
   }) : createdAt = createdAt ?? DateTime.now(),
-       history = history ?? {},
-       streakBeforeAction = streakBeforeAction ?? {};
+       history = history ?? {};
 
   bool get isValidatedToday {
     if (lastValidatedDate == null) return false;
@@ -73,18 +70,6 @@ class Habit {
   void setStatusForDate(DateTime date, DayStatus status) {
     final key = _dateToKey(date);
     history[key] = status;
-  }
-
-  // Stocke le streak avant une action pour permettre la correction
-  void setStreakBeforeAction(DateTime date, int streakValue) {
-    final key = _dateToKey(date);
-    streakBeforeAction[key] = streakValue;
-  }
-
-  // Récupère le streak avant l'action pour une date donnée
-  int? getStreakBeforeAction(DateTime date) {
-    final key = _dateToKey(date);
-    return streakBeforeAction[key];
   }
 
   // Calculate success rate (percentage)
@@ -171,6 +156,50 @@ class Habit {
     return history.values.where((s) => s == DayStatus.validated).length;
   }
 
+  // Apply the penalty for a single missed day to a given streak value
+  static int applyPenalty(PenaltyMode mode, int currentStreak) {
+    switch (mode) {
+      case PenaltyMode.zen:
+        return currentStreak > 0 ? currentStreak - 1 : 0;
+      case PenaltyMode.standard:
+        int level = 1;
+        int total = 0;
+        while (total + level * level <= currentStreak) {
+          total += level * level;
+          level++;
+        }
+        return currentStreak > total ? total : currentStreak;
+      case PenaltyMode.hardcore:
+        return 0;
+    }
+  }
+
+  // Replays the full history day-by-day from creation to today, recomputing
+  // streak and lastValidatedDate from scratch. This is the single source of
+  // truth for streak correction after any historical edit (today or past).
+  void recalculateStreak() {
+    final today = DateTime.now();
+    final todayNorm = DateTime(today.year, today.month, today.day);
+    var date = DateTime(createdAt.year, createdAt.month, createdAt.day);
+
+    int newStreak = 0;
+    DateTime? newLastValidated;
+
+    while (!date.isAfter(todayNorm)) {
+      final status = getStatusForDate(date);
+      if (status == DayStatus.validated) {
+        newStreak++;
+        newLastValidated = date;
+      } else if (status == DayStatus.skipped) {
+        newStreak = applyPenalty(penaltyMode, newStreak);
+      }
+      date = date.add(const Duration(days: 1));
+    }
+
+    streak = newStreak;
+    lastValidatedDate = newLastValidated;
+  }
+
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
@@ -180,7 +209,6 @@ class Habit {
     'lastValidatedDate': lastValidatedDate?.toIso8601String(),
     'createdAt': createdAt.toIso8601String(),
     'history': history.map((key, value) => MapEntry(key, value.index)),
-    'streakBeforeAction': streakBeforeAction,
     'reminderEnabled': reminderEnabled,
     'reminderHour': reminderHour,
     'reminderMinute': reminderMinute,
@@ -200,9 +228,6 @@ class Habit {
         : null,
     history: (json['history'] as Map<String, dynamic>?)?.map(
       (key, value) => MapEntry(key, DayStatus.values[value as int]),
-    ) ?? {},
-    streakBeforeAction: (json['streakBeforeAction'] as Map<String, dynamic>?)?.map(
-      (key, value) => MapEntry(key, value as int),
     ) ?? {},
     reminderEnabled: json['reminderEnabled'] ?? false,
     reminderHour: json['reminderHour'],

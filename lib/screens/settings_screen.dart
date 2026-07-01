@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../models/habit.dart';
 import '../services/language_service.dart';
+import '../services/share_service.dart';
 import '../services/storage_service.dart';
 import '../services/notification_service.dart';
 import '../services/subscription_service.dart';
@@ -35,6 +36,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isLoading = true;
   bool _isPro = false;
   int _devTapCount = 0;
+  List<Habit> _habits = [];
+  bool _quietHoursEnabled = false;
+  int _quietHoursStart = 22 * 60;
+  int _quietHoursEnd = 7 * 60;
 
   @override
   void initState() {
@@ -47,12 +52,87 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final language = await LanguageService.getSelectedLanguage();
     final isDark = await ThemeService.isDarkMode();
     final isPro = await SubscriptionService.isPro();
+    final habits = await StorageService().loadHabits();
+    final (quietEnabled, quietStart, quietEnd) =
+        await NotificationService.getQuietHours();
     setState(() {
       _selectedLanguage = language;
       _isDarkMode = isDark;
       _isPro = isPro;
+      _habits = habits;
+      _quietHoursEnabled = quietEnabled;
+      _quietHoursStart = quietStart;
+      _quietHoursEnd = quietEnd;
       _isLoading = false;
     });
+  }
+
+  String _formatMinutes(int minutes) {
+    final h = (minutes ~/ 60).toString().padLeft(2, '0');
+    final m = (minutes % 60).toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
+  Future<void> _pickQuietHoursTime(bool isStart) async {
+    final initial = isStart ? _quietHoursStart : _quietHoursEnd;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+    final time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: initial ~/ 60, minute: initial % 60),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: theme.accentGreen,
+              surface: theme.cardBg,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (time == null) return;
+    final minutes = time.hour * 60 + time.minute;
+    setState(() {
+      if (isStart) {
+        _quietHoursStart = minutes;
+      } else {
+        _quietHoursEnd = minutes;
+      }
+    });
+    await NotificationService.setQuietHours(
+      enabled: _quietHoursEnabled,
+      startMinutes: _quietHoursStart,
+      endMinutes: _quietHoursEnd,
+    );
+  }
+
+  Future<void> _toggleQuietHours(bool value) async {
+    setState(() => _quietHoursEnabled = value);
+    await NotificationService.setQuietHours(
+      enabled: value,
+      startMinutes: _quietHoursStart,
+      endMinutes: _quietHoursEnd,
+    );
+  }
+
+  Future<void> _sendTestNotification() async {
+    final loc = AppLocalizations.of(context)!;
+    final hasPermission = await NotificationService.requestPermission();
+    if (!hasPermission) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(loc.permissionRequired)),
+        );
+      }
+      return;
+    }
+    await NotificationService.sendTestNotification(loc.testNotificationBody);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(loc.testNotificationSent)),
+      );
+    }
   }
 
   Future<void> _changeLanguage(String languageCode) async {
@@ -208,7 +288,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _shareApp() async {
     final loc = AppLocalizations.of(context)!;
-    await SharePlus.instance.share(ShareParams(text: loc.shareMessage));
+    await ShareService.shareApp(loc);
+  }
+
+  Future<void> _shareProgress() async {
+    if (_habits.isEmpty) return;
+    final loc = AppLocalizations.of(context)!;
+    final featured = _habits.reduce((a, b) => a.streak >= b.streak ? a : b);
+    await ShareService.shareProgress(featured, loc);
+  }
+
+  void _showShareOptions() {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: theme.cardBg,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.share_outlined, color: theme.accentGreen),
+                title: Text(
+                  loc.shareApp,
+                  style: GoogleFonts.inter(color: theme.textPrimary),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _shareApp();
+                },
+              ),
+              if (_habits.isNotEmpty)
+                ListTile(
+                  leading: Icon(Icons.insights_outlined, color: theme.accentGreen),
+                  title: Text(
+                    loc.shareMyProgress,
+                    style: GoogleFonts.inter(color: theme.textPrimary),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _shareProgress();
+                  },
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _replayOnboarding() async {
@@ -295,7 +427,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     iconColor: theme.accentGreen,
                     title: loc.shareApp,
                     subtitle: loc.shareAppDescription,
-                    onTap: _shareApp,
+                    onTap: _showShareOptions,
+                  ),
+                  const SizedBox(height: 40),
+
+                  // Section Notifications
+                  _buildSectionTitle(loc.notifications, theme),
+                  const SizedBox(height: 16),
+                  _buildQuietHoursCard(theme, loc),
+                  const SizedBox(height: 12),
+                  _buildActionCard(
+                    theme: theme,
+                    icon: Icons.notifications_active_outlined,
+                    iconColor: theme.accentGreen,
+                    title: loc.sendTestNotification,
+                    subtitle: loc.sendTestNotificationDescription,
+                    onTap: _sendTestNotification,
                   ),
                   const SizedBox(height: 40),
 
@@ -461,6 +608,124 @@ class _SettingsScreenState extends State<SettingsScreen> {
         fontWeight: FontWeight.w600,
         color: theme.textSecondary,
         letterSpacing: 0.5,
+      ),
+    );
+  }
+
+  Widget _buildQuietHoursCard(MotoTheme theme, AppLocalizations loc) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.cardBg,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: theme.borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      loc.quietHours,
+                      style: GoogleFonts.inter(
+                        color: theme.textPrimary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      loc.quietHoursDescription,
+                      style: GoogleFonts.inter(
+                        color: theme.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Switch(
+                value: _quietHoursEnabled,
+                onChanged: _toggleQuietHours,
+                activeTrackColor: theme.accentGreen,
+              ),
+            ],
+          ),
+          if (_quietHoursEnabled) ...[
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => _pickQuietHoursTime(true),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: theme.bg,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            loc.quietHoursStart,
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              color: theme.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _formatMinutes(_quietHoursStart),
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                              color: theme.textPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => _pickQuietHoursTime(false),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: theme.bg,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            loc.quietHoursEnd,
+                            style: GoogleFonts.inter(
+                              fontSize: 11,
+                              color: theme.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            _formatMinutes(_quietHoursEnd),
+                            style: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                              color: theme.textPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
       ),
     );
   }

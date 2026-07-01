@@ -8,7 +8,20 @@
       "Bash(flutter gen-l10n:*)",
       "Bash(flutter pub add:*)",
       "Bash(findstr:*)",
-      "Bash(del \"c:\\\\Users\\\\Marou\\\\Documents\\\\Dev\\\\moto\\\\lib\\\\services\\\\demo_data.dart\")"
+      "Bash(del \"c:\\\\Users\\\\Marou\\\\Documents\\\\Dev\\\\moto\\\\lib\\\\services\\\\demo_data.dart\")",
+      "PowerShell(Get-ChildItem \"$env:LOCALAPPDATA\\\\Pub\\\\Cache\\\\hosted\\\\pub.dev\" -Directory | Where-Object { $_.Name -match \"flutter_local_notifications-22|flutter_timezone-5\" } | Select-Object FullName)",
+      "Bash(find \"C:/Users/Marou/AppData/Local/Pub/Cache/hosted/pub.dev\" -maxdepth 1 -iname \"permission_handler-*\" -type d 2>/dev/null)",
+      "Read(//c/Users/Marou/AppData/Local/Pub/Cache/hosted/pub.dev/**)",
+      "Bash(find \"C:/Users/Marou/AppData/Local/Pub/Cache/hosted/pub.dev\" -maxdepth 1 -iname \"permission_handler_platform_interface-*\" -type d 2>/dev/null)",
+      "Bash(flutter analyze *)",
+      "Bash(flutter gen-l10n *)",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(flutter run *)",
+      "Bash(tee /tmp/flutter_run.log)",
+      "Bash(echo \"Launched in background with PID $!\")",
+      "Read(//tmp/**)",
+      "PowerShell(Get-Process | Where-Object { $_.ProcessName -match \"moto\" } | Select-Object Id, ProcessName, MainWindowTitle)"
     ]
   }
 }

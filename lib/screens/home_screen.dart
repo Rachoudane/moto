@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../models/app_badge.dart';
 import '../models/habit.dart';
+import '../services/badge_service.dart';
+import '../services/motivation_service.dart';
 import '../services/notification_service.dart';
+import '../services/share_service.dart';
 import '../services/storage_service.dart';
 import '../services/subscription_service.dart';
 import '../widgets/habit_card.dart';
+import 'badges_screen.dart';
 import 'pro_screen.dart';
 import 'settings_screen.dart';
 
@@ -33,10 +39,22 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Habit> _habits = [];
   bool _isLoading = true;
   bool _isPro = false;
+  int _badgeCount = 0;
+  bool _showPromoCard = false;
 
   String _formattedDate(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
     return DateFormat.yMMMMEEEEd(locale).format(DateTime.now());
+  }
+
+  int _completedSquaresFor(int streak) {
+    int level = 1;
+    int total = 0;
+    while (total + level * level <= streak) {
+      total += level * level;
+      level++;
+    }
+    return level - 1;
   }
 
   @override
@@ -44,6 +62,91 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadHabits();
     _loadProStatus();
+    _loadBadgeCount();
+    _checkDowngradeNotice();
+    _loadPromoCardVisibility();
+  }
+
+  Future<void> _loadBadgeCount() async {
+    final unlocked = await BadgeService.getUnlocked();
+    if (mounted) setState(() => _badgeCount = unlocked.length);
+  }
+
+  Future<void> _loadPromoCardVisibility() async {
+    final show = await SubscriptionService.shouldShowPromoCard();
+    if (mounted) setState(() => _showPromoCard = show);
+  }
+
+  Future<void> _checkDowngradeNotice() async {
+    final shouldShow = await SubscriptionService.shouldShowDowngradeNotice();
+    if (!shouldShow || !mounted) return;
+    // Defer until after first frame so context/theme/l10n are ready.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showDowngradeNotice());
+  }
+
+  void _showDowngradeNotice() {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: theme.cardBg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Icon(Icons.info_outline, color: theme.accentGreen),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                l10n.proDowngradeTitle,
+                style: GoogleFonts.inter(
+                  color: theme.textPrimary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          l10n.proDowngradeDescription,
+          style: GoogleFonts.inter(color: theme.textSecondary, height: 1.4),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              SubscriptionService.dismissDowngradeNotice();
+              Navigator.pop(context);
+            },
+            child: Text(
+              l10n.cancel,
+              style: GoogleFonts.inter(color: theme.textSecondary),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              SubscriptionService.dismissDowngradeNotice();
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProScreen()),
+              ).then((_) {
+                _loadProStatus();
+                _loadPromoCardVisibility();
+              });
+            },
+            child: Text(
+              l10n.upgrade,
+              style: GoogleFonts.inter(
+                color: theme.accentGreen,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _loadProStatus() async {
@@ -124,25 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _applyPenalty(Habit habit) {
-    switch (habit.penaltyMode) {
-      case PenaltyMode.zen:
-        if (habit.streak > 0) habit.streak--;
-        break;
-      case PenaltyMode.standard:
-        int level = 1;
-        int total = 0;
-        while (total + level * level <= habit.streak) {
-          total += level * level;
-          level++;
-        }
-        if (habit.streak > total) {
-          habit.streak = total;
-        }
-        break;
-      case PenaltyMode.hardcore:
-        habit.streak = 0;
-        break;
-    }
+    habit.streak = Habit.applyPenalty(habit.penaltyMode, habit.streak);
   }
 
   Future<void> _saveHabits() async {
@@ -153,13 +238,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final habit = _habits.firstWhere((h) => h.id == id);
     if (!habit.isValidatedToday) {
       HapticFeedback.mediumImpact();
+      final beforeCompletedSquares = _completedSquaresFor(habit.streak);
       setState(() {
-        habit.setStreakBeforeAction(DateTime.now(), habit.streak);
         habit.streak++;
         habit.lastValidatedDate = DateTime.now();
         habit.setStatusForDate(DateTime.now(), DayStatus.validated);
       });
       _saveHabits();
+      _afterValidationEffects(habit, beforeCompletedSquares);
       // Cancel today's reminder and reschedule for tomorrow
       if (habit.reminderEnabled) {
         NotificationService.cancelHabitReminder(habit.id);
@@ -174,12 +260,166 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  /// Runs badge checks and shows celebratory feedback (square completion,
+  /// streak milestone, badge unlocks) after a successful validation.
+  Future<void> _afterValidationEffects(
+    Habit habit,
+    int beforeCompletedSquares,
+  ) async {
+    final afterCompletedSquares = _completedSquaresFor(habit.streak);
+    final newBadges = await BadgeService.checkAndUnlock(_habits);
+    if (!mounted) return;
+
+    final l10n = AppLocalizations.of(context)!;
+    if (afterCompletedSquares > beforeCompletedSquares) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.squareCompletedCelebration(afterCompletedSquares)),
+          action: SnackBarAction(
+            label: l10n.shareApp,
+            onPressed: () =>
+                ShareService.shareSquareCompletion(habit, afterCompletedSquares, l10n),
+          ),
+          duration: const Duration(seconds: 5),
+        ),
+      );
+    } else if ([7, 30, 100, 365].contains(habit.currentStreak)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.streakMilestoneCelebration(habit.currentStreak)),
+          action: SnackBarAction(
+            label: l10n.shareApp,
+            onPressed: () => ShareService.shareProgress(habit, l10n),
+          ),
+          duration: const Duration(seconds: 5),
+        ),
+      );
+    }
+
+    for (final badgeType in newBadges) {
+      if (!mounted) return;
+      await _showBadgeCelebration(badgeType);
+    }
+
+    if (newBadges.isNotEmpty) {
+      _loadBadgeCount();
+    }
+  }
+
+  Future<void> _showBadgeCelebration(BadgeType type) async {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+    const amber = Color(0xFFE5C07B);
+    final unlocked = (await BadgeService.getUnlocked())
+        .firstWhere((b) => b.type == type);
+
+    if (!mounted) return;
+
+    await showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'badge',
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 350),
+      pageBuilder: (context, anim1, anim2) {
+        return Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.all(28),
+            decoration: BoxDecoration(
+              color: theme.cardBg,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: amber.withValues(alpha: 0.4)),
+              boxShadow: [
+                BoxShadow(
+                  color: amber.withValues(alpha: 0.3),
+                  blurRadius: 30,
+                  spreadRadius: 4,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(badgeIcons[type], color: amber, size: 48)
+                    .animate()
+                    .scale(
+                      duration: 500.ms,
+                      curve: Curves.elasticOut,
+                      begin: const Offset(0.3, 0.3),
+                      end: const Offset(1, 1),
+                    ),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.badgeUnlockedTitle,
+                  style: GoogleFonts.inter(
+                    color: amber,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                    letterSpacing: 1,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  ShareService.badgeName(type, l10n),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    color: theme.textPrimary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  ShareService.badgeDescription(type, l10n),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    color: theme.textSecondary,
+                    fontSize: 13,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        ShareService.shareBadge(unlocked, l10n);
+                      },
+                      child: Text(
+                        l10n.shareApp,
+                        style: GoogleFonts.inter(color: theme.accentGreen),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        l10n.cancel,
+                        style: GoogleFonts.inter(color: theme.textSecondary),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ).animate().fadeIn(duration: 250.ms).scale(
+                begin: const Offset(0.9, 0.9),
+                end: const Offset(1, 1),
+                duration: 250.ms,
+              ),
+        );
+      },
+    );
+  }
+
   void _decrementStreak(String id) {
     final habit = _habits.firstWhere((h) => h.id == id);
     if (!habit.isValidatedToday) {
       HapticFeedback.lightImpact();
       setState(() {
-        habit.setStreakBeforeAction(DateTime.now(), habit.streak);
         _applyPenalty(habit);
         habit.lastValidatedDate = DateTime.now();
         habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
@@ -227,6 +467,17 @@ class _HomeScreenState extends State<HomeScreen> {
     // Reload habits from storage to ensure latest changes
     _loadHabits();
     _loadProStatus();
+    _loadBadgeCount();
+  }
+
+  void _reorderHabits(int oldIndex, int newIndex) {
+    HapticFeedback.selectionClick();
+    setState(() {
+      if (newIndex > oldIndex) newIndex -= 1;
+      final habit = _habits.removeAt(oldIndex);
+      _habits.insert(newIndex, habit);
+    });
+    _saveHabits();
   }
 
   void _showUpgradeDialog({String? title, String? description}) {
@@ -601,6 +852,127 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Widget _buildQuoteCard(BuildContext context, MotoTheme theme) {
+    final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
+    final quote = MotivationService.getTodayQuote(locale);
+
+    return GestureDetector(
+      onTap: () => ShareService.shareQuote(quote, l10n),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.cardBg,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: theme.borderColor.withValues(alpha: 0.5)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.format_quote,
+              size: 18,
+              color: theme.accentGreen.withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                quote,
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  fontStyle: FontStyle.italic,
+                  color: theme.textSecondary,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ).animate().fadeIn(duration: 400.ms, curve: Curves.easeOut);
+  }
+
+  Widget _buildProPromoCard(
+    BuildContext context,
+    MotoTheme theme,
+    AppLocalizations l10n,
+  ) {
+    const amber = Color(0xFFE5C07B);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProScreen()),
+          ).then((_) {
+            _loadProStatus();
+            _loadPromoCardVisibility();
+          });
+        },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                amber.withValues(alpha: 0.18),
+                amber.withValues(alpha: 0.08),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: amber.withValues(alpha: 0.3)),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.star, color: amber),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.proPromoCardTitle,
+                      style: GoogleFonts.inter(
+                        color: amber,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      l10n.proPromoCardSubtitle,
+                      style: GoogleFonts.inter(
+                        color: theme.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  SubscriptionService.dismissPromoCard();
+                  setState(() => _showPromoCard = false);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Icon(
+                    Icons.close,
+                    size: 16,
+                    color: theme.textSecondary.withValues(alpha: 0.6),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<MotoTheme>()!;
@@ -678,6 +1050,59 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
+                                      builder: (context) => const BadgesScreen(),
+                                    ),
+                                  ).then((_) => _loadBadgeCount());
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      Icon(
+                                        Icons.emoji_events_outlined,
+                                        color: theme.textSecondary.withValues(
+                                          alpha: 0.5,
+                                        ),
+                                        size: 22,
+                                      ),
+                                      if (_badgeCount > 0)
+                                        Positioned(
+                                          right: -4,
+                                          top: -4,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 4,
+                                              vertical: 1,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFE5C07B),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              '$_badgeCount',
+                                              style: GoogleFonts.inter(
+                                                fontSize: 9,
+                                                fontWeight: FontWeight.w700,
+                                                color: theme.bg,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (context) => SettingsScreen(
                                         onLanguageChanged:
                                             widget.onLanguageChanged ?? (_) {},
@@ -689,6 +1114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ).then((_) {
                                     _loadHabits();
                                     _loadProStatus();
+                                    _loadPromoCardVisibility();
                                   });
                                 },
                                 child: Padding(
@@ -707,7 +1133,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 36),
+                        const SizedBox(height: 20),
+                        _buildQuoteCard(context, theme),
+                        if (_showPromoCard && _habits.isNotEmpty) ...[
+                          const SizedBox(height: 16),
+                          _buildProPromoCard(context, theme, l10n),
+                        ],
+                        const SizedBox(height: 16),
 
                         Expanded(
                           child: _habits.isEmpty
@@ -744,7 +1176,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                 )
-                              : ListView.separated(
+                              : ReorderableListView.builder(
+                                  buildDefaultDragHandles: false,
                                   padding: EdgeInsets.only(
                                     bottom:
                                         MediaQuery.of(
@@ -752,19 +1185,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ).viewPadding.bottom +
                                         80,
                                   ),
+                                  onReorder: _reorderHabits,
                                   itemCount: _habits.length,
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 14),
                                   itemBuilder: (context, index) {
                                     final habit = _habits[index];
-                                    return HabitCard(
-                                      habit: habit,
-                                      onIncrement: () =>
-                                          _incrementStreak(habit.id),
-                                      onDecrement: () =>
-                                          _decrementStreak(habit.id),
-                                      onDelete: () => _deleteHabit(habit.id),
-                                      onUpdate: _updateHabit,
+                                    return Padding(
+                                      key: ValueKey(habit.id),
+                                      padding: const EdgeInsets.only(bottom: 14),
+                                      child: HabitCard(
+                                        habit: habit,
+                                        reorderIndex: index,
+                                        onIncrement: () =>
+                                            _incrementStreak(habit.id),
+                                        onDecrement: () =>
+                                            _decrementStreak(habit.id),
+                                        onDelete: () => _deleteHabit(habit.id),
+                                        onUpdate: _updateHabit,
+                                      ),
                                     );
                                   },
                                 ),

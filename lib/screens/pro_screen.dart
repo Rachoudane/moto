@@ -177,6 +177,18 @@ class _ProScreenState extends State<ProScreen> {
                           textAlign: TextAlign.center,
                         ),
 
+                        const SizedBox(height: 12),
+
+                        Text(
+                          loc.proSocialProof,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: _proGold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+
                         const SizedBox(height: 32),
 
                         // Features list

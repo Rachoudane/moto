@@ -12,6 +12,7 @@ class HabitCard extends StatelessWidget {
   final VoidCallback onDecrement;
   final VoidCallback onDelete;
   final VoidCallback onUpdate;
+  final int? reorderIndex;
 
   const HabitCard({
     super.key,
@@ -20,6 +21,7 @@ class HabitCard extends StatelessWidget {
     required this.onDecrement,
     required this.onDelete,
     required this.onUpdate,
+    this.reorderIndex,
   });
 
   (int, int) _getCurrentProgress() {
@@ -166,6 +168,17 @@ class HabitCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   HabitProgress(streak: habit.streak),
+                  if (reorderIndex != null) ...[
+                    const SizedBox(width: 8),
+                    ReorderableDragStartListener(
+                      index: reorderIndex!,
+                      child: Icon(
+                        Icons.drag_indicator,
+                        color: theme.textSecondary.withValues(alpha: 0.4),
+                        size: 20,
+                      ),
+                    ),
+                  ],
                 ],
               ),
               const SizedBox(height: 14),

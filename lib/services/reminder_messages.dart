@@ -3,6 +3,7 @@ import '../l10n/app_localizations_en.dart';
 import '../l10n/app_localizations_fr.dart';
 import '../l10n/app_localizations_ja.dart';
 import '../models/habit.dart';
+import 'motivation_service.dart';
 
 class ReminderMessages {
   static AppLocalizations _getLocalizations(String locale) {
@@ -52,6 +53,9 @@ class ReminderMessages {
       isQuitting: habit.isQuitting,
       timeOfDay: timeOfDay,
       progressLevel: progressLevel,
+      streak: streak,
+      locale: locale,
+      isWeekend: now.weekday == DateTime.saturday || now.weekday == DateTime.sunday,
     );
 
     // Return random message
@@ -67,6 +71,9 @@ class ReminderMessages {
     required bool isQuitting,
     required String timeOfDay,
     required String progressLevel,
+    required int streak,
+    required String locale,
+    required bool isWeekend,
   }) {
     final messages = <String>[];
 
@@ -133,6 +140,29 @@ class ReminderMessages {
           messages.add(l10n.reminderAdvancedMotivation(habitName));
           break;
       }
+    }
+
+    // Gentle nudges, playful variants and quote-of-day apply regardless of
+    // building vs quitting — this is what pushes the pool past 20 distinct
+    // variants per language while staying contextually relevant.
+    messages.add(l10n.reminderGentle1(habitName));
+    messages.add(l10n.reminderGentle2(habitName));
+    messages.add(l10n.reminderGentle3(habitName));
+    messages.add(l10n.reminderPlayful1(habitName));
+    messages.add(l10n.reminderPlayful2(habitName));
+    messages.add(l10n.reminderPlayful3(habitName));
+
+    if (isWeekend) {
+      messages.add(l10n.reminderWeekendVibe(habitName));
+    }
+
+    const milestones = [7, 14, 30, 50, 100, 200, 365];
+    if (milestones.contains(streak)) {
+      messages.add(l10n.reminderStreakMilestone(habitName, streak));
+    }
+
+    if (timeOfDay == 'morning') {
+      messages.add(MotivationService.getTodayQuote(locale));
     }
 
     return messages;

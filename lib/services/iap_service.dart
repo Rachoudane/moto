@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'subscription_service.dart';
 
@@ -75,10 +75,57 @@ class IAPService {
       }
 
       _isInitialized = true;
+
+      // Best-effort subscription lifecycle re-verification (never touches
+      // habit data; only ever downgrades Pro status after a grace period).
+      unawaited(_verifyLifecycle());
     } catch (e) {
       debugPrint('IAP initialization error: $e');
     } finally {
       _isLoading = false;
+    }
+  }
+
+  /// Silently checks whether a previously-Pro user still has an active
+  /// entitlement, using [restorePurchases] as a proxy since this app has no
+  /// backend receipt validation. If the store confirms nothing active and
+  /// the last successful verification is older than the grace period,
+  /// downgrades to free and flags a one-time, respectful notice.
+  static Future<void> _verifyLifecycle() async {
+    final isPro = await SubscriptionService.isPro();
+    if (!isPro) return;
+
+    bool sawActiveEntitlement = false;
+    final sub = InAppPurchase.instance.purchaseStream.listen((purchases) {
+      if (purchases.any(
+        (p) =>
+            p.status == PurchaseStatus.purchased ||
+            p.status == PurchaseStatus.restored,
+      )) {
+        sawActiveEntitlement = true;
+      }
+    });
+
+    try {
+      await InAppPurchase.instance.restorePurchases();
+    } catch (e) {
+      debugPrint('IAP lifecycle restore error: $e');
+    }
+
+    await Future.delayed(const Duration(seconds: 4));
+    await sub.cancel();
+
+    if (sawActiveEntitlement) {
+      await SubscriptionService.recordVerified();
+      return;
+    }
+
+    final lastVerified = await SubscriptionService.getLastVerifiedAt();
+    final graceExpired = lastVerified == null ||
+        DateTime.now().difference(lastVerified) > const Duration(days: 3);
+    if (graceExpired) {
+      await SubscriptionService.setPro(false);
+      await SubscriptionService.flagDowngradeNotice();
     }
   }
 
