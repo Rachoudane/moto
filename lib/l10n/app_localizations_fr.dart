@@ -36,6 +36,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get toQuit => 'À arrêter';
 
   @override
+  String get frequency => 'Fréquence';
+
+  @override
+  String get everyDay => 'Tous les jours';
+
+  @override
+  String get specificDays => 'Jours spécifiques';
+
+  @override
+  String get restDay => 'Jour de repos';
+
+  @override
   String get penaltyMode => 'Mode de pénalité';
 
   @override

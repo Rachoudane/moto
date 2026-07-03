@@ -22,7 +22,11 @@
       "Bash(echo \"Launched in background with PID $!\")",
       "Read(//tmp/**)",
       "PowerShell(Get-Process | Where-Object { $_.ProcessName -match \"moto\" } | Select-Object Id, ProcessName, MainWindowTitle)",
-      "Bash(flutter build *)"
+      "Bash(flutter build *)",
+      "Bash(flutter devices *)",
+      "Bash(echo \"started with pid $!\")",
+      "Bash(tasklist)",
+      "Bash(adb -s R5CY91F0V2T shell pm list packages)"
     ]
   }
 }

@@ -13,6 +13,8 @@ import '../services/notification_service.dart';
 import '../services/share_service.dart';
 import '../services/storage_service.dart';
 import '../services/subscription_service.dart';
+import '../utils/text_utils.dart';
+import '../widgets/frequency_picker.dart';
 import '../widgets/habit_card.dart';
 import 'badges_screen.dart';
 import 'pro_screen.dart';
@@ -177,49 +179,44 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  /// Fills in any untouched scheduled days between a habit's last known
+  /// activity and today as "skipped", then recalculates the streak from
+  /// scratch. Only ever touches days still marked `pending` so it's safe to
+  /// call repeatedly (e.g. every time habits reload) without re-penalizing
+  /// days that were already accounted for — including days a user just
+  /// corrected by hand in the history editor.
   void _checkMissedDays() {
     bool hasChanges = false;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
     for (final habit in _habits) {
-      if (habit.lastValidatedDate != null && habit.daysMissed > 0) {
-        // Cas normal: habitude déjà validée au moins une fois
-        final lastDate = DateTime(
-          habit.lastValidatedDate!.year,
-          habit.lastValidatedDate!.month,
-          habit.lastValidatedDate!.day,
-        );
-        final missedDays = habit.daysMissed;
-        for (int i = 1; i <= missedDays; i++) {
-          final missedDate = lastDate.add(Duration(days: i));
-          habit.setStatusForDate(missedDate, DayStatus.skipped);
-          _applyPenalty(habit);
-        }
-        // Set to the last missed day (yesterday), not today, so user can still vote today
-        habit.lastValidatedDate = lastDate.add(Duration(days: missedDays));
-        hasChanges = true;
-      } else if (habit.lastValidatedDate == null) {
-        // Nouvelle habitude jamais validée: vérifier les jours depuis la création
-        final createdDate = DateTime(
-          habit.createdAt.year,
-          habit.createdAt.month,
-          habit.createdAt.day,
-        );
-        final daysSinceCreation = today.difference(createdDate).inDays;
+      final referenceDate = habit.lastValidatedDate != null
+          ? DateTime(
+              habit.lastValidatedDate!.year,
+              habit.lastValidatedDate!.month,
+              habit.lastValidatedDate!.day,
+            )
+          : DateTime(
+              habit.createdAt.year,
+              habit.createdAt.month,
+              habit.createdAt.day,
+            );
 
-        if (daysSinceCreation > 0) {
-          // Marquer les jours passés (sauf aujourd'hui) comme manqués
-          for (int i = 0; i < daysSinceCreation; i++) {
-            final missedDate = createdDate.add(Duration(days: i));
-            // Ne marquer que si pas déjà dans l'historique
-            if (habit.getStatusForDate(missedDate) == DayStatus.pending) {
-              habit.setStatusForDate(missedDate, DayStatus.skipped);
-              _applyPenalty(habit);
-            }
-          }
-          hasChanges = true;
+      var cursor = referenceDate.add(const Duration(days: 1));
+      bool changedForHabit = false;
+      while (cursor.isBefore(today)) {
+        if (habit.isScheduledDay(cursor) &&
+            habit.getStatusForDate(cursor) == DayStatus.pending) {
+          habit.setStatusForDate(cursor, DayStatus.skipped);
+          changedForHabit = true;
         }
+        cursor = cursor.add(const Duration(days: 1));
+      }
+
+      if (changedForHabit) {
+        habit.recalculateStreak();
+        hasChanges = true;
       }
     }
 
@@ -275,27 +272,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final l10n = AppLocalizations.of(context)!;
     if (afterCompletedSquares > beforeCompletedSquares) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.squareCompletedCelebration(afterCompletedSquares)),
-          action: SnackBarAction(
-            label: l10n.shareApp,
-            onPressed: () =>
-                ShareService.shareSquareCompletion(habit, afterCompletedSquares, l10n),
-          ),
-          duration: const Duration(seconds: 5),
-        ),
+      _showCelebrationSnackBar(
+        icon: Icons.emoji_events_rounded,
+        iconColor: const Color(0xFFE5C07B),
+        message: l10n.squareCompletedCelebration(afterCompletedSquares),
+        actionLabel: l10n.shareApp,
+        onAction: () =>
+            ShareService.shareSquareCompletion(habit, afterCompletedSquares, l10n),
       );
     } else if ([7, 30, 100, 365].contains(habit.currentStreak)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.streakMilestoneCelebration(habit.currentStreak)),
-          action: SnackBarAction(
-            label: l10n.shareApp,
-            onPressed: () => ShareService.shareProgress(habit, l10n),
-          ),
-          duration: const Duration(seconds: 5),
-        ),
+      _showCelebrationSnackBar(
+        icon: Icons.local_fire_department_rounded,
+        iconColor: const Color(0xFFE5C07B),
+        message: l10n.streakMilestoneCelebration(habit.currentStreak),
+        actionLabel: l10n.shareApp,
+        onAction: () => ShareService.shareProgress(habit, l10n),
       );
     }
 
@@ -307,6 +298,51 @@ class _HomeScreenState extends State<HomeScreen> {
     if (newBadges.isNotEmpty) {
       _loadBadgeCount();
     }
+  }
+
+  void _showCelebrationSnackBar({
+    required IconData icon,
+    required Color iconColor,
+    required String message,
+    required String actionLabel,
+    required VoidCallback onAction,
+  }) {
+    final theme = Theme.of(context).extension<MotoTheme>()!;
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: theme.cardBg,
+        behavior: SnackBarBehavior.floating,
+        elevation: 0,
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(color: iconColor.withValues(alpha: 0.35)),
+        ),
+        duration: const Duration(seconds: 5),
+        content: Row(
+          children: [
+            Icon(icon, color: iconColor, size: 20),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: GoogleFonts.inter(
+                  color: theme.textPrimary,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                ),
+              ),
+            ),
+          ],
+        ),
+        action: SnackBarAction(
+          label: actionLabel,
+          textColor: theme.accentGreen,
+          onPressed: onAction,
+        ),
+      ),
+    );
   }
 
   Future<void> _showBadgeCelebration(BadgeType type) async {
@@ -442,15 +478,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _addHabit(String name, bool isQuitting, PenaltyMode penaltyMode) {
+  void _addHabit(
+    String name,
+    bool isQuitting,
+    PenaltyMode penaltyMode,
+    Set<int> scheduledWeekdays,
+  ) {
     HapticFeedback.lightImpact();
     setState(() {
       _habits.add(
         Habit(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
-          name: name,
+          name: capitalizeFirst(name),
           isQuitting: isQuitting,
           penaltyMode: penaltyMode,
+          scheduledWeekdays: scheduledWeekdays,
         ),
       );
     });
@@ -548,6 +590,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String name = '';
     bool isQuitting = false;
     PenaltyMode penaltyMode = PenaltyMode.standard;
+    Set<int> scheduledWeekdays = {0, 1, 2, 3, 4, 5, 6};
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<MotoTheme>()!;
 
@@ -587,6 +630,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 24),
                   TextField(
                     autofocus: true,
+                    textCapitalization: TextCapitalization.sentences,
                     style: GoogleFonts.inter(color: modalTheme.textPrimary),
                     decoration: InputDecoration(
                       hintText: l10n.habitName,
@@ -744,13 +788,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   const SizedBox(height: 24),
+                  FrequencyPicker(
+                    selectedWeekdays: scheduledWeekdays,
+                    onChanged: (updated) =>
+                        setModalState(() => scheduledWeekdays = updated),
+                  ),
+
+                  const SizedBox(height: 24),
 
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
                       onTap: () {
                         if (name.trim().isNotEmpty) {
-                          _addHabit(name.trim(), isQuitting, penaltyMode);
+                          _addHabit(
+                            name.trim(),
+                            isQuitting,
+                            penaltyMode,
+                            scheduledWeekdays,
+                          );
                           Navigator.pop(context);
                         }
                       },
@@ -858,10 +914,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildQuoteCard(BuildContext context, MotoTheme theme) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
-    final quote = MotivationService.getTodayQuote(locale);
+    final parts = MotivationService.getTodayQuoteParts(locale);
+    final fullQuote = MotivationService.getTodayQuote(locale);
 
     return GestureDetector(
-      onTap: () => ShareService.shareQuote(quote, l10n),
+      onTap: () => ShareService.shareQuote(fullQuote, l10n),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16),
@@ -880,14 +937,45 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(
-                quote,
-                style: GoogleFonts.inter(
-                  fontSize: 13,
-                  fontStyle: FontStyle.italic,
-                  color: theme.textSecondary,
-                  height: 1.4,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (parts.word.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: parts.word,
+                              style: GoogleFonts.inter(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: theme.accentGreen,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '  (${parts.romaji})',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                color: theme.textSecondary.withValues(alpha: 0.8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  Text(
+                    parts.meaning,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontStyle: FontStyle.italic,
+                      color: theme.textSecondary,
+                      height: 1.4,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

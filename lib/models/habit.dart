@@ -10,6 +10,10 @@ enum DayStatus {
   pending,
 }
 
+/// All 7 weekdays, Monday(0) through Sunday(6). Used as the default
+/// schedule so existing habits without a saved frequency behave as "daily".
+const Set<int> allWeekdays = {0, 1, 2, 3, 4, 5, 6};
+
 class Habit {
   final String id;
   String name;
@@ -22,6 +26,9 @@ class Habit {
   bool reminderEnabled;
   int? reminderHour;
   int? reminderMinute;
+  // Weekdays this habit is scheduled on: 0 = Monday ... 6 = Sunday.
+  // All 7 days selected means "every day".
+  Set<int> scheduledWeekdays;
 
   Habit({
     required this.id,
@@ -35,8 +42,17 @@ class Habit {
     this.reminderEnabled = false,
     this.reminderHour,
     this.reminderMinute,
+    Set<int>? scheduledWeekdays,
   }) : createdAt = createdAt ?? DateTime.now(),
-       history = history ?? {};
+       history = history ?? {},
+       scheduledWeekdays = scheduledWeekdays ?? {...allWeekdays};
+
+  bool get isDailyFrequency => scheduledWeekdays.length >= 7;
+
+  bool isScheduledDay(DateTime date) =>
+      scheduledWeekdays.contains(date.weekday - 1);
+
+  bool get isScheduledToday => isScheduledDay(DateTime.now());
 
   bool get isValidatedToday {
     if (lastValidatedDate == null) return false;
@@ -79,17 +95,27 @@ class Habit {
     return (validated / history.length) * 100;
   }
 
-  // Get current streak (consecutive validated days ending today or yesterday)
+  // Get current streak (consecutive scheduled days validated, ending today or
+  // yesterday). Days the habit isn't scheduled on are skipped over rather
+  // than breaking the streak, so a 3x/week habit isn't punished for its
+  // rest days.
   int get currentStreak {
     int streak = 0;
     var date = DateTime.now();
-    
+    date = DateTime(date.year, date.month, date.day);
+    final createdNorm = DateTime(createdAt.year, createdAt.month, createdAt.day);
+
     // If not validated today, start from yesterday
-    if (getStatusForDate(date) != DayStatus.validated) {
+    if (!isScheduledDay(date) || getStatusForDate(date) != DayStatus.validated) {
       date = date.subtract(const Duration(days: 1));
     }
-    
-    while (getStatusForDate(date) == DayStatus.validated) {
+
+    while (!date.isBefore(createdNorm)) {
+      if (!isScheduledDay(date)) {
+        date = date.subtract(const Duration(days: 1));
+        continue;
+      }
+      if (getStatusForDate(date) != DayStatus.validated) break;
       streak++;
       date = date.subtract(const Duration(days: 1));
     }
@@ -212,6 +238,7 @@ class Habit {
     'reminderEnabled': reminderEnabled,
     'reminderHour': reminderHour,
     'reminderMinute': reminderMinute,
+    'scheduledWeekdays': scheduledWeekdays.toList(),
   };
 
   factory Habit.fromJson(Map<String, dynamic> json) => Habit(
@@ -232,5 +259,9 @@ class Habit {
     reminderEnabled: json['reminderEnabled'] ?? false,
     reminderHour: json['reminderHour'],
     reminderMinute: json['reminderMinute'],
+    scheduledWeekdays: (json['scheduledWeekdays'] as List<dynamic>?)
+            ?.map((e) => e as int)
+            .toSet() ??
+        {...allWeekdays},
   );
 }

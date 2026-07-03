@@ -196,6 +196,21 @@ class HabitCard extends StatelessWidget {
                     ),
                   ),
                 )
+              else if (!habit.isScheduledToday)
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Center(
+                    child: Text(
+                      l10n.restDay,
+                      style: GoogleFonts.inter(
+                        fontSize: 13,
+                        color: theme.textSecondary.withValues(alpha: 0.5),
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                )
               else
                 Row(
                   children: [

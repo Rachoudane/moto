@@ -7,6 +7,8 @@ import '../models/habit.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
 import '../services/subscription_service.dart';
+import '../utils/text_utils.dart';
+import '../widgets/frequency_picker.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
 import 'pro_screen.dart';
@@ -161,7 +163,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<MotoTheme>()!;
     final locale = Localizations.localeOf(context).toString();
-    final currentStatus = widget.habit.getStatusForDate(date);
 
     showModalBottomSheet(
       context: context,
@@ -172,6 +173,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
+            final currentStatus = widget.habit.getStatusForDate(date);
             return Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
               child: Column(
@@ -329,6 +331,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     String name = widget.habit.name;
     bool isQuitting = widget.habit.isQuitting;
     PenaltyMode penaltyMode = widget.habit.penaltyMode;
+    Set<int> scheduledWeekdays = {...widget.habit.scheduledWeekdays};
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<MotoTheme>()!;
 
@@ -368,6 +371,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   const SizedBox(height: 24),
                   TextFormField(
                     initialValue: name,
+                    textCapitalization: TextCapitalization.sentences,
                     style: GoogleFonts.inter(color: modalTheme.textPrimary),
                     decoration: InputDecoration(
                       hintText: l10n.habitName,
@@ -521,15 +525,22 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
+                  FrequencyPicker(
+                    selectedWeekdays: scheduledWeekdays,
+                    onChanged: (updated) =>
+                        setModalState(() => scheduledWeekdays = updated),
+                  ),
+                  const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
                       onTap: () async {
                         if (name.trim().isNotEmpty) {
                           // Update the habit object
-                          widget.habit.name = name.trim();
+                          widget.habit.name = capitalizeFirst(name.trim());
                           widget.habit.isQuitting = isQuitting;
                           widget.habit.penaltyMode = penaltyMode;
+                          widget.habit.scheduledWeekdays = scheduledWeekdays;
 
                           // Save to storage
                           final allHabits = await _storageService.loadHabits();
@@ -1041,6 +1052,19 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
               title: l10n.penaltyMode,
               value: _getModeName(l10n, widget.habit.penaltyMode),
               subtitle: _getModeDescription(l10n, widget.habit.penaltyMode),
+            ),
+            const SizedBox(height: 16),
+            _buildStatCard(
+              context,
+              title: l10n.frequency,
+              value: widget.habit.isDailyFrequency
+                  ? l10n.everyDay
+                  : l10n.specificDays,
+              subtitle: frequencySummary(
+                l10n,
+                Localizations.localeOf(context).toString(),
+                widget.habit.scheduledWeekdays,
+              ),
             ),
             const SizedBox(height: 16),
             _buildReminderCard(context),

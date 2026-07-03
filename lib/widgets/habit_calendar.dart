@@ -70,10 +70,14 @@ class HabitCalendar extends StatelessWidget {
                 final isFuture = date.isAfter(todayNorm);
                 final isToday = date == todayNorm;
                 final status = habit.getStatusForDate(date);
+                final isRestDay =
+                    status == DayStatus.pending && !habit.isScheduledDay(date);
 
                 Color cellColor;
                 if (isFuture) {
                   cellColor = theme.emptySquare.withValues(alpha: 0.3);
+                } else if (isRestDay) {
+                  cellColor = theme.emptySquare.withValues(alpha: 0.4);
                 } else {
                   switch (status) {
                     case DayStatus.validated:
@@ -103,7 +107,7 @@ class HabitCalendar extends StatelessWidget {
                     child: Text(
                       date.day.toString(),
                       style: GoogleFonts.inter(
-                        color: isFuture
+                        color: isFuture || isRestDay
                             ? theme.textSecondary.withValues(alpha: 0.3)
                             : status == DayStatus.validated
                                 ? validatedTextColor

@@ -91,6 +91,17 @@ class _MotoAppState extends State<MotoApp> {
         systemNavigationBarIconBrightness: Brightness.light,
       ),
     ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: MotoColors.darkCardBg,
+      contentTextStyle: GoogleFonts.inter(color: MotoColors.darkTextPrimary),
+      actionTextColor: MotoColors.darkAccentGreen,
+      behavior: SnackBarBehavior.floating,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: MotoColors.darkBorderColor),
+      ),
+    ),
     extensions: [MotoColors.dark],
   );
 
@@ -107,6 +118,17 @@ class _MotoAppState extends State<MotoApp> {
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: MotoColors.lightCardBg,
+      contentTextStyle: GoogleFonts.inter(color: MotoColors.lightTextPrimary),
+      actionTextColor: MotoColors.lightAccentGreen,
+      behavior: SnackBarBehavior.floating,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: MotoColors.lightBorderColor),
       ),
     ),
     extensions: [MotoColors.light],

@@ -36,6 +36,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get toQuit => 'やめること';
 
   @override
+  String get frequency => '頻度';
+
+  @override
+  String get everyDay => '毎日';
+
+  @override
+  String get specificDays => '特定の曜日';
+
+  @override
+  String get restDay => '休息日';
+
+  @override
   String get penaltyMode => 'ペナルティモード';
 
   @override

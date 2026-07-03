@@ -154,6 +154,30 @@ abstract class AppLocalizations {
   /// **'To quit'**
   String get toQuit;
 
+  /// No description provided for @frequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get frequency;
+
+  /// No description provided for @everyDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get everyDay;
+
+  /// No description provided for @specificDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific days'**
+  String get specificDays;
+
+  /// No description provided for @restDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest day'**
+  String get restDay;
+
   /// No description provided for @penaltyMode.
   ///
   /// In en, this message translates to:

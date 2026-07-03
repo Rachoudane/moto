@@ -36,6 +36,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get toQuit => 'To quit';
 
   @override
+  String get frequency => 'Frequency';
+
+  @override
+  String get everyDay => 'Every day';
+
+  @override
+  String get specificDays => 'Specific days';
+
+  @override
+  String get restDay => 'Rest day';
+
+  @override
   String get penaltyMode => 'Penalty mode';
 
   @override
