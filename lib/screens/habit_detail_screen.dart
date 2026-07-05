@@ -3,12 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
+import '../models/app_badge.dart';
 import '../models/habit.dart';
 import '../services/badge_service.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
 import '../services/subscription_service.dart';
 import '../utils/text_utils.dart';
+import '../widgets/badge_celebration.dart';
 import '../widgets/frequency_picker.dart';
 import '../widgets/habit_calendar.dart';
 import '../widgets/habit_progress.dart';
@@ -133,14 +135,23 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
 
     final allHabits = await _storageService.loadHabits();
     final habitIndex = allHabits.indexWhere((h) => h.id == habit.id);
+    var newBadges = <BadgeType>[];
     if (habitIndex != -1) {
       allHabits[habitIndex] = habit;
       await _storageService.saveHabits(allHabits);
-      await BadgeService.checkAndUnlock(allHabits);
+      newBadges = await BadgeService.checkAndUnlock(allHabits);
     }
 
     setModalState(() {});
     widget.onUpdate();
+
+    // Show each newly-unlocked badge in turn - a bulk history edit can cross
+    // several thresholds at once, so these must stack sequentially rather
+    // than overlap.
+    for (final badgeType in newBadges) {
+      if (!mounted) return;
+      await showBadgeCelebration(context, badgeType);
+    }
   }
 
   String _dateKey(DateTime date) =>
