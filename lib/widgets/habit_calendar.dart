@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../main.dart';
 import '../models/habit.dart';
+import '../utils/text_utils.dart';
 
 class HabitCalendar extends StatelessWidget {
   final Habit habit;
@@ -137,7 +138,8 @@ class HabitCalendar extends StatelessWidget {
     return List.generate(7, (i) {
       final date = DateTime(2024, 1, 1 + i);
       final label = formatter.format(date);
-      return label.length > 2 ? label.substring(0, 2) : label;
+      final truncated = label.length > 2 ? label.substring(0, 2) : label;
+      return capitalizeFirst(truncated);
     });
   }
 }

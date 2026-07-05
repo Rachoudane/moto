@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/habit.dart';
+import '../services/badge_service.dart';
 import '../services/notification_service.dart';
 import '../services/storage_service.dart';
 import '../services/subscription_service.dart';
@@ -135,6 +136,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     if (habitIndex != -1) {
       allHabits[habitIndex] = habit;
       await _storageService.saveHabits(allHabits);
+      await BadgeService.checkAndUnlock(allHabits);
     }
 
     setModalState(() {});
@@ -177,13 +179,18 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           builder: (context, setModalState) {
             final currentStatus = widget.habit.getStatusForDate(date);
             return Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+              padding: EdgeInsets.fromLTRB(
+                24,
+                24,
+                24,
+                32 + MediaQuery.of(context).viewPadding.bottom,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    DateFormat.yMMMMEEEEd(locale).format(date),
+                    capitalizeFirst(DateFormat.yMMMMEEEEd(locale).format(date)),
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
