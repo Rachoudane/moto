@@ -78,6 +78,22 @@ class Habit {
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 
+  static DateTime _keyToDate(String key) {
+    final parts = key.split('-');
+    return DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+  }
+
+  // Earliest date streak calculations should consider: the habit's creation
+  // date, or an earlier history entry if the user has backfilled days before
+  // creation. Editing any day - before creation or not - should be able to
+  // move the streak/square.
+  DateTime get _earliestRelevantDate {
+    final createdNorm = DateTime(createdAt.year, createdAt.month, createdAt.day);
+    if (history.isEmpty) return createdNorm;
+    final earliestHistoryDate = _keyToDate((history.keys.toList()..sort()).first);
+    return earliestHistoryDate.isBefore(createdNorm) ? earliestHistoryDate : createdNorm;
+  }
+
   DayStatus getStatusForDate(DateTime date) {
     final key = _dateToKey(date);
     return history[key] ?? DayStatus.pending;
@@ -103,14 +119,14 @@ class Habit {
     int streak = 0;
     var date = DateTime.now();
     date = DateTime(date.year, date.month, date.day);
-    final createdNorm = DateTime(createdAt.year, createdAt.month, createdAt.day);
+    final earliestNorm = _earliestRelevantDate;
 
     // If not validated today, start from yesterday
     if (!isScheduledDay(date) || getStatusForDate(date) != DayStatus.validated) {
       date = date.subtract(const Duration(days: 1));
     }
 
-    while (!date.isBefore(createdNorm)) {
+    while (!date.isBefore(earliestNorm)) {
       if (!isScheduledDay(date)) {
         date = date.subtract(const Duration(days: 1));
         continue;
@@ -151,8 +167,7 @@ class Habit {
     final dayTotal = <int, int>{};
     
     history.forEach((dateKey, status) {
-      final parts = dateKey.split('-');
-      final date = DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+      final date = _keyToDate(dateKey);
       final weekday = date.weekday - 1; // 0-6
       
       dayTotal[weekday] = (dayTotal[weekday] ?? 0) + 1;
@@ -206,7 +221,7 @@ class Habit {
   void recalculateStreak() {
     final today = DateTime.now();
     final todayNorm = DateTime(today.year, today.month, today.day);
-    var date = DateTime(createdAt.year, createdAt.month, createdAt.day);
+    var date = _earliestRelevantDate;
 
     int newStreak = 0;
     DateTime? newLastValidated;
