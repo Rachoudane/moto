@@ -16,11 +16,13 @@ import 'pro_screen.dart';
 class HabitDetailScreen extends StatefulWidget {
   final Habit habit;
   final VoidCallback onUpdate;
+  final VoidCallback onDelete;
 
   const HabitDetailScreen({
     super.key,
     required this.habit,
     required this.onUpdate,
+    required this.onDelete,
   });
 
   @override
@@ -312,7 +314,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
             onPressed: () {
               Navigator.pop(context);
               Navigator.pop(context);
-              widget.onUpdate();
+              widget.onDelete();
             },
             child: Text(
               l10n.delete,

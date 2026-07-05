@@ -100,8 +100,11 @@ class HabitCard extends StatelessWidget {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  HabitDetailScreen(habit: habit, onUpdate: onUpdate),
+              builder: (context) => HabitDetailScreen(
+                habit: habit,
+                onUpdate: onUpdate,
+                onDelete: onDelete,
+              ),
             ),
           );
           onUpdate();
