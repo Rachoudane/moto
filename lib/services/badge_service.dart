@@ -6,6 +6,12 @@ import '../models/habit.dart';
 class BadgeService {
   static const String _key = 'unlocked_badges';
 
+  // Serializes checkAndUnlock calls so overlapping invocations (e.g. a
+  // validation tap and a background missed-days recalculation) can't
+  // interleave their read-modify-write of the persisted badge list and
+  // silently drop each other's newly-unlocked badges.
+  static Future<void> _queue = Future.value();
+
   static int _completedSquares(Habit habit) {
     int level = 1;
     int total = 0;
@@ -34,8 +40,17 @@ class BadgeService {
 
   /// Evaluates all badge criteria against the current [habits] state,
   /// persists any newly-crossed badges, and returns the newly-unlocked
-  /// types (for celebration UI). Safe to call after every save.
-  static Future<List<BadgeType>> checkAndUnlock(List<Habit> habits) async {
+  /// types (for celebration UI). Safe to call after every save — calls are
+  /// queued so overlapping invocations can't clobber each other's writes.
+  static Future<List<BadgeType>> checkAndUnlock(List<Habit> habits) {
+    final result = _queue.then((_) => _checkAndUnlockLocked(habits));
+    _queue = result.then((_) {}, onError: (_) {});
+    return result;
+  }
+
+  static Future<List<BadgeType>> _checkAndUnlockLocked(
+    List<Habit> habits,
+  ) async {
     final unlocked = await getUnlocked();
     final unlockedTypes = unlocked.map((b) => b.type).toSet();
     final newly = <BadgeType>[];
