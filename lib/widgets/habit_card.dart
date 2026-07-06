@@ -173,12 +173,15 @@ class HabitCard extends StatelessWidget {
                   HabitProgress(streak: habit.streak),
                   if (reorderIndex != null) ...[
                     const SizedBox(width: 8),
-                    ReorderableDragStartListener(
-                      index: reorderIndex!,
-                      child: Icon(
-                        Icons.drag_indicator,
-                        color: theme.textSecondary.withValues(alpha: 0.4),
-                        size: 20,
+                    Tooltip(
+                      message: l10n.reorderHabit,
+                      child: ReorderableDragStartListener(
+                        index: reorderIndex!,
+                        child: Icon(
+                          Icons.drag_indicator,
+                          color: theme.textSecondary.withValues(alpha: 0.4),
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],
@@ -215,70 +218,75 @@ class HabitCard extends StatelessWidget {
                   ),
                 )
               else
-                Row(
-                  children: [
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                        child: InkWell(
-                          onTap: onDecrement,
+                IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Material(
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: theme.textSecondary.withValues(
-                                  alpha: 0.3,
+                          child: InkWell(
+                            onTap: onDecrement,
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: theme.textSecondary.withValues(
+                                    alpha: 0.3,
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                l10n.skipped,
-                                style: GoogleFonts.inter(
-                                  color: theme.textSecondary,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13,
+                              child: Center(
+                                child: Text(
+                                  l10n.skipped,
+                                  style: GoogleFonts.inter(
+                                    color: theme.textSecondary,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Material(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
-                        child: InkWell(
-                          onTap: onIncrement,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Material(
+                          color: Colors.transparent,
                           borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: theme.accentGreen.withValues(alpha: 0.5),
+                          child: InkWell(
+                            onTap: onIncrement,
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: theme.accentGreen.withValues(
+                                    alpha: 0.5,
+                                  ),
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                l10n.done,
-                                style: GoogleFonts.inter(
-                                  color: theme.accentGreen,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13,
+                              child: Center(
+                                child: Text(
+                                  l10n.done,
+                                  style: GoogleFonts.inter(
+                                    color: theme.accentGreen,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
             ],
           ),

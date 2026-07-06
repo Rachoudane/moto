@@ -250,6 +250,12 @@ abstract class AppLocalizations {
   /// **'Skipped'**
   String get skipped;
 
+  /// No description provided for @reorderHabit.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to reorder'**
+  String get reorderHabit;
+
   /// No description provided for @validated.
   ///
   /// In en, this message translates to:

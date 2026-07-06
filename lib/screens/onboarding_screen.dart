@@ -91,8 +91,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) {
+        if (didPop) return;
+        // Only treat back-navigation as "finish onboarding" on the last
+        // page (equivalent to tapping "Continue free"); on earlier pages
+        // it should just go back a page, not skip onboarding entirely.
+        if (_currentPage == pages.length - 1) {
           _completeOnboarding();
+        } else {
+          _pageController.previousPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
         }
       },
       child: Scaffold(

@@ -87,6 +87,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skipped => 'Skipped';
 
   @override
+  String get reorderHabit => 'Drag to reorder';
+
+  @override
   String get validated => '✓';
 
   @override

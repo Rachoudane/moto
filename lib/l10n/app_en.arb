@@ -25,6 +25,7 @@
   "cancel": "Cancel",
   "done": "Done",
   "skipped": "Skipped",
+  "reorderHabit": "Drag to reorder",
   "validated": "✓",
   "deleteHabit": "Delete this habit?",
   "deleteHabitConfirm": "You will lose your progress of {count} cells.",

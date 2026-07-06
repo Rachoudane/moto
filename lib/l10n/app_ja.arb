@@ -25,6 +25,7 @@
   "cancel": "キャンセル",
   "done": "完了",
   "skipped": "スキップ",
+  "reorderHabit": "ドラッグして並べ替え",
   "validated": "✓",
   "deleteHabit": "この習慣を削除しますか？",
   "deleteHabitConfirm": "{count}マスの進捗が失われます。",

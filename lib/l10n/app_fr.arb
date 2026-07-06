@@ -25,6 +25,7 @@
   "cancel": "Annuler",
   "done": "Validé",
   "skipped": "Manqué",
+  "reorderHabit": "Glisser pour réorganiser",
   "validated": "✓",
   "deleteHabit": "Supprimer cette habitude ?",
   "deleteHabitConfirm": "Tu vas perdre ta progression de {count} cases.",

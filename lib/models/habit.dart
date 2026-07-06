@@ -90,18 +90,6 @@ class Habit {
         lastValidatedDate!.day == now.day;
   }
 
-  int get daysMissed {
-    if (lastValidatedDate == null) return 0;
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final lastDate = DateTime(
-      lastValidatedDate!.year,
-      lastValidatedDate!.month,
-      lastValidatedDate!.day,
-    );
-    return today.difference(lastDate).inDays - 1;
-  }
-
   static String _dateToKey(DateTime date) {
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
