@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -36,13 +37,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   final StorageService _storageService = StorageService();
   List<Habit> _habits = [];
   bool _isLoading = true;
   bool _isPro = false;
   int _badgeCount = 0;
   bool _showPromoCard = false;
+  Timer? _midnightTimer;
 
   String _formattedDate(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
@@ -62,11 +64,47 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadHabits();
     _loadProStatus();
     _loadBadgeCount();
     _checkDowngradeNotice();
     _loadPromoCardVisibility();
+    _scheduleMidnightRefresh();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _midnightTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Catches the case where the app was backgrounded (not necessarily
+    // killed) before midnight and brought back afterward: no cold start
+    // happens in that case, so nothing else would refresh "today".
+    if (state == AppLifecycleState.resumed) {
+      _loadHabits();
+      _scheduleMidnightRefresh();
+    }
+  }
+
+  /// Schedules a one-shot timer to refresh habits right after the next
+  /// local midnight, so a habit validated "today" correctly flips back to
+  /// pending if the app is left open (foreground) across the day boundary.
+  /// Reschedules itself after firing rather than repeating on an interval.
+  void _scheduleMidnightRefresh() {
+    _midnightTimer?.cancel();
+    final now = DateTime.now();
+    final nextMidnight = DateTime(now.year, now.month, now.day + 1);
+    final delay = nextMidnight.difference(now) + const Duration(seconds: 1);
+    _midnightTimer = Timer(delay, () {
+      if (!mounted) return;
+      _loadHabits();
+      _scheduleMidnightRefresh();
+    });
   }
 
   Future<void> _loadBadgeCount() async {
