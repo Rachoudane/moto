@@ -124,20 +124,26 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   ) async {
     final habit = widget.habit;
 
-    setState(() {
+    void applyEdit(Habit target) {
       if (newStatus == DayStatus.pending) {
-        habit.history.remove(_dateKey(date));
+        target.history.remove(_dateKey(date));
       } else {
-        habit.setStatusForDate(date, newStatus);
+        target.setStatusForDate(date, newStatus);
       }
-      habit.recalculateStreak();
-    });
+      target.recalculateStreak();
+    }
 
+    setState(() => applyEdit(habit));
+
+    // Apply the same single-day edit to a freshly-loaded copy rather than
+    // overwriting the stored habit with this screen's (possibly stale)
+    // in-memory instance, which could otherwise clobber changes written
+    // elsewhere (e.g. missed-day backfill) while this screen was open.
     final allHabits = await _storageService.loadHabits();
     final habitIndex = allHabits.indexWhere((h) => h.id == habit.id);
     var newBadges = <BadgeType>[];
     if (habitIndex != -1) {
-      allHabits[habitIndex] = habit;
+      applyEdit(allHabits[habitIndex]);
       await _storageService.saveHabits(allHabits);
       newBadges = await BadgeService.checkAndUnlock(allHabits);
     }
@@ -556,21 +562,30 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     child: GestureDetector(
                       onTap: () async {
                         if (name.trim().isNotEmpty) {
-                          // Update the habit object
-                          widget.habit.name = capitalizeFirst(name.trim());
-                          widget.habit.isQuitting = isQuitting;
-                          widget.habit.penaltyMode = penaltyMode;
-                          widget.habit.scheduledWeekdays = scheduledWeekdays;
+                          final trimmedName = capitalizeFirst(name.trim());
 
-                          // Save to storage
+                          // Apply the edited fields to a freshly-loaded copy
+                          // rather than overwriting the stored habit with
+                          // this screen's (possibly stale) in-memory
+                          // instance, which could otherwise clobber changes
+                          // written elsewhere while this screen was open.
                           final allHabits = await _storageService.loadHabits();
                           final habitIndex = allHabits.indexWhere(
                             (h) => h.id == widget.habit.id,
                           );
                           if (habitIndex != -1) {
-                            allHabits[habitIndex] = widget.habit;
+                            final freshHabit = allHabits[habitIndex];
+                            freshHabit.name = trimmedName;
+                            freshHabit.isQuitting = isQuitting;
+                            freshHabit.penaltyMode = penaltyMode;
+                            freshHabit.scheduledWeekdays = scheduledWeekdays;
                             await _storageService.saveHabits(allHabits);
                           }
+
+                          widget.habit.name = trimmedName;
+                          widget.habit.isQuitting = isQuitting;
+                          widget.habit.penaltyMode = penaltyMode;
+                          widget.habit.scheduledWeekdays = scheduledWeekdays;
 
                           setState(() {});
                           widget.onUpdate();
