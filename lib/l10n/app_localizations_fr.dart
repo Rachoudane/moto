@@ -546,6 +546,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get badgeUnlockedTitle => 'BADGE DÉBLOQUÉ';
 
   @override
+  String get badgeLockedTitle => 'VERROUILLÉ';
+
+  @override
   String badgeUnlockedOn(String date) {
     return 'Débloqué le $date';
   }

@@ -1042,6 +1042,12 @@ abstract class AppLocalizations {
   /// **'BADGE UNLOCKED'**
   String get badgeUnlockedTitle;
 
+  /// No description provided for @badgeLockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'LOCKED'**
+  String get badgeLockedTitle;
+
   /// No description provided for @badgeUnlockedOn.
   ///
   /// In en, this message translates to:

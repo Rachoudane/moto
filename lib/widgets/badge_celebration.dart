@@ -6,14 +6,7 @@ import '../main.dart';
 import '../models/app_badge.dart';
 import '../services/badge_service.dart';
 import '../services/share_service.dart';
-
-// The medallion is a fixed "physical medal" surface (like a real badge),
-// not a themed one, so it uses its own fixed palette rather than
-// theme.cardBg/textPrimary. _medallionInk is a deep warm brown chosen for
-// contrast against the gold gradient in both light and dark app themes.
-const _celebrationGold = Color(0xFFE5C07B);
-const _celebrationGoldDeep = Color(0xFFCFA05C);
-const _medallionInk = Color(0xFF3A2A12);
+import 'badge_medallion.dart';
 
 /// Shows the badge-unlocked celebration dialog for [type]. Safe to call from
 /// any screen; awaits so callers can chain multiple unlocks sequentially
@@ -22,11 +15,16 @@ const _medallionInk = Color(0xFF3A2A12);
 Future<void> showBadgeCelebration(BuildContext context, BadgeType type) async {
   final l10n = AppLocalizations.of(context)!;
   final theme = Theme.of(context).extension<MotoTheme>()!;
-  // The "badge unlocked" chip sits on theme.cardBg (gold-tinted), so unlike
-  // the medallion (always on a fixed gold gradient) its label needs to flip
-  // between a bright and a deep gold depending on the surface it's on.
+  final tier = badgeTiers[type] ?? BadgeTier.special;
+  final family = badgeFamilies[type];
+  final glow = badgeTierGlow(tier, family);
+  final ink = badgeTierInk(tier);
+  // The "badge unlocked" chip sits on theme.cardBg (tinted with the tier's
+  // glow), so unlike the medallion (always on its own fixed gradient) its
+  // label needs to flip between the bright and the deep tone depending on
+  // which card background it's rendered over.
   final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-  final badgeLabelColor = isDarkTheme ? _celebrationGold : _medallionInk;
+  final badgeLabelColor = isDarkTheme ? glow : ink;
   final unlocked = (await BadgeService.getUnlocked()).firstWhere(
     (b) => b.type == type,
   );
@@ -66,73 +64,12 @@ Future<void> showBadgeCelebration(BuildContext context, BadgeType type) async {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Medallion: a contained gold glow behind a gradient
-                        // circle, instead of an amber border/glow around the
-                        // whole card.
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: 92,
-                              height: 92,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: _celebrationGold.withValues(
-                                      alpha: 0.4,
-                                    ),
-                                    blurRadius: 32,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: 76,
-                              height: 76,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    _celebrationGold,
-                                    _celebrationGoldDeep,
-                                  ],
-                                ),
-                              ),
-                              child: Icon(
-                                badgeIcons[type],
-                                color: _medallionInk,
-                                size: 34,
-                              ),
-                            ).animate().scale(
-                              duration: 500.ms,
-                              curve: Curves.elasticOut,
-                              begin: const Offset(0.3, 0.3),
-                              end: const Offset(1, 1),
-                            ),
-                            // Glossy top-left highlight for a medal-like shine.
-                            IgnorePointer(
-                              child: Container(
-                                width: 76,
-                                height: 76,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Colors.white.withValues(alpha: 0.35),
-                                      Colors.white.withValues(alpha: 0),
-                                    ],
-                                    stops: const [0.0, 0.6],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                        BadgeMedallion(
+                          icon: badgeIcons[type]!,
+                          tier: tier,
+                          family: family,
+                          size: 76,
+                          animateIn: true,
                         ),
                         const SizedBox(height: 20),
                         Container(
@@ -141,7 +78,7 @@ Future<void> showBadgeCelebration(BuildContext context, BadgeType type) async {
                             vertical: 5,
                           ),
                           decoration: BoxDecoration(
-                            color: _celebrationGold.withValues(alpha: 0.15),
+                            color: glow.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(

@@ -545,6 +545,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get badgeUnlockedTitle => 'BADGE UNLOCKED';
 
   @override
+  String get badgeLockedTitle => 'LOCKED';
+
+  @override
   String badgeUnlockedOn(String date) {
     return 'Unlocked on $date';
   }

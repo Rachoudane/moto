@@ -244,6 +244,7 @@
     }
   },
   "badgeUnlockedTitle": "バッジ解除",
+  "badgeLockedTitle": "未解除",
   "badgeUnlockedOn": "{date}に解除",
   "@badgeUnlockedOn": {
     "placeholders": {

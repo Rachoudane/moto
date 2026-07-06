@@ -536,6 +536,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get badgeUnlockedTitle => 'バッジ解除';
 
   @override
+  String get badgeLockedTitle => '未解除';
+
+  @override
   String badgeUnlockedOn(String date) {
     return '$dateに解除';
   }

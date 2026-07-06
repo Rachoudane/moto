@@ -244,6 +244,7 @@
     }
   },
   "badgeUnlockedTitle": "BADGE DÉBLOQUÉ",
+  "badgeLockedTitle": "VERROUILLÉ",
   "badgeUnlockedOn": "Débloqué le {date}",
   "@badgeUnlockedOn": {
     "placeholders": {

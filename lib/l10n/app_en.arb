@@ -265,6 +265,7 @@
     }
   },
   "badgeUnlockedTitle": "BADGE UNLOCKED",
+  "badgeLockedTitle": "LOCKED",
   "badgeUnlockedOn": "Unlocked on {date}",
   "@badgeUnlockedOn": {
     "placeholders": {

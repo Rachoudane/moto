@@ -3,6 +3,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/app_badge.dart';
 import '../models/habit.dart';
 
+enum BadgeMetric { longestStreak, completedSquares, totalCells, habitCount }
+
+/// Threshold criteria for badges whose progress is a plain count (as
+/// opposed to the behavioral/secret badges below, which are pass/fail and
+/// have no meaningful "X/Y" progress).
+const Map<BadgeType, (BadgeMetric, int)> _countableCriteria = {
+  BadgeType.streak7: (BadgeMetric.longestStreak, 7),
+  BadgeType.streak30: (BadgeMetric.longestStreak, 30),
+  BadgeType.streak100: (BadgeMetric.longestStreak, 100),
+  BadgeType.streak365: (BadgeMetric.longestStreak, 365),
+  BadgeType.square1: (BadgeMetric.completedSquares, 1),
+  BadgeType.square2: (BadgeMetric.completedSquares, 2),
+  BadgeType.square3: (BadgeMetric.completedSquares, 3),
+  BadgeType.square5: (BadgeMetric.completedSquares, 5),
+  BadgeType.square8: (BadgeMetric.completedSquares, 8),
+  BadgeType.cells10: (BadgeMetric.totalCells, 10),
+  BadgeType.cells50: (BadgeMetric.totalCells, 50),
+  BadgeType.cells100: (BadgeMetric.totalCells, 100),
+  BadgeType.cells500: (BadgeMetric.totalCells, 500),
+  BadgeType.cells1000: (BadgeMetric.totalCells, 1000),
+  BadgeType.habits3: (BadgeMetric.habitCount, 3),
+  BadgeType.habits5: (BadgeMetric.habitCount, 5),
+  BadgeType.habits10: (BadgeMetric.habitCount, 10),
+};
+
 class BadgeService {
   static const String _key = 'unlocked_badges';
 
@@ -11,6 +36,56 @@ class BadgeService {
   // interleave their read-modify-write of the persisted badge list and
   // silently drop each other's newly-unlocked badges.
   static Future<void> _queue = Future.value();
+
+  /// The four scalar counts every "countable" badge family is measured
+  /// against. Computed once and shared by checkAndUnlock and progressForAll
+  /// so the two can never disagree on what counts as progress.
+  static (
+    int longestStreak,
+    int completedSquares,
+    int totalCells,
+    int habitCount,
+  )
+  _metrics(List<Habit> habits) {
+    final longestStreak = habits.isEmpty
+        ? 0
+        : habits.map((h) => h.longestStreak).reduce((a, b) => a > b ? a : b);
+    final completedSquares = habits.isEmpty
+        ? 0
+        : habits
+              .map((h) => Habit.completedSquaresFor(h.streak))
+              .reduce((a, b) => a > b ? a : b);
+    final totalCells = habits.fold<int>(
+      0,
+      (sum, h) => sum + h.totalValidatedDays,
+    );
+    return (longestStreak, completedSquares, totalCells, habits.length);
+  }
+
+  static int _valueFor(BadgeMetric metric, (int, int, int, int) metrics) {
+    final (longestStreak, completedSquares, totalCells, habitCount) = metrics;
+    return switch (metric) {
+      BadgeMetric.longestStreak => longestStreak,
+      BadgeMetric.completedSquares => completedSquares,
+      BadgeMetric.totalCells => totalCells,
+      BadgeMetric.habitCount => habitCount,
+    };
+  }
+
+  /// Progress toward every "countable" badge (streak/square/cell/habit-count
+  /// families), for a progress ring on locked badges. Behavioral and secret
+  /// badges aren't included: their criteria are pass/fail, not a count, so a
+  /// numeric progress ring wouldn't mean anything for them.
+  static Map<BadgeType, (int current, int target)> progressForAll(
+    List<Habit> habits,
+  ) {
+    final metrics = _metrics(habits);
+    return _countableCriteria.map((type, criteria) {
+      final (metric, target) = criteria;
+      final current = _valueFor(metric, metrics);
+      return MapEntry(type, (current < target ? current : target, target));
+    });
+  }
 
   static Future<List<AppBadge>> getUnlocked() async {
     final prefs = await SharedPreferences.getInstance();
@@ -52,36 +127,11 @@ class BadgeService {
       }
     }
 
-    final longestStreakEver = habits.isEmpty
-        ? 0
-        : habits.map((h) => h.longestStreak).reduce((a, b) => a > b ? a : b);
-    unlock(BadgeType.streak7, longestStreakEver >= 7);
-    unlock(BadgeType.streak30, longestStreakEver >= 30);
-    unlock(BadgeType.streak100, longestStreakEver >= 100);
-    unlock(BadgeType.streak365, longestStreakEver >= 365);
-
-    final maxCompletedSquares = habits.isEmpty
-        ? 0
-        : habits
-            .map((h) => Habit.completedSquaresFor(h.streak))
-            .reduce((a, b) => a > b ? a : b);
-    unlock(BadgeType.square1, maxCompletedSquares >= 1);
-    unlock(BadgeType.square2, maxCompletedSquares >= 2);
-    unlock(BadgeType.square3, maxCompletedSquares >= 3);
-    unlock(BadgeType.square5, maxCompletedSquares >= 5);
-    unlock(BadgeType.square8, maxCompletedSquares >= 8);
-
-    final totalCellsEver =
-        habits.fold<int>(0, (sum, h) => sum + h.totalValidatedDays);
-    unlock(BadgeType.cells10, totalCellsEver >= 10);
-    unlock(BadgeType.cells50, totalCellsEver >= 50);
-    unlock(BadgeType.cells100, totalCellsEver >= 100);
-    unlock(BadgeType.cells500, totalCellsEver >= 500);
-    unlock(BadgeType.cells1000, totalCellsEver >= 1000);
-
-    unlock(BadgeType.habits3, habits.length >= 3);
-    unlock(BadgeType.habits5, habits.length >= 5);
-    unlock(BadgeType.habits10, habits.length >= 10);
+    final metrics = _metrics(habits);
+    for (final entry in _countableCriteria.entries) {
+      final (metric, target) = entry.value;
+      unlock(entry.key, _valueFor(metric, metrics) >= target);
+    }
 
     final justValidated = habits.where((h) => h.isValidatedToday);
     unlock(
