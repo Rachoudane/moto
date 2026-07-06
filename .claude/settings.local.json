@@ -26,7 +26,8 @@
       "Bash(flutter devices *)",
       "Bash(echo \"started with pid $!\")",
       "Bash(tasklist)",
-      "Bash(adb -s R5CY91F0V2T shell pm list packages)"
+      "Bash(adb -s R5CY91F0V2T shell pm list packages)",
+      "Bash(xargs wc -l)"
     ]
   }
 }

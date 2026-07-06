@@ -285,7 +285,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       _saveHabits();
       _afterValidationEffects(habit, beforeCompletedSquares);
       // Cancel today's reminder and reschedule for tomorrow
-      if (habit.reminderEnabled) {
+      if (habit.reminderEnabled &&
+          habit.reminderHour != null &&
+          habit.reminderMinute != null) {
         NotificationService.cancelHabitReminder(habit.id);
         final locale = Localizations.localeOf(context).languageCode;
         NotificationService.scheduleHabitReminder(
@@ -394,7 +396,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       });
       _saveHabits();
       // Cancel today's reminder and reschedule for tomorrow
-      if (habit.reminderEnabled) {
+      if (habit.reminderEnabled &&
+          habit.reminderHour != null &&
+          habit.reminderMinute != null) {
         NotificationService.cancelHabitReminder(habit.id);
         final locale = Localizations.localeOf(context).languageCode;
         NotificationService.scheduleHabitReminder(
