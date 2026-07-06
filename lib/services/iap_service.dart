@@ -106,10 +106,12 @@ class IAPService {
       }
     });
 
+    bool restoreFailed = false;
     try {
       await InAppPurchase.instance.restorePurchases();
     } catch (e) {
       debugPrint('IAP lifecycle restore error: $e');
+      restoreFailed = true;
     }
 
     await Future.delayed(const Duration(seconds: 4));
@@ -120,8 +122,22 @@ class IAPService {
       return;
     }
 
+    // Couldn't actually ask the store (offline, store unavailable, etc.) —
+    // this is inconclusive, not a confirmed loss of entitlement, so don't
+    // let it burn down the grace period.
+    if (restoreFailed) return;
+
     final lastVerified = await SubscriptionService.getLastVerifiedAt();
-    final graceExpired = lastVerified == null ||
+    if (lastVerified == null) {
+      // Pre-existing Pro user from before this check existed (or the store
+      // just didn't replay an event this run) — seed the clock instead of
+      // treating "never verified" as "grace already expired", which would
+      // downgrade them on the very first check.
+      await SubscriptionService.recordVerified();
+      return;
+    }
+
+    final graceExpired =
         DateTime.now().difference(lastVerified) > const Duration(days: 3);
     if (graceExpired) {
       await SubscriptionService.setPro(false);
@@ -143,6 +159,7 @@ class IAPService {
           final valid = await _verifyPurchase(purchase);
           if (valid) {
             await SubscriptionService.setPro(true);
+            await SubscriptionService.recordVerified();
             onPurchaseResult?.call(true, null);
           } else {
             onPurchaseResult?.call(false, 'Purchase verification failed');
