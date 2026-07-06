@@ -224,6 +224,11 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
+    // Skip rest days: roll forward to the next day this habit is scheduled on
+    while (!habit.isScheduledDay(scheduledDate)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+
     final (quietEnabled, quietStart, quietEnd) = await getQuietHours();
     scheduledDate =
         _applyQuietHours(scheduledDate, quietEnabled, quietStart, quietEnd);
