@@ -97,7 +97,7 @@ class FrequencyPicker extends StatelessWidget {
                         color: isSelected
                             ? theme.accentGreen.withValues(alpha: 0.2)
                             : theme.bg,
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: isSelected
                               ? theme.accentGreen.withValues(alpha: 0.4)

@@ -483,7 +483,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   await SubscriptionService.setPro(true);
                                   await _loadSettings();
                                   messenger.showSnackBar(
-                                    const SnackBar(content: Text('Pro activated! 🎉')),
+                                    SnackBar(content: Text(loc.proActivated)),
                                   );
                                 }
                               },

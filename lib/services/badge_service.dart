@@ -12,16 +12,6 @@ class BadgeService {
   // silently drop each other's newly-unlocked badges.
   static Future<void> _queue = Future.value();
 
-  static int _completedSquares(Habit habit) {
-    int level = 1;
-    int total = 0;
-    while (total + level * level <= habit.streak) {
-      total += level * level;
-      level++;
-    }
-    return level - 1;
-  }
-
   static Future<List<AppBadge>> getUnlocked() async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_key);
@@ -72,7 +62,9 @@ class BadgeService {
 
     final maxCompletedSquares = habits.isEmpty
         ? 0
-        : habits.map(_completedSquares).reduce((a, b) => a > b ? a : b);
+        : habits
+            .map((h) => Habit.completedSquaresFor(h.streak))
+            .reduce((a, b) => a > b ? a : b);
     unlock(BadgeType.square1, maxCompletedSquares >= 1);
     unlock(BadgeType.square2, maxCompletedSquares >= 2);
     unlock(BadgeType.square3, maxCompletedSquares >= 3);
@@ -156,7 +148,7 @@ class BadgeService {
     if (daysSinceCreation < days - 1) return false;
 
     for (int i = 0; i < days; i++) {
-      final date = todayNorm.subtract(Duration(days: i));
+      final date = Habit.addDays(todayNorm, -i);
       if (habit.getStatusForDate(date) != DayStatus.validated) return false;
     }
     return true;
@@ -166,9 +158,9 @@ class BadgeService {
     final today = DateTime.now();
     var sunday = DateTime(today.year, today.month, today.day);
     while (sunday.weekday != DateTime.sunday) {
-      sunday = sunday.subtract(const Duration(days: 1));
+      sunday = Habit.addDays(sunday, -1);
     }
-    final saturday = sunday.subtract(const Duration(days: 1));
+    final saturday = Habit.addDays(sunday, -1);
     return habit.getStatusForDate(saturday) == DayStatus.validated &&
         habit.getStatusForDate(sunday) == DayStatus.validated;
   }

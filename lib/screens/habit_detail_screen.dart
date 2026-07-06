@@ -93,26 +93,14 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   }
 
   (int level, int progress, int totalForNext) _getStats() {
-    int level = 1;
-    int total = 0;
-    while (total + level * level <= widget.habit.streak) {
-      total += level * level;
-      level++;
-    }
-    int progress = widget.habit.streak - total;
-    int totalForNext = level * level;
+    final (level, total) = Habit.squareProgressFor(widget.habit.streak);
+    final progress = widget.habit.streak - total;
+    final totalForNext = level * level;
     return (level, progress, totalForNext);
   }
 
-  int _getTotalSquaresCompleted() {
-    int level = 1;
-    int total = 0;
-    while (total + level * level <= widget.habit.streak) {
-      total += level * level;
-      level++;
-    }
-    return level - 1;
-  }
+  int _getTotalSquaresCompleted() =>
+      Habit.completedSquaresFor(widget.habit.streak);
 
   /// Applies a new day status to [date] and recalculates the streak from
   /// scratch by replaying the full history. Used both for correcting today's

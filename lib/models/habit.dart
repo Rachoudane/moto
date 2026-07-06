@@ -49,6 +49,34 @@ class Habit {
 
   bool get isDailyFrequency => scheduledWeekdays.length >= 7;
 
+  /// Sum-of-squares streak progression: square 1 needs 1 day, square 2
+  /// needs 4 more (5 total), square 3 needs 9 more (14 total), etc.
+  /// Returns the in-progress square number (1-based) and the total days
+  /// required to have completed all squares below it. Shared by the
+  /// streak-square UI, penalty calculation, and badge unlocking so they
+  /// can't drift apart.
+  static (int level, int totalForCompletedSquares) squareProgressFor(
+    int streak,
+  ) {
+    int level = 1;
+    int total = 0;
+    while (total + level * level <= streak) {
+      total += level * level;
+      level++;
+    }
+    return (level, total);
+  }
+
+  static int completedSquaresFor(int streak) =>
+      squareProgressFor(streak).$1 - 1;
+
+  /// Adds (or subtracts, for negative [days]) whole calendar days to [date].
+  /// Safe across daylight-saving transitions, unlike `date.add(Duration(days:
+  /// n))`, which operates on absolute time and can land on the wrong local
+  /// calendar day when a DST boundary is crossed on or after [date].
+  static DateTime addDays(DateTime date, int days) =>
+      DateTime(date.year, date.month, date.day + days);
+
   bool isScheduledDay(DateTime date) =>
       scheduledWeekdays.contains(date.weekday - 1);
 
@@ -123,38 +151,46 @@ class Habit {
 
     // If not validated today, start from yesterday
     if (!isScheduledDay(date) || getStatusForDate(date) != DayStatus.validated) {
-      date = date.subtract(const Duration(days: 1));
+      date = addDays(date, -1);
     }
 
     while (!date.isBefore(earliestNorm)) {
       if (!isScheduledDay(date)) {
-        date = date.subtract(const Duration(days: 1));
+        date = addDays(date, -1);
         continue;
       }
       if (getStatusForDate(date) != DayStatus.validated) break;
       streak++;
-      date = date.subtract(const Duration(days: 1));
+      date = addDays(date, -1);
     }
     return streak;
   }
 
-  // Get longest streak ever
+  // Get longest streak ever (consecutive scheduled days validated). Walks
+  // every calendar day from the earliest relevant date to today, so a day
+  // with no history entry at all counts as a miss just like one explicitly
+  // marked skipped — matching currentStreak, which the previous version
+  // (iterating only over `history.keys`) didn't: it silently ignored gaps
+  // with no entry, overcounting streaks that had unrecorded missed days.
   int get longestStreak {
     if (history.isEmpty) return 0;
-    
+
     int longest = 0;
     int current = 0;
-    
-    // Sort dates
-    final sortedDates = history.keys.toList()..sort();
-    
-    for (final dateKey in sortedDates) {
-      if (history[dateKey] == DayStatus.validated) {
-        current++;
-        if (current > longest) longest = current;
-      } else {
-        current = 0;
+    final today = DateTime.now();
+    final todayNorm = DateTime(today.year, today.month, today.day);
+    var date = _earliestRelevantDate;
+
+    while (!date.isAfter(todayNorm)) {
+      if (isScheduledDay(date)) {
+        if (getStatusForDate(date) == DayStatus.validated) {
+          current++;
+          if (current > longest) longest = current;
+        } else {
+          current = 0;
+        }
       }
+      date = addDays(date, 1);
     }
     return longest;
   }
@@ -203,12 +239,7 @@ class Habit {
       case PenaltyMode.zen:
         return currentStreak > 0 ? currentStreak - 1 : 0;
       case PenaltyMode.standard:
-        int level = 1;
-        int total = 0;
-        while (total + level * level <= currentStreak) {
-          total += level * level;
-          level++;
-        }
+        final total = squareProgressFor(currentStreak).$2;
         return currentStreak > total ? total : currentStreak;
       case PenaltyMode.hardcore:
         return 0;
@@ -234,7 +265,7 @@ class Habit {
       } else if (status == DayStatus.skipped) {
         newStreak = applyPenalty(penaltyMode, newStreak);
       }
-      date = date.add(const Duration(days: 1));
+      date = addDays(date, 1);
     }
 
     streak = newStreak;

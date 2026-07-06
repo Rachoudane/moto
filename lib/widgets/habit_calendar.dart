@@ -90,9 +90,9 @@ class HabitCalendar extends StatelessWidget {
                   }
                 }
 
-                // Text color for validated cells - dark on light theme, dark on dark theme
-                final isDark = Theme.of(context).brightness == Brightness.dark;
-                final validatedTextColor = isDark ? const Color(0xFF0A0A0A) : const Color(0xFF0A0A0A);
+                // Validated cells render on a light green fill regardless of
+                // theme, so the day number always needs dark text on top.
+                const validatedTextColor = Color(0xFF0A0A0A);
 
                 final cell = Container(
                   width: cellSize,
@@ -104,19 +104,42 @@ class HabitCalendar extends StatelessWidget {
                         ? Border.all(color: theme.textPrimary, width: 2)
                         : null,
                   ),
-                  child: Center(
-                    child: Text(
-                      date.day.toString(),
-                      style: GoogleFonts.inter(
-                        color: isFuture || isRestDay
-                            ? theme.textSecondary.withValues(alpha: 0.3)
-                            : status == DayStatus.validated
-                                ? validatedTextColor
-                                : theme.textPrimary.withValues(alpha: 0.8),
-                        fontSize: 11,
-                        fontWeight: isToday ? FontWeight.w700 : FontWeight.w400,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Text(
+                        date.day.toString(),
+                        style: GoogleFonts.inter(
+                          color: isFuture || isRestDay
+                              ? theme.textSecondary.withValues(alpha: 0.3)
+                              : status == DayStatus.validated
+                                  ? validatedTextColor
+                                  : theme.textPrimary.withValues(alpha: 0.8),
+                          fontSize: 11,
+                          fontWeight: isToday ? FontWeight.w700 : FontWeight.w400,
+                        ),
                       ),
-                    ),
+                      // Validated/skipped are distinguished by a small icon,
+                      // not just cell color, so the difference doesn't rely
+                      // on green/red hue perception.
+                      if (!isFuture &&
+                          !isRestDay &&
+                          status != DayStatus.pending)
+                        Positioned(
+                          right: 1,
+                          bottom: 1,
+                          child: Icon(
+                            status == DayStatus.validated
+                                ? Icons.check_rounded
+                                : Icons.close_rounded,
+                            size: 8,
+                            color: (status == DayStatus.validated
+                                    ? validatedTextColor
+                                    : theme.textPrimary)
+                                .withValues(alpha: 0.7),
+                          ),
+                        ),
+                    ],
                   ),
                 );
 

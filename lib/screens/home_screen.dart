@@ -48,18 +48,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   String _formattedDate(BuildContext context) {
     final locale = Localizations.localeOf(context).toString();
-    return DateFormat.yMMMMEEEEd(locale).format(DateTime.now());
+    return capitalizeFirst(DateFormat.yMMMMEEEEd(locale).format(DateTime.now()));
   }
 
-  int _completedSquaresFor(int streak) {
-    int level = 1;
-    int total = 0;
-    while (total + level * level <= streak) {
-      total += level * level;
-      level++;
-    }
-    return level - 1;
-  }
+  int _completedSquaresFor(int streak) => Habit.completedSquaresFor(streak);
 
   @override
   void initState() {
@@ -241,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               habit.createdAt.day,
             );
 
-      var cursor = referenceDate.add(const Duration(days: 1));
+      var cursor = Habit.addDays(referenceDate, 1);
       bool changedForHabit = false;
       while (cursor.isBefore(today)) {
         if (habit.isScheduledDay(cursor) &&
@@ -249,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           habit.setStatusForDate(cursor, DayStatus.skipped);
           changedForHabit = true;
         }
-        cursor = cursor.add(const Duration(days: 1));
+        cursor = Habit.addDays(cursor, 1);
       }
 
       if (changedForHabit) {
@@ -284,19 +276,36 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       });
       _saveHabits();
       _afterValidationEffects(habit, beforeCompletedSquares);
-      // Cancel today's reminder and reschedule for tomorrow
-      if (habit.reminderEnabled &&
-          habit.reminderHour != null &&
-          habit.reminderMinute != null) {
-        NotificationService.cancelHabitReminder(habit.id);
-        final locale = Localizations.localeOf(context).languageCode;
-        NotificationService.scheduleHabitReminder(
-          habit: habit,
-          hour: habit.reminderHour!,
-          minute: habit.reminderMinute!,
-          locale: locale,
-        );
-      }
+      _rescheduleReminderAfterAction(habit);
+    }
+  }
+
+  /// Cancels today's reminder and reschedules it for the habit's next
+  /// scheduled day. Mirrors the try/catch + SnackBar-on-failure pattern used
+  /// when the reminder is toggled/edited from the habit detail screen, so a
+  /// scheduling failure is surfaced the same way regardless of which screen
+  /// triggered it.
+  Future<void> _rescheduleReminderAfterAction(Habit habit) async {
+    if (!habit.reminderEnabled ||
+        habit.reminderHour == null ||
+        habit.reminderMinute == null) {
+      return;
+    }
+    NotificationService.cancelHabitReminder(habit.id);
+    final locale = Localizations.localeOf(context).languageCode;
+    try {
+      await NotificationService.scheduleHabitReminder(
+        habit: habit,
+        hour: habit.reminderHour!,
+        minute: habit.reminderMinute!,
+        locale: locale,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.errorGeneric(e.toString()))),
+      );
     }
   }
 
@@ -395,19 +404,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         habit.setStatusForDate(DateTime.now(), DayStatus.skipped);
       });
       _saveHabits();
-      // Cancel today's reminder and reschedule for tomorrow
-      if (habit.reminderEnabled &&
-          habit.reminderHour != null &&
-          habit.reminderMinute != null) {
-        NotificationService.cancelHabitReminder(habit.id);
-        final locale = Localizations.localeOf(context).languageCode;
-        NotificationService.scheduleHabitReminder(
-          habit: habit,
-          hour: habit.reminderHour!,
-          minute: habit.reminderMinute!,
-          locale: locale,
-        );
-      }
+      _rescheduleReminderAfterAction(habit);
     }
   }
 
