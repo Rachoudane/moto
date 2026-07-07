@@ -131,6 +131,7 @@ class HabitCard extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             color: theme.textPrimary,
                           ),
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 6),

@@ -48,3 +48,9 @@ app.*.map.json
 android/key.properties
 android/app/upload-keystore.jks
 *.jks
+
+# ASO screenshot generation working files (raw captures, in-progress
+# composites, AI-generated versions) — large/regenerated, not for git.
+/screenshots/raw/
+/screenshots/work/
+/screenshots/final/

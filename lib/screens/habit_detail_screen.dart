@@ -993,21 +993,16 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: SizedBox(
-          height: kToolbarHeight,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                widget.habit.name,
-                style: GoogleFonts.inter(
-                  color: theme.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+        toolbarHeight: 72,
+        title: Text(
+          widget.habit.name,
+          style: GoogleFonts.inter(
+            color: theme.textPrimary,
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
           ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: theme.textPrimary),

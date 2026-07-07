@@ -154,7 +154,7 @@ class _HabitProgressState extends State<HabitProgress> {
     final completedLevels = _overrideCompleted ?? calcCompleted;
 
     return SizedBox(
-      width: 180,
+      width: 128,
       height: 48,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
