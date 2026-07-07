@@ -18,10 +18,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get buildYourBase => '基盤を築こう';
 
   @override
-  String get noHabits => '習慣がありません';
+  String get noHabits => 'まだ土台がありません。';
 
   @override
-  String get noHabitsSubtitle => '基盤を築き始めよう';
+  String get noHabitsSubtitle => '最初の一石を置きましょう。';
 
   @override
   String get newHabit => '新しい習慣';
@@ -68,6 +68,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get hardcoreDescription => '容赦なし — 1日休むとゼロからやり直し。プレッシャーの中で力を発揮する方向け。';
+
+  @override
+  String get penaltyRepairMessage => 'ひびは金で継ぎました。また積み上げていきましょう。';
 
   @override
   String get create => '作成';
@@ -385,39 +388,38 @@ class AppLocalizationsJa extends AppLocalizations {
   String get getStarted => '始める';
 
   @override
-  String get onboardingTitle1 => '元 — 始まり';
+  String get onboardingTitle1 => 'モトさんです';
 
   @override
   String get onboardingDesc1 =>
-      '「元」は起源、基盤を意味します。すべての偉大な成果は、たった一つの行動から始まります。今日、最初の石を置こう。';
+      '「元」は「はじまり」、つまり土台を意味します。偉大な達成は、たったひとつの行動から。モトさんが一緒に積み上げていきます。';
 
   @override
-  String get onboardingTitle2 => '一歩ずつ、積み上げる';
+  String get onboardingTitle2 => '毎日が一石を積む';
 
   @override
   String get onboardingDesc2 =>
-      '魔法のストリークはありません。毎日の達成がマスを増やします。1×1、2×2、3×3…自分の規律が形になるのを見届けよう。';
+      '魔法の連続記録はありません。達成した一日ごとに、正方形にマスがひとつ増えます。自分の規律が形になっていくのが見えます。';
 
   @override
-  String get onboardingTitle3 => '勝利は残る';
+  String get onboardingTitle3 => 'つまずきも道のうち';
 
   @override
   String get onboardingDesc3 =>
-      '完成した正方形は金色のトロフィーになります。つまずいても、トロフィーは消えません。ゼロからやり直すことはありません。';
+      '一日逃しても、モトさんが金で継いでくれます。完成したトロフィーは決して消えません — 本当のゼロには戻らないのです。';
 
   @override
-  String get onboardingTitle4 => '自分の道を選ぶ';
+  String get onboardingModesHint => '🌱 禅 · ⚡ 普通 · 🔥 本気';
+
+  @override
+  String get onboardingTitle4 => 'トロフィーは残り続ける';
 
   @override
   String get onboardingDesc4 =>
-      '🌱 禅：優しく進む、1マス失う。\n⚡ 普通：現在の正方形を失う。\n🔥 本気：完全にゼロから。';
+      '完成した正方形は永遠のトロフィーになります。バッジを集め、記録を守り、続くものを築きましょう。';
 
   @override
-  String get onboardingTitle5 => 'Proでさらに先へ';
-
-  @override
-  String get onboardingDesc5 =>
-      '無制限の習慣、すべてのモード、リマインダーなどを解放。または無料で始めて、いつでもアップグレード可能。';
+  String get onboardingFinalCta => '最初の一石を置こう';
 
   @override
   String get continueFree => '無料で続ける';

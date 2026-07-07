@@ -121,13 +121,13 @@ abstract class AppLocalizations {
   /// No description provided for @noHabits.
   ///
   /// In en, this message translates to:
-  /// **'No habits yet'**
+  /// **'No foundation yet.'**
   String get noHabits;
 
   /// No description provided for @noHabitsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Start building your foundation'**
+  /// **'Lay your first stone.'**
   String get noHabitsSubtitle;
 
   /// No description provided for @newHabit.
@@ -219,6 +219,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No mercy — miss a day, start over from zero. For those who thrive under pressure.'**
   String get hardcoreDescription;
+
+  /// No description provided for @penaltyRepairMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The crack is repaired with gold. Let\'s keep building.'**
+  String get penaltyRepairMessage;
 
   /// No description provided for @create.
   ///
@@ -769,62 +775,62 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingTitle1.
   ///
   /// In en, this message translates to:
-  /// **'元 — The Origin'**
+  /// **'Meet Moto-san'**
   String get onboardingTitle1;
 
   /// No description provided for @onboardingDesc1.
   ///
   /// In en, this message translates to:
-  /// **'In Japanese, 元 (Moto) means \'origin\' or \'foundation\'. Every great achievement starts with a single action. Today, you lay the first stone.'**
+  /// **'元 means origin — the foundation. Every great achievement starts with a single action. Moto-san is here to build with you.'**
   String get onboardingDesc1;
 
   /// No description provided for @onboardingTitle2.
   ///
   /// In en, this message translates to:
-  /// **'Build, brick by brick'**
+  /// **'Every day lays a stone'**
   String get onboardingTitle2;
 
   /// No description provided for @onboardingDesc2.
   ///
   /// In en, this message translates to:
-  /// **'No magic streaks here. Every validated day adds a cell to your square. 1×1, then 2×2, then 3×3... You literally watch your discipline take shape.'**
+  /// **'No magic streaks. Each validated day adds a cell to your square. You literally watch your discipline take shape.'**
   String get onboardingDesc2;
 
   /// No description provided for @onboardingTitle3.
   ///
   /// In en, this message translates to:
-  /// **'Your victories remain'**
+  /// **'Stumbling is part of the path'**
   String get onboardingTitle3;
 
   /// No description provided for @onboardingDesc3.
   ///
   /// In en, this message translates to:
-  /// **'Each completed square becomes a golden trophy — proof of your consistency. Even if you stumble, your trophies stay. You never truly start from zero.'**
+  /// **'Miss a day? Moto-san repairs the crack with gold. Your completed trophies always remain — you never truly start from zero.'**
   String get onboardingDesc3;
+
+  /// No description provided for @onboardingModesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'🌱 Zen · ⚡ Standard · 🔥 Hardcore'**
+  String get onboardingModesHint;
 
   /// No description provided for @onboardingTitle4.
   ///
   /// In en, this message translates to:
-  /// **'Choose your path'**
+  /// **'Your trophies remain'**
   String get onboardingTitle4;
 
   /// No description provided for @onboardingDesc4.
   ///
   /// In en, this message translates to:
-  /// **'🌱 Zen: Progress gently, lose one cell.\n⚡ Standard: Lose your current square.\n🔥 Hardcore: Start over completely.'**
+  /// **'Completed squares become permanent trophies. Earn badges, protect your streaks, build something that lasts.'**
   String get onboardingDesc4;
 
-  /// No description provided for @onboardingTitle5.
+  /// No description provided for @onboardingFinalCta.
   ///
   /// In en, this message translates to:
-  /// **'Go further with Pro'**
-  String get onboardingTitle5;
-
-  /// No description provided for @onboardingDesc5.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlock unlimited habits, all penalty modes, reminders, and more. Or start free — you can upgrade anytime.'**
-  String get onboardingDesc5;
+  /// **'Lay your first stone'**
+  String get onboardingFinalCta;
 
   /// No description provided for @continueFree.
   ///

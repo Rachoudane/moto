@@ -18,10 +18,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get buildYourBase => 'Construis ta base';
 
   @override
-  String get noHabits => 'Aucune habitude';
+  String get noHabits => 'Aucune fondation pour l\'instant.';
 
   @override
-  String get noHabitsSubtitle => 'Commence à construire ta base';
+  String get noHabitsSubtitle => 'Pose ta première pierre.';
 
   @override
   String get newHabit => 'Nouvelle habitude';
@@ -70,6 +70,10 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get hardcoreDescription =>
       'Sans pitié — un jour raté, tout recommencer à zéro. Pour ceux qui aiment les défis extrêmes.';
+
+  @override
+  String get penaltyRepairMessage =>
+      'La fissure est réparée à l\'or. On continue à construire.';
 
   @override
   String get create => 'Créer';
@@ -391,39 +395,38 @@ class AppLocalizationsFr extends AppLocalizations {
   String get getStarted => 'Commencer';
 
   @override
-  String get onboardingTitle1 => '元 — L\'Origine';
+  String get onboardingTitle1 => 'Voici Moto-san';
 
   @override
   String get onboardingDesc1 =>
-      'En japonais, 元 (Moto) signifie « origine » ou « fondement ». Chaque grande réussite commence par une seule action. Aujourd\'hui, tu poses la première pierre.';
+      '元 signifie « l\'origine » — la fondation. Toute grande réalisation commence par une seule action. Moto-san est là pour construire avec toi.';
 
   @override
-  String get onboardingTitle2 => 'Construis, brique par brique';
+  String get onboardingTitle2 => 'Chaque jour pose une pierre';
 
   @override
   String get onboardingDesc2 =>
-      'Pas de streak magique ici. Chaque jour validé ajoute une case à ton carré. 1×1, puis 2×2, puis 3×3... Tu visualises ta discipline prendre forme.';
+      'Pas de séries magiques. Chaque jour validé ajoute une case à ton carré. Tu regardes littéralement ta discipline prendre forme.';
 
   @override
-  String get onboardingTitle3 => 'Tes victoires restent';
+  String get onboardingTitle3 => 'Trébucher fait partie du chemin';
 
   @override
   String get onboardingDesc3 =>
-      'Chaque carré complété devient un trophée doré — une preuve de ta constance. Même si tu trébuches, tes trophées restent. Tu ne repars jamais de zéro.';
+      'Un jour manqué ? Moto-san répare la fissure à l\'or. Tes trophées complétés restent, toujours — tu ne repars jamais vraiment de zéro.';
 
   @override
-  String get onboardingTitle4 => 'Choisis ton chemin';
+  String get onboardingModesHint => '🌱 Zen · ⚡ Standard · 🔥 Hardcore';
+
+  @override
+  String get onboardingTitle4 => 'Tes trophées restent';
 
   @override
   String get onboardingDesc4 =>
-      '🌱 Zen : Progresse en douceur, perds une case.\n⚡ Standard : Perds le carré en cours.\n🔥 Hardcore : Recommence tout à zéro.';
+      'Les carrés complétés deviennent des trophées permanents. Gagne des badges, protège tes séries, construis quelque chose qui dure.';
 
   @override
-  String get onboardingTitle5 => 'Va plus loin avec Pro';
-
-  @override
-  String get onboardingDesc5 =>
-      'Débloque des habitudes illimitées, tous les modes, les rappels et plus encore. Ou commence gratuitement — tu peux améliorer à tout moment.';
+  String get onboardingFinalCta => 'Pose ta première pierre';
 
   @override
   String get continueFree => 'Continuer gratuitement';

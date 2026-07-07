@@ -27,7 +27,10 @@
       "Bash(echo \"started with pid $!\")",
       "Bash(tasklist)",
       "Bash(adb -s R5CY91F0V2T shell pm list packages)",
-      "Bash(xargs wc -l)"
+      "Bash(xargs wc -l)",
+      "Bash(flutter --version)",
+      "PowerShell(flutter pub add flutter_svg)",
+      "PowerShell(flutter gen-l10n)"
     ]
   }
 }

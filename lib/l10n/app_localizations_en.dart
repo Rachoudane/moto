@@ -18,10 +18,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buildYourBase => 'Build your foundation';
 
   @override
-  String get noHabits => 'No habits yet';
+  String get noHabits => 'No foundation yet.';
 
   @override
-  String get noHabitsSubtitle => 'Start building your foundation';
+  String get noHabitsSubtitle => 'Lay your first stone.';
 
   @override
   String get newHabit => 'New habit';
@@ -70,6 +70,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get hardcoreDescription =>
       'No mercy — miss a day, start over from zero. For those who thrive under pressure.';
+
+  @override
+  String get penaltyRepairMessage =>
+      'The crack is repaired with gold. Let\'s keep building.';
 
   @override
   String get create => 'Create';
@@ -391,39 +395,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getStarted => 'Get Started';
 
   @override
-  String get onboardingTitle1 => '元 — The Origin';
+  String get onboardingTitle1 => 'Meet Moto-san';
 
   @override
   String get onboardingDesc1 =>
-      'In Japanese, 元 (Moto) means \'origin\' or \'foundation\'. Every great achievement starts with a single action. Today, you lay the first stone.';
+      '元 means origin — the foundation. Every great achievement starts with a single action. Moto-san is here to build with you.';
 
   @override
-  String get onboardingTitle2 => 'Build, brick by brick';
+  String get onboardingTitle2 => 'Every day lays a stone';
 
   @override
   String get onboardingDesc2 =>
-      'No magic streaks here. Every validated day adds a cell to your square. 1×1, then 2×2, then 3×3... You literally watch your discipline take shape.';
+      'No magic streaks. Each validated day adds a cell to your square. You literally watch your discipline take shape.';
 
   @override
-  String get onboardingTitle3 => 'Your victories remain';
+  String get onboardingTitle3 => 'Stumbling is part of the path';
 
   @override
   String get onboardingDesc3 =>
-      'Each completed square becomes a golden trophy — proof of your consistency. Even if you stumble, your trophies stay. You never truly start from zero.';
+      'Miss a day? Moto-san repairs the crack with gold. Your completed trophies always remain — you never truly start from zero.';
 
   @override
-  String get onboardingTitle4 => 'Choose your path';
+  String get onboardingModesHint => '🌱 Zen · ⚡ Standard · 🔥 Hardcore';
+
+  @override
+  String get onboardingTitle4 => 'Your trophies remain';
 
   @override
   String get onboardingDesc4 =>
-      '🌱 Zen: Progress gently, lose one cell.\n⚡ Standard: Lose your current square.\n🔥 Hardcore: Start over completely.';
+      'Completed squares become permanent trophies. Earn badges, protect your streaks, build something that lasts.';
 
   @override
-  String get onboardingTitle5 => 'Go further with Pro';
-
-  @override
-  String get onboardingDesc5 =>
-      'Unlock unlimited habits, all penalty modes, reminders, and more. Or start free — you can upgrade anytime.';
+  String get onboardingFinalCta => 'Lay your first stone';
 
   @override
   String get continueFree => 'Continue Free';

@@ -4,6 +4,7 @@ import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../services/iap_service.dart';
 import '../services/subscription_service.dart';
+import '../widgets/moto_san.dart';
 
 class ProScreen extends StatefulWidget {
   const ProScreen({super.key});
@@ -120,6 +121,10 @@ class _ProScreenState extends State<ProScreen> {
                           _buildVisualHeader(theme),
 
                           const SizedBox(height: 32),
+
+                          const MotoSan(pose: MotoSanPose.welcome, height: 80),
+
+                          const SizedBox(height: 20),
 
                           // Pro badge
                           Container(

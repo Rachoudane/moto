@@ -17,6 +17,9 @@ import '../utils/text_utils.dart';
 import '../widgets/badge_celebration.dart';
 import '../widgets/frequency_picker.dart';
 import '../widgets/habit_card.dart';
+import '../widgets/moto_san.dart';
+import '../widgets/penalty_repair_dialog.dart';
+import '../widgets/square_completion_celebration.dart';
 import 'badges_screen.dart';
 import 'pro_screen.dart';
 import 'settings_screen.dart';
@@ -253,6 +256,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     if (hasChanges) {
       setState(() {});
       _saveHabits();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) showPenaltyRepairDialog(context);
+      });
     }
   }
 
@@ -321,14 +327,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
     final l10n = AppLocalizations.of(context)!;
     if (afterCompletedSquares > beforeCompletedSquares) {
-      _showCelebrationSnackBar(
-        icon: Icons.emoji_events_rounded,
-        iconColor: const Color(0xFFE5C07B),
-        message: l10n.squareCompletedCelebration(afterCompletedSquares),
-        actionLabel: l10n.shareApp,
-        onAction: () =>
-            ShareService.shareSquareCompletion(habit, afterCompletedSquares, l10n),
+      await showSquareCompletionCelebration(
+        context,
+        habit,
+        afterCompletedSquares,
       );
+      if (!mounted) return;
     } else if ([7, 30, 100, 365].contains(habit.currentStreak)) {
       _showCelebrationSnackBar(
         icon: Icons.local_fire_department_rounded,
@@ -405,6 +409,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       });
       _saveHabits();
       _rescheduleReminderAfterAction(habit);
+      showPenaltyRepairDialog(context);
     }
   }
 
@@ -1168,12 +1173,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Icon(
-                                        Icons.grid_view_rounded,
-                                        size: 48,
-                                        color: theme.textSecondary.withValues(
-                                          alpha: 0.25,
-                                        ),
+                                      const MotoSan(
+                                        pose: MotoSanPose.zen,
+                                        height: 140,
                                       ),
                                       const SizedBox(height: 20),
                                       Text(
@@ -1185,12 +1187,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                         ),
                                       ),
                                       const SizedBox(height: 6),
-                                      Text(
-                                        l10n.noHabitsSubtitle,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 13,
-                                          color: theme.textSecondary.withValues(
-                                            alpha: 0.6,
+                                      GestureDetector(
+                                        onTap: _showAddHabitDialog,
+                                        child: Text(
+                                          l10n.noHabitsSubtitle,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                            color: theme.accentGreen,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor:
+                                                theme.accentGreen,
                                           ),
                                         ),
                                       ),
