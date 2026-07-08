@@ -51,6 +51,7 @@ android/app/upload-keystore.jks
 
 # ASO screenshot generation working files (raw captures, in-progress
 # composites, AI-generated versions) — large/regenerated, not for git.
-/screenshots/raw/
-/screenshots/work/
-/screenshots/final/
+/screenshots/
+
+# Local Claude Code settings — machine-specific, not for git.
+.claude/settings.local.json
