@@ -150,6 +150,30 @@
   "@reminderAdvancedMotivation": {
     "placeholders": {"habit": {"type": "String"}}
   },
+  "reminderQuittingBeginnerGeneral": "Just getting started resisting {habit} — that's a strong first step!",
+  "reminderQuittingBeginnerMotivation": "Every hour without {habit} counts right now",
+  "reminderQuittingIntermediateGeneral": "Look how far you've come without {habit}! Keep resisting",
+  "reminderQuittingIntermediateMotivation": "The urge fades a bit more each day: stay clean from {habit}",
+  "reminderQuittingAdvancedGeneral": "You're proof it's possible! Keep your streak without {habit}",
+  "reminderQuittingAdvancedMotivation": "Freedom from {habit} is becoming who you are",
+  "@reminderQuittingBeginnerGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingBeginnerMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingIntermediateGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingIntermediateMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingAdvancedGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingAdvancedMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
   "reminderQuittingVictory": "Every day without {habit} is a victory",
   "reminderQuittingWillpower": "Break the chain with {habit} - you can!",
   "reminderBuildingSuccess": "Success comes from consistency: {habit}",
@@ -375,6 +399,28 @@
   "@shareSquareMsg4": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
   "@shareSquareMsg5": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
 
+  "shareQuittingProgressMsg1": "{streak} days free from \"{habitName}\" with Moto. Building my foundation, one day at a time. 🧱",
+  "shareQuittingProgressMsg2": "Day by day, I'm leaving \"{habitName}\" behind — {streak} clean days so far on Moto. 🌱",
+  "shareQuittingProgressMsg3": "{streak} days without \"{habitName}\". Moto is keeping me honest. 元",
+  "shareQuittingProgressMsg4": "Watching my resistance to \"{habitName}\" grow square by square — {streak} clean days in on Moto.",
+  "shareQuittingProgressMsg5": "My streak without \"{habitName}\" just hit {streak} days on Moto. Small steps, real progress.",
+  "@shareQuittingProgressMsg1": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg2": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg3": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg4": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg5": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+
+  "shareQuittingSquareMsg1": "Just completed a {level}×{level} square staying away from \"{habitName}\" with Moto! 🧱",
+  "shareQuittingSquareMsg2": "My \"{habitName}\"-free streak leveled up — {level}×{level} square complete on Moto.",
+  "shareQuittingSquareMsg3": "Another trophy earned: {level}×{level} days without \"{habitName}\". Moto keeps the proof. 元",
+  "shareQuittingSquareMsg4": "Square complete! {level}×{level} without \"{habitName}\" — one clean day at a time.",
+  "shareQuittingSquareMsg5": "Just hit a {level}×{level} square resisting \"{habitName}\" on Moto. Consistency, visualized.",
+  "@shareQuittingSquareMsg1": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg2": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg3": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg4": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg5": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+
   "squareCompletedCelebration": "🎉 Square completed! You just finished a {count}×{count}.",
   "@squareCompletedCelebration": {"placeholders": {"count": {"type": "int"}}},
   "streakMilestoneCelebration": "🔥 {streak}-day streak! Keep the momentum going.",
@@ -416,5 +462,22 @@
   "@reminderPlayful2": {"placeholders": {"habit": {"type": "String"}}},
   "@reminderPlayful3": {"placeholders": {"habit": {"type": "String"}}},
   "@reminderWeekendVibe": {"placeholders": {"habit": {"type": "String"}}},
-  "@reminderStreakMilestone": {"placeholders": {"habit": {"type": "String"}, "streak": {"type": "int"}}}
+  "@reminderStreakMilestone": {"placeholders": {"habit": {"type": "String"}, "streak": {"type": "int"}}},
+
+  "reminderQuittingGentle1": "No pressure — just get through today without {habit}.",
+  "reminderQuittingGentle2": "A gentle reminder: you're staying away from {habit}, one day at a time.",
+  "reminderQuittingGentle3": "Whenever the urge hits today, remember why you're leaving {habit} behind.",
+  "reminderQuittingPlayful1": "Psst. {habit} is looking for you. Don't answer.",
+  "reminderQuittingPlayful2": "Your square is waiting to grow. Starve it of {habit} today.",
+  "reminderQuittingPlayful3": "Plot twist: today is a great day to say no to {habit}.",
+  "reminderQuittingWeekendVibe": "Weekend or not, staying away from {habit} doesn't take a day off.",
+  "reminderQuittingStreakMilestone": "{streak} days strong without {habit}. Don't stop now.",
+  "@reminderQuittingGentle1": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingGentle2": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingGentle3": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingPlayful1": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingPlayful2": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingPlayful3": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingWeekendVibe": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingStreakMilestone": {"placeholders": {"habit": {"type": "String"}, "streak": {"type": "int"}}}
 }

@@ -129,6 +129,30 @@
   "@reminderAdvancedMotivation": {
     "placeholders": {"habit": {"type": "String"}}
   },
+  "reminderQuittingBeginnerGeneral": "{habit}への抵抗を始めたばかり - 素晴らしい第一歩だ！",
+  "reminderQuittingBeginnerMotivation": "{habit}なしの一時間一時間が、今大切だ",
+  "reminderQuittingIntermediateGeneral": "{habit}なしでここまで来た道のりを見て！抵抗を続けよう",
+  "reminderQuittingIntermediateMotivation": "衝動は日々薄れていく：{habit}を断ったままでいよう",
+  "reminderQuittingAdvancedGeneral": "君はそれが可能だという証だ！{habit}なしで記録を保とう",
+  "reminderQuittingAdvancedMotivation": "{habit}からの自由が、今の君を作っている",
+  "@reminderQuittingBeginnerGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingBeginnerMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingIntermediateGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingIntermediateMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingAdvancedGeneral": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
+  "@reminderQuittingAdvancedMotivation": {
+    "placeholders": {"habit": {"type": "String"}}
+  },
   "reminderQuittingVictory": "{habit}のない毎日が勝利だ",
   "reminderQuittingWillpower": "{habit}との関係を断ち切ろう - 君なら出来る！",
   "reminderBuildingSuccess": "成功は継続から来る：{habit}",
@@ -354,6 +378,28 @@
   "@shareSquareMsg4": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
   "@shareSquareMsg5": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
 
+  "shareQuittingProgressMsg1": "「{habitName}」なしで{streak}日達成中。Motoで一日ずつ基盤を築いています。🧱",
+  "shareQuittingProgressMsg2": "「{habitName}」を少しずつ手放してきた — Motoで現在{streak}日間クリーン。🌱",
+  "shareQuittingProgressMsg3": "「{habitName}」なしで{streak}日達成。Motoが私を正直にさせてくれる。元",
+  "shareQuittingProgressMsg4": "「{habitName}」への抵抗がマスごとに成長していくのを見ている — Motoで{streak}日クリーン。",
+  "shareQuittingProgressMsg5": "「{habitName}」なしの記録がMotoで{streak}日に到達。小さな一歩が本当の進歩に。",
+  "@shareQuittingProgressMsg1": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg2": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg3": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg4": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+  "@shareQuittingProgressMsg5": {"placeholders": {"habitName": {"type": "String"}, "streak": {"type": "int"}}},
+
+  "shareQuittingSquareMsg1": "Motoで「{habitName}」なしの{level}×{level}の正方形を完成させた！🧱",
+  "shareQuittingSquareMsg2": "「{habitName}」なしの記録がレベルアップ — Motoで{level}×{level}の正方形が完成。",
+  "shareQuittingSquareMsg3": "またトロフィー獲得：「{habitName}」なしで{level}×{level}。Motoが証明してくれる。元",
+  "shareQuittingSquareMsg4": "正方形完成！「{habitName}」なしで{level}×{level} — 一日ずつクリーンを積み上げた結果。",
+  "shareQuittingSquareMsg5": "「{habitName}」に抵抗してMotoで{level}×{level}の正方形に到達。継続が目に見える形に。",
+  "@shareQuittingSquareMsg1": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg2": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg3": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg4": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+  "@shareQuittingSquareMsg5": {"placeholders": {"habitName": {"type": "String"}, "level": {"type": "int"}}},
+
   "squareCompletedCelebration": "🎉 正方形完成！{count}×{count}を完成させた。",
   "@squareCompletedCelebration": {"placeholders": {"count": {"type": "int"}}},
   "streakMilestoneCelebration": "🔥 {streak}日連続達成！この勢いを続けよう。",
@@ -395,5 +441,22 @@
   "@reminderPlayful2": {"placeholders": {"habit": {"type": "String"}}},
   "@reminderPlayful3": {"placeholders": {"habit": {"type": "String"}}},
   "@reminderWeekendVibe": {"placeholders": {"habit": {"type": "String"}}},
-  "@reminderStreakMilestone": {"placeholders": {"habit": {"type": "String"}, "streak": {"type": "int"}}}
+  "@reminderStreakMilestone": {"placeholders": {"habit": {"type": "String"}, "streak": {"type": "int"}}},
+
+  "reminderQuittingGentle1": "プレッシャーはいらない — 今日はただ{habit}なしで乗り切ろう。",
+  "reminderQuittingGentle2": "そっと一言：{habit}から一日また一日と離れているね。",
+  "reminderQuittingGentle3": "今日、衝動が来たら、なぜ{habit}を手放すのか思い出して。",
+  "reminderQuittingPlayful1": "ねえ。{habit}があなたを探しているよ。出ないで。",
+  "reminderQuittingPlayful2": "あなたの正方形が成長を待っている。今日は{habit}を断って育ててあげよう。",
+  "reminderQuittingPlayful3": "どんでん返し：今日は{habit}にノーと言うのにぴったりの日だ。",
+  "reminderQuittingWeekendVibe": "週末でも、{habit}に抵抗することは休まない。",
+  "reminderQuittingStreakMilestone": "{habit}なしで{streak}日達成。ここで止まらないで。",
+  "@reminderQuittingGentle1": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingGentle2": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingGentle3": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingPlayful1": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingPlayful2": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingPlayful3": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingWeekendVibe": {"placeholders": {"habit": {"type": "String"}}},
+  "@reminderQuittingStreakMilestone": {"placeholders": {"habit": {"type": "String"}, "streak": {"type": "int"}}}
 }

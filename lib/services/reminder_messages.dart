@@ -100,6 +100,22 @@ class ReminderMessages {
       // General quitting messages
       messages.add(l10n.reminderQuittingVictory(habitName));
       messages.add(l10n.reminderQuittingWillpower(habitName));
+
+      // Progress-level specific messages
+      switch (progressLevel) {
+        case 'beginner':
+          messages.add(l10n.reminderQuittingBeginnerGeneral(habitName));
+          messages.add(l10n.reminderQuittingBeginnerMotivation(habitName));
+          break;
+        case 'intermediate':
+          messages.add(l10n.reminderQuittingIntermediateGeneral(habitName));
+          messages.add(l10n.reminderQuittingIntermediateMotivation(habitName));
+          break;
+        case 'advanced':
+          messages.add(l10n.reminderQuittingAdvancedGeneral(habitName));
+          messages.add(l10n.reminderQuittingAdvancedMotivation(habitName));
+          break;
+      }
     } else {
       // Time-of-day specific messages
       switch (timeOfDay) {
@@ -142,23 +158,41 @@ class ReminderMessages {
       }
     }
 
-    // Gentle nudges, playful variants and quote-of-day apply regardless of
-    // building vs quitting — this is what pushes the pool past 20 distinct
-    // variants per language while staying contextually relevant.
-    messages.add(l10n.reminderGentle1(habitName));
-    messages.add(l10n.reminderGentle2(habitName));
-    messages.add(l10n.reminderGentle3(habitName));
-    messages.add(l10n.reminderPlayful1(habitName));
-    messages.add(l10n.reminderPlayful2(habitName));
-    messages.add(l10n.reminderPlayful3(habitName));
+    // Gentle nudges, playful variants and quote-of-day push the pool past
+    // 20 distinct variants per language while staying contextually
+    // relevant. Each has a quitting-specific counterpart since "just do
+    // {habit}" reads backwards for a habit someone is trying to avoid.
+    if (isQuitting) {
+      messages.add(l10n.reminderQuittingGentle1(habitName));
+      messages.add(l10n.reminderQuittingGentle2(habitName));
+      messages.add(l10n.reminderQuittingGentle3(habitName));
+      messages.add(l10n.reminderQuittingPlayful1(habitName));
+      messages.add(l10n.reminderQuittingPlayful2(habitName));
+      messages.add(l10n.reminderQuittingPlayful3(habitName));
+    } else {
+      messages.add(l10n.reminderGentle1(habitName));
+      messages.add(l10n.reminderGentle2(habitName));
+      messages.add(l10n.reminderGentle3(habitName));
+      messages.add(l10n.reminderPlayful1(habitName));
+      messages.add(l10n.reminderPlayful2(habitName));
+      messages.add(l10n.reminderPlayful3(habitName));
+    }
 
     if (isWeekend) {
-      messages.add(l10n.reminderWeekendVibe(habitName));
+      messages.add(
+        isQuitting
+            ? l10n.reminderQuittingWeekendVibe(habitName)
+            : l10n.reminderWeekendVibe(habitName),
+      );
     }
 
     const milestones = [7, 14, 30, 50, 100, 200, 365];
     if (milestones.contains(streak)) {
-      messages.add(l10n.reminderStreakMilestone(habitName, streak));
+      messages.add(
+        isQuitting
+            ? l10n.reminderQuittingStreakMilestone(habitName, streak)
+            : l10n.reminderStreakMilestone(habitName, streak),
+      );
     }
 
     if (timeOfDay == 'morning') {

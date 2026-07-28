@@ -40,13 +40,21 @@ class ShareService {
 
   static Future<void> shareProgress(Habit habit, AppLocalizations l10n) async {
     final streak = habit.streak;
-    final variants = [
-      l10n.shareProgressMsg1(habit.name, streak),
-      l10n.shareProgressMsg2(habit.name, streak),
-      l10n.shareProgressMsg3(habit.name, streak),
-      l10n.shareProgressMsg4(habit.name, streak),
-      l10n.shareProgressMsg5(habit.name, streak),
-    ];
+    final variants = habit.isQuitting
+        ? [
+            l10n.shareQuittingProgressMsg1(habit.name, streak),
+            l10n.shareQuittingProgressMsg2(habit.name, streak),
+            l10n.shareQuittingProgressMsg3(habit.name, streak),
+            l10n.shareQuittingProgressMsg4(habit.name, streak),
+            l10n.shareQuittingProgressMsg5(habit.name, streak),
+          ]
+        : [
+            l10n.shareProgressMsg1(habit.name, streak),
+            l10n.shareProgressMsg2(habit.name, streak),
+            l10n.shareProgressMsg3(habit.name, streak),
+            l10n.shareProgressMsg4(habit.name, streak),
+            l10n.shareProgressMsg5(habit.name, streak),
+          ];
     final message = variants[_dailyPick % variants.length];
     await SharePlus.instance.share(
       ShareParams(text: _withStoreLink(message, l10n)),
@@ -73,13 +81,21 @@ class ShareService {
     int level,
     AppLocalizations l10n,
   ) async {
-    final variants = [
-      l10n.shareSquareMsg1(habit.name, level),
-      l10n.shareSquareMsg2(habit.name, level),
-      l10n.shareSquareMsg3(habit.name, level),
-      l10n.shareSquareMsg4(habit.name, level),
-      l10n.shareSquareMsg5(habit.name, level),
-    ];
+    final variants = habit.isQuitting
+        ? [
+            l10n.shareQuittingSquareMsg1(habit.name, level),
+            l10n.shareQuittingSquareMsg2(habit.name, level),
+            l10n.shareQuittingSquareMsg3(habit.name, level),
+            l10n.shareQuittingSquareMsg4(habit.name, level),
+            l10n.shareQuittingSquareMsg5(habit.name, level),
+          ]
+        : [
+            l10n.shareSquareMsg1(habit.name, level),
+            l10n.shareSquareMsg2(habit.name, level),
+            l10n.shareSquareMsg3(habit.name, level),
+            l10n.shareSquareMsg4(habit.name, level),
+            l10n.shareSquareMsg5(habit.name, level),
+          ];
     final message = variants[_dailyPick % variants.length];
     await SharePlus.instance.share(
       ShareParams(text: _withStoreLink(message, l10n)),

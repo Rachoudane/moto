@@ -544,6 +544,42 @@ abstract class AppLocalizations {
   /// **'Mastery awaits: another day of {habit}'**
   String reminderAdvancedMotivation(String habit);
 
+  /// No description provided for @reminderQuittingBeginnerGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Just getting started resisting {habit} — that\'s a strong first step!'**
+  String reminderQuittingBeginnerGeneral(String habit);
+
+  /// No description provided for @reminderQuittingBeginnerMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Every hour without {habit} counts right now'**
+  String reminderQuittingBeginnerMotivation(String habit);
+
+  /// No description provided for @reminderQuittingIntermediateGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'Look how far you\'ve come without {habit}! Keep resisting'**
+  String reminderQuittingIntermediateGeneral(String habit);
+
+  /// No description provided for @reminderQuittingIntermediateMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'The urge fades a bit more each day: stay clean from {habit}'**
+  String reminderQuittingIntermediateMotivation(String habit);
+
+  /// No description provided for @reminderQuittingAdvancedGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re proof it\'s possible! Keep your streak without {habit}'**
+  String reminderQuittingAdvancedGeneral(String habit);
+
+  /// No description provided for @reminderQuittingAdvancedMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Freedom from {habit} is becoming who you are'**
+  String reminderQuittingAdvancedMotivation(String habit);
+
   /// No description provided for @reminderQuittingVictory.
   ///
   /// In en, this message translates to:
@@ -1540,6 +1576,66 @@ abstract class AppLocalizations {
   /// **'\"{habitName}\" just hit a {level}×{level} square on Moto. Consistency, visualized.'**
   String shareSquareMsg5(String habitName, int level);
 
+  /// No description provided for @shareQuittingProgressMsg1.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} days free from \"{habitName}\" with Moto. Building my foundation, one day at a time. 🧱'**
+  String shareQuittingProgressMsg1(String habitName, int streak);
+
+  /// No description provided for @shareQuittingProgressMsg2.
+  ///
+  /// In en, this message translates to:
+  /// **'Day by day, I\'m leaving \"{habitName}\" behind — {streak} clean days so far on Moto. 🌱'**
+  String shareQuittingProgressMsg2(String habitName, int streak);
+
+  /// No description provided for @shareQuittingProgressMsg3.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} days without \"{habitName}\". Moto is keeping me honest. 元'**
+  String shareQuittingProgressMsg3(String habitName, int streak);
+
+  /// No description provided for @shareQuittingProgressMsg4.
+  ///
+  /// In en, this message translates to:
+  /// **'Watching my resistance to \"{habitName}\" grow square by square — {streak} clean days in on Moto.'**
+  String shareQuittingProgressMsg4(String habitName, int streak);
+
+  /// No description provided for @shareQuittingProgressMsg5.
+  ///
+  /// In en, this message translates to:
+  /// **'My streak without \"{habitName}\" just hit {streak} days on Moto. Small steps, real progress.'**
+  String shareQuittingProgressMsg5(String habitName, int streak);
+
+  /// No description provided for @shareQuittingSquareMsg1.
+  ///
+  /// In en, this message translates to:
+  /// **'Just completed a {level}×{level} square staying away from \"{habitName}\" with Moto! 🧱'**
+  String shareQuittingSquareMsg1(String habitName, int level);
+
+  /// No description provided for @shareQuittingSquareMsg2.
+  ///
+  /// In en, this message translates to:
+  /// **'My \"{habitName}\"-free streak leveled up — {level}×{level} square complete on Moto.'**
+  String shareQuittingSquareMsg2(String habitName, int level);
+
+  /// No description provided for @shareQuittingSquareMsg3.
+  ///
+  /// In en, this message translates to:
+  /// **'Another trophy earned: {level}×{level} days without \"{habitName}\". Moto keeps the proof. 元'**
+  String shareQuittingSquareMsg3(String habitName, int level);
+
+  /// No description provided for @shareQuittingSquareMsg4.
+  ///
+  /// In en, this message translates to:
+  /// **'Square complete! {level}×{level} without \"{habitName}\" — one clean day at a time.'**
+  String shareQuittingSquareMsg4(String habitName, int level);
+
+  /// No description provided for @shareQuittingSquareMsg5.
+  ///
+  /// In en, this message translates to:
+  /// **'Just hit a {level}×{level} square resisting \"{habitName}\" on Moto. Consistency, visualized.'**
+  String shareQuittingSquareMsg5(String habitName, int level);
+
   /// No description provided for @squareCompletedCelebration.
   ///
   /// In en, this message translates to:
@@ -1707,6 +1803,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{streak} days strong on {habit}. Don\'t stop now.'**
   String reminderStreakMilestone(String habit, int streak);
+
+  /// No description provided for @reminderQuittingGentle1.
+  ///
+  /// In en, this message translates to:
+  /// **'No pressure — just get through today without {habit}.'**
+  String reminderQuittingGentle1(String habit);
+
+  /// No description provided for @reminderQuittingGentle2.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle reminder: you\'re staying away from {habit}, one day at a time.'**
+  String reminderQuittingGentle2(String habit);
+
+  /// No description provided for @reminderQuittingGentle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Whenever the urge hits today, remember why you\'re leaving {habit} behind.'**
+  String reminderQuittingGentle3(String habit);
+
+  /// No description provided for @reminderQuittingPlayful1.
+  ///
+  /// In en, this message translates to:
+  /// **'Psst. {habit} is looking for you. Don\'t answer.'**
+  String reminderQuittingPlayful1(String habit);
+
+  /// No description provided for @reminderQuittingPlayful2.
+  ///
+  /// In en, this message translates to:
+  /// **'Your square is waiting to grow. Starve it of {habit} today.'**
+  String reminderQuittingPlayful2(String habit);
+
+  /// No description provided for @reminderQuittingPlayful3.
+  ///
+  /// In en, this message translates to:
+  /// **'Plot twist: today is a great day to say no to {habit}.'**
+  String reminderQuittingPlayful3(String habit);
+
+  /// No description provided for @reminderQuittingWeekendVibe.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekend or not, staying away from {habit} doesn\'t take a day off.'**
+  String reminderQuittingWeekendVibe(String habit);
+
+  /// No description provided for @reminderQuittingStreakMilestone.
+  ///
+  /// In en, this message translates to:
+  /// **'{streak} days strong without {habit}. Don\'t stop now.'**
+  String reminderQuittingStreakMilestone(String habit, int streak);
 }
 
 class _AppLocalizationsDelegate

@@ -264,6 +264,36 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String reminderQuittingBeginnerGeneral(String habit) {
+    return '$habitへの抵抗を始めたばかり - 素晴らしい第一歩だ！';
+  }
+
+  @override
+  String reminderQuittingBeginnerMotivation(String habit) {
+    return '$habitなしの一時間一時間が、今大切だ';
+  }
+
+  @override
+  String reminderQuittingIntermediateGeneral(String habit) {
+    return '$habitなしでここまで来た道のりを見て！抵抗を続けよう';
+  }
+
+  @override
+  String reminderQuittingIntermediateMotivation(String habit) {
+    return '衝動は日々薄れていく：$habitを断ったままでいよう';
+  }
+
+  @override
+  String reminderQuittingAdvancedGeneral(String habit) {
+    return '君はそれが可能だという証だ！$habitなしで記録を保とう';
+  }
+
+  @override
+  String reminderQuittingAdvancedMotivation(String habit) {
+    return '$habitからの自由が、今の君を作っている';
+  }
+
+  @override
   String reminderQuittingVictory(String habit) {
     return '$habitのない毎日が勝利だ';
   }
@@ -816,6 +846,56 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String shareQuittingProgressMsg1(String habitName, int streak) {
+    return '「$habitName」なしで$streak日達成中。Motoで一日ずつ基盤を築いています。🧱';
+  }
+
+  @override
+  String shareQuittingProgressMsg2(String habitName, int streak) {
+    return '「$habitName」を少しずつ手放してきた — Motoで現在$streak日間クリーン。🌱';
+  }
+
+  @override
+  String shareQuittingProgressMsg3(String habitName, int streak) {
+    return '「$habitName」なしで$streak日達成。Motoが私を正直にさせてくれる。元';
+  }
+
+  @override
+  String shareQuittingProgressMsg4(String habitName, int streak) {
+    return '「$habitName」への抵抗がマスごとに成長していくのを見ている — Motoで$streak日クリーン。';
+  }
+
+  @override
+  String shareQuittingProgressMsg5(String habitName, int streak) {
+    return '「$habitName」なしの記録がMotoで$streak日に到達。小さな一歩が本当の進歩に。';
+  }
+
+  @override
+  String shareQuittingSquareMsg1(String habitName, int level) {
+    return 'Motoで「$habitName」なしの$level×$levelの正方形を完成させた！🧱';
+  }
+
+  @override
+  String shareQuittingSquareMsg2(String habitName, int level) {
+    return '「$habitName」なしの記録がレベルアップ — Motoで$level×$levelの正方形が完成。';
+  }
+
+  @override
+  String shareQuittingSquareMsg3(String habitName, int level) {
+    return 'またトロフィー獲得：「$habitName」なしで$level×$level。Motoが証明してくれる。元';
+  }
+
+  @override
+  String shareQuittingSquareMsg4(String habitName, int level) {
+    return '正方形完成！「$habitName」なしで$level×$level — 一日ずつクリーンを積み上げた結果。';
+  }
+
+  @override
+  String shareQuittingSquareMsg5(String habitName, int level) {
+    return '「$habitName」に抵抗してMotoで$level×$levelの正方形に到達。継続が目に見える形に。';
+  }
+
+  @override
   String squareCompletedCelebration(int count) {
     return '🎉 正方形完成！$count×$countを完成させた。';
   }
@@ -921,5 +1001,45 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String reminderStreakMilestone(String habit, int streak) {
     return '$habitで$streak日達成。ここで止まらないで。';
+  }
+
+  @override
+  String reminderQuittingGentle1(String habit) {
+    return 'プレッシャーはいらない — 今日はただ$habitなしで乗り切ろう。';
+  }
+
+  @override
+  String reminderQuittingGentle2(String habit) {
+    return 'そっと一言：$habitから一日また一日と離れているね。';
+  }
+
+  @override
+  String reminderQuittingGentle3(String habit) {
+    return '今日、衝動が来たら、なぜ$habitを手放すのか思い出して。';
+  }
+
+  @override
+  String reminderQuittingPlayful1(String habit) {
+    return 'ねえ。$habitがあなたを探しているよ。出ないで。';
+  }
+
+  @override
+  String reminderQuittingPlayful2(String habit) {
+    return 'あなたの正方形が成長を待っている。今日は$habitを断って育ててあげよう。';
+  }
+
+  @override
+  String reminderQuittingPlayful3(String habit) {
+    return 'どんでん返し：今日は$habitにノーと言うのにぴったりの日だ。';
+  }
+
+  @override
+  String reminderQuittingWeekendVibe(String habit) {
+    return '週末でも、$habitに抵抗することは休まない。';
+  }
+
+  @override
+  String reminderQuittingStreakMilestone(String habit, int streak) {
+    return '$habitなしで$streak日達成。ここで止まらないで。';
   }
 }

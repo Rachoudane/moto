@@ -267,6 +267,36 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String reminderQuittingBeginnerGeneral(String habit) {
+    return 'Tu commences à résister à $habit - c\'est un excellent premier pas !';
+  }
+
+  @override
+  String reminderQuittingBeginnerMotivation(String habit) {
+    return 'Chaque heure sans $habit compte, maintenant';
+  }
+
+  @override
+  String reminderQuittingIntermediateGeneral(String habit) {
+    return 'Regarde le chemin parcouru sans $habit ! Continue de résister';
+  }
+
+  @override
+  String reminderQuittingIntermediateMotivation(String habit) {
+    return 'L\'envie s\'estompe un peu plus chaque jour : reste clean de $habit';
+  }
+
+  @override
+  String reminderQuittingAdvancedGeneral(String habit) {
+    return 'Tu es la preuve que c\'est possible ! Garde ta série sans $habit';
+  }
+
+  @override
+  String reminderQuittingAdvancedMotivation(String habit) {
+    return 'Se libérer de $habit, c\'est devenir qui tu es';
+  }
+
+  @override
   String reminderQuittingVictory(String habit) {
     return 'Chaque jour sans $habit est une victoire';
   }
@@ -844,6 +874,56 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String shareQuittingProgressMsg1(String habitName, int streak) {
+    return '$streak jours libéré de « $habitName » avec Moto. Je construis ma base, un jour à la fois. 🧱';
+  }
+
+  @override
+  String shareQuittingProgressMsg2(String habitName, int streak) {
+    return 'Jour après jour, je laisse « $habitName » derrière moi — $streak jours propres jusqu\'ici sur Moto. 🌱';
+  }
+
+  @override
+  String shareQuittingProgressMsg3(String habitName, int streak) {
+    return '$streak jours sans « $habitName ». Moto me garde honnête. 元';
+  }
+
+  @override
+  String shareQuittingProgressMsg4(String habitName, int streak) {
+    return 'Je regarde ma résistance à « $habitName » grandir case par case — $streak jours propres sur Moto.';
+  }
+
+  @override
+  String shareQuittingProgressMsg5(String habitName, int streak) {
+    return 'Ma série sans « $habitName » vient d\'atteindre $streak jours avec Moto. Petits pas, vrais progrès.';
+  }
+
+  @override
+  String shareQuittingSquareMsg1(String habitName, int level) {
+    return 'Je viens de compléter un carré $level×$level sans « $habitName » avec Moto ! 🧱';
+  }
+
+  @override
+  String shareQuittingSquareMsg2(String habitName, int level) {
+    return 'Ma série sans « $habitName » a franchi un cap — carré $level×$level complété sur Moto.';
+  }
+
+  @override
+  String shareQuittingSquareMsg3(String habitName, int level) {
+    return 'Un trophée de plus : $level×$level jours sans « $habitName ». Moto garde la preuve. 元';
+  }
+
+  @override
+  String shareQuittingSquareMsg4(String habitName, int level) {
+    return 'Carré complété ! $level×$level sans « $habitName » — un jour propre à la fois.';
+  }
+
+  @override
+  String shareQuittingSquareMsg5(String habitName, int level) {
+    return 'Je viens d\'atteindre un carré $level×$level en résistant à « $habitName » sur Moto. La régularité, visualisée.';
+  }
+
+  @override
   String squareCompletedCelebration(int count) {
     return '🎉 Carré complété ! Tu viens de terminer un $count×$count.';
   }
@@ -953,5 +1033,45 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String reminderStreakMilestone(String habit, int streak) {
     return '$streak jours solides sur $habit. N\'arrête pas maintenant.';
+  }
+
+  @override
+  String reminderQuittingGentle1(String habit) {
+    return 'Pas de pression — tiens juste bon aujourd\'hui sans $habit.';
+  }
+
+  @override
+  String reminderQuittingGentle2(String habit) {
+    return 'Un petit rappel en douceur : tu restes loin de $habit, un jour à la fois.';
+  }
+
+  @override
+  String reminderQuittingGentle3(String habit) {
+    return 'Si l\'envie arrive aujourd\'hui, souviens-toi pourquoi tu laisses $habit derrière toi.';
+  }
+
+  @override
+  String reminderQuittingPlayful1(String habit) {
+    return 'Psst. $habit te cherche. Ne réponds pas.';
+  }
+
+  @override
+  String reminderQuittingPlayful2(String habit) {
+    return 'Ton carré attend de grandir. Prive-le de $habit aujourd\'hui.';
+  }
+
+  @override
+  String reminderQuittingPlayful3(String habit) {
+    return 'Coup de théâtre : aujourd\'hui est un jour parfait pour dire non à $habit.';
+  }
+
+  @override
+  String reminderQuittingWeekendVibe(String habit) {
+    return 'Week-end ou pas, résister à $habit ne prend pas de jour de repos.';
+  }
+
+  @override
+  String reminderQuittingStreakMilestone(String habit, int streak) {
+    return '$streak jours solides sans $habit. N\'arrête pas maintenant.';
   }
 }
