@@ -55,3 +55,6 @@ android/app/upload-keystore.jks
 
 # Local Claude Code settings — machine-specific, not for git.
 .claude/settings.local.json
+
+# iOS build/install output from builder-windows-amd64.exe (MobAI flow)
+dist/*.ipa

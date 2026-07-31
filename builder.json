@@ -1,0 +1,16 @@
+{
+  "project": "moto",
+  "platform": "ios",
+  "github": {
+    "owner": "Rachoudane",
+    "repo": "moto"
+  },
+  "ios": {
+    "path": "ios"
+  },
+  "flutter": {
+    "watch": {}
+  },
+  "reactNative": {},
+  "mobai": {}
+}
