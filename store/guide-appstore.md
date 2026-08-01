@@ -127,16 +127,24 @@ before Media Manager/metadata/anything else below is even reachable.
 >     - **Featuring** — `Nominations` (not relevant to Moto)
 > - The version panel itself keeps the **Save** / **Add for Review** buttons
 >   top-right, sticky the whole time you scroll — unchanged from the old flow.
-> - **Name, Subtitle, and Promotional Text are gone from the version panel**
->   — not per-locale here anymore. Best guess: Name/Subtitle moved to
->   `App Information`; Promotional Text is likely behind a separate
->   quick-edit control Apple added since it's now editable without review.
->   **Not yet confirmed** — see the note at the end of section 4.
+> - **Name and Subtitle are gone from the version panel** — moved to the
+>   `App Information` page instead (section 7). Promotional Text is still
+>   on the version panel as before (right after Screenshots).
+> - **`App Information` is one long page**, not split into further sidebar
+>   items — Age Ratings, App Encryption Documentation, and App Store
+>   Regulations & Permits (DSA/Vietnam/Medical Devices/Server
+>   Notifications/Shared Secret) are all just sections you scroll past on
+>   that same page, confirmed by screenshot. Old sections 8/9/10 below are
+>   rewritten to reflect this — they're not separate destinations.
 >
-> Sections 3, 4, 6b, 16, 17 below are now confirmed field-by-field from
-> screenshots. Sections 7–9 (App Information / Age Ratings / Encryption)
-> still describe the pre-redesign fields and need one more screenshot pass
-> to confirm — flag it when you get there.
+> Sections 3, 4, 6b, 7, 8, 9, 10, 11, 16, 17 are now confirmed field-by-field
+> from screenshots. Section 12 now has precise, current product IDs,
+> pricing, and per-locale copy (sourced from `iap_service.dart` and
+> `lib/l10n/*.arb`), but its on-page UI layout is still not
+> screenshot-verified against App Store Connect 2.0. Remaining unconfirmed:
+> section 13 (Pricing and Availability) and 14/15 (Agreements/Tax/Banking,
+> Codemagic build upload) — same content as before, just not yet
+> screenshot-verified against the new UI.
 
 ## 3. Screenshots (version panel → Previews and Screenshots)
 
@@ -179,6 +187,7 @@ Confirmed field-by-field from a live screenshot. Immediately below
 
 | Field | Value |
 |---|---|
+| Promotional Text (170 max) | See `store/metadata/appstore-en.md` |
 | Description (4,000 max) | Full text in `store/metadata/appstore-en.md` (~2000 chars) — paste as-is |
 | Keywords (100 max) | `habit tracker,streak,daily habits,goal,self improvement,routine,motivation,productivity,checklist` |
 | Support URL | `https://rachoucorp.app` or `mailto:rachoucorp@gmail.com` |
@@ -190,40 +199,30 @@ Confirmed field-by-field from a live screenshot. Immediately below
 Below that, two **collapsed** sections — leave both closed, Moto uses
 neither: **App Clip** and **iMessage App**.
 
-**No "Name" or "Subtitle" fields, and no "Promotional Text" field appear on
-this page anymore** — confirmed absent between the language selector and
-Description in the actual screenshot. Two live changes from Apple in
-2025–2026 explain this:
-- **Name/Subtitle** moved to the `App Information` page (section 7) — they
-  used to be per-version/per-locale here, now they're managed there instead.
-- **Promotional Text** still exists as a field (Apple's own docs still
-  describe it as "the only field editable without review") but isn't on
-  this full edit form anymore — it's very likely behind a lighter-weight
-  quick-edit control (e.g. a pencil icon on the live product page preview,
-  or inside `Product Page Optimization` under Growth & Marketing). Not yet
-  confirmed by screenshot — check both `App Information` and
-  `Product Page Optimization` when you get there and tell me which one has
-  it, plus the exact Name/Subtitle field labels/limits you see on
-  `App Information`, since section 7 below is still describing the *old*
-  fields for that page.
+**Correction:** Promotional Text is on this page after all (right below
+Screenshots, above Description) — an earlier pass of this guide wrongly
+said it was missing based on a screenshot boundary that just happened to
+cut off right above it. What *is* genuinely gone from this page: **Name**
+and **Subtitle** — confirmed moved to the `App Information` page, see the
+rewritten section 7 below.
 
 ---
 
 ## 5. French (FR) Localization
 
 Still on that version panel: switch the language selector to **French**
-(or **+ Add Localization → French** if not yet added), fill Description /
-Keywords from `store/metadata/appstore-fr.md`. Screenshots done in
-section 3. (Name/Subtitle/Promotional Text: see the note at the end of
-section 4 — not on this page, still being tracked down.)
+(or **+ Add Localization → French** if not yet added), fill Promotional
+Text / Description / Keywords from `store/metadata/appstore-fr.md`.
+Screenshots done in section 3. (Name/Subtitle for French: set on the
+`App Information` page instead, section 7 — its own language selector.)
 
 ---
 
 ## 6. Japanese (JA) Localization
 
 Still on that version panel: **+ Add Localization → Japanese**, fill
-Description / Keywords from `store/metadata/appstore-ja.md`. Screenshots
-done in section 3. (Name/Subtitle/Promotional Text: same caveat as above.)
+Promotional Text / Description / Keywords from `store/metadata/appstore-ja.md`.
+Screenshots done in section 3. (Name/Subtitle for Japanese: section 7.)
 
 > Note: Wingman only shipped EN+FR on the App Store — Moto adds Japanese here
 > since the app itself supports all 3 locales (`lib/l10n/`).
@@ -273,97 +272,159 @@ regardless of which language is selected):
 
 ## 7. App Information (Distribution tab → sidebar → General → App Information)
 
-Confirmed from the sidebar: it's a left-menu item under the **General**
-group (alongside `App Review` and `History`), not a top-level tab.
+Confirmed field-by-field from screenshots. It's a left-menu item under
+**General** (alongside `App Review` and `History`), and it's **one long
+page** — sections 8, 9, 10 below are just further down this same page, not
+separate destinations. Header note Apple shows: *"This information is used
+for all platforms of this app. Any changes will be released with your next
+app version."*
 
-**General Information**
-- Bundle ID / SKU: already set from section 2, read-only here
-- Content Rights: "No, this app does not contain, show, or access
-  third-party content" — Moto is fully original (no licensed IP, unlike
-  Wingman's Valorant screenshots)
+**Localizable Information** (own language selector, top-right):
+| Field | Value |
+|---|---|
+| Name | `Moto: Habit Tracker` |
+| Subtitle | `Grow Habits, Square by Square` |
+
+Switch the selector to French/Japanese and fill the localized name/subtitle
+from `store/metadata/appstore-fr.md` / `appstore-ja.md` here (this is what
+moved off the version panel — see sections 4–6).
+
+**General Information** (two columns):
+- Bundle ID: dropdown, already shows `Moto - com.rachoucorp.moto`
+- SKU: `moto-habit-tracker`, read-only
+- **Apple ID**: a numeric ID Apple assigns (e.g. `6797039104` shown in the
+  screenshot) — read-only, but worth noting down once created, useful for
+  App Store Connect API calls / TestFlight public links later
+- **Content Rights**: no longer a radio/text choice — now an **Edit** link
+  opening a **"Set Up Content Rights Information"** flow. Go through it and
+  answer that Moto doesn't contain third-party content (fully original, no
+  licensed IP, unlike Wingman's Valorant screenshots)
+- **License Agreement**: an **Edit** link, defaults to **Apple's Standard
+  License Agreement** — leave as default, no need for a custom EULA
 - Primary Language: English (U.S.)
-- Category: Health & Fitness · Secondary (optional): Productivity
-
-Age Ratings and App Encryption Documentation are sub-sections of this same
-`App Information` page (sections 8/9 below). Privacy Policy URL and the
-data-collection questionnaire, however, are on their **own** sidebar item,
-`App Privacy` (section 11) — confirmed separate, not nested here.
+- Category: Primary `Health & Fitness` · Secondary (optional) `Productivity`
 
 ---
 
 ## 8. Age Ratings
 
-Apple replaced the old grouped questionnaire with a multi-step **"Set Up
-Age Ratings"** dialog, reachable via the `App Information` page from
-section 7 (Distribution tab → sidebar → General → App Information → Age
-Ratings → **Set Up Age Ratings** button) — not yet confirmed by screenshot,
-flag it to me if it's actually somewhere else. Separately, Apple added new
-rating tiers. Apple required
-every app to re-answer the updated questionnaire by **January 31, 2026**,
-which has already passed, so this step is mandatory even for the initial
-submission, not optional boilerplate:
+Still on the `App Information` page (section 7), scrolled further down.
+Apple replaced the old grouped questionnaire with a **"Set Up Age
+Ratings"** button that opens a multi-step dialog, plus added new rating
+tiers. Apple required every app to re-answer the updated questionnaire by
+**January 31, 2026**, which has already passed, so this is mandatory for
+the initial submission:
 
 **New tiers:** `4+`, `9+`, `13+`, `16+`, `18+` (replacing the old
 4+/9+/12+/17+ scale).
 
-**Dialog flow:**
-1. Step 1 — select any **in-app controls / capabilities** that can restrict
-   content (Moto has none: no chat, no user-generated content, no
-   unrestricted web access)
-2. Steps 2–6 — a series of content-descriptor questions, each answered with
-   **None / Infrequent/Mild / Frequent/Intense** rather than a flat
-   yes/no — for Moto, **None** across every category (Mature Themes,
-   Sexuality, Violence, Chance-Based Activities/Gambling, etc.), same
-   reasoning as before: no ads, no third-party SDKs, no gambling mechanics
-3. Final step — Apple shows a **Calculated Rating**, plus:
-   - **Age Category Override**: leave **Not Applicable** (don't opt into
-     "Made for Kids" — Moto isn't a kids' app)
-   - **Age Suitability URL** (optional): leave blank unless you want a page
-     explaining the rating
+Confirmed from screenshot, the page shows a **"Set Up Age Ratings"** button,
+then a **"Learn More About Age Ratings"** reference grid with exactly these
+7 categories (note: **no separate "Advertising" category anymore** — it's
+gone or folded elsewhere):
+- **In-App Controls** — Parental Controls, Age Assurance
+- **Capabilities** — Unrestricted Web Access, User-Generated Content,
+  Social Media, Social Media Disabled for Users...
+- **Mature Themes** — Profanity or Crude Humor, Horror/Fear Themes,
+  Alcohol, Tobacco, or Drug Use or References
+- **Medical or Wellness** — Medical or Treatment Information, Health or
+  Wellness Topics
+- **Sexuality or Nudity** — Mature or Suggestive Themes, Sexual Content or
+  Nudity, Graphic Sexual Content and Nudity
+- **Violence** — Cartoon or Fantasy Violence, Realistic Violence, Prolonged
+  Graphic or Sadistic Realistic...
+- **Chance-Based Activities** — Gambling, Simulated Gambling, Contests,
+  Loot Boxes
 
-Expected calculated result: **4+**. Double-check the Health & Fitness
-category doesn't trigger a borderline "Medical/Treatment Information"
-descriptor — answer accurately either way if it appears.
+These are reference cards, not the actual questionnaire — the real flow is
+behind **Set Up Age Ratings**, still expected to be the same multi-step
+None/Infrequent/Frequent dialog described by Apple's help docs. For Moto:
+**None** across every category — no chat, no user-generated content, no
+gambling mechanics, no third-party SDKs. Watch **Medical or Wellness**
+specifically: it's called out by name here given Moto's Health & Fitness
+category — answer accurately (habit tracking isn't medical/treatment
+advice, so should be None, but check the actual sub-questions).
+
+Expected calculated result: **4+**.
 
 ---
 
 ## 9. App Encryption Documentation
 
-Already handled: `ITSAppUsesNonExemptEncryption = false` is now in
-`ios/Runner/Info.plist` (done this session). Once a build with this key is
-uploaded, App Store Connect won't ask at submission time. If it does still
-prompt, it's most likely a field on the same `App Information` page from
-section 7 (not yet confirmed by screenshot) or a submission-time question —
-answer "No" to using non-exempt encryption either way.
+Still the same `App Information` page, right after Age Ratings. Confirmed
+text: *"Specify your use of encryption in Xcode by adding the **App Uses
+Non-Exempt Encryption** key to your app's Info.plist file with a Boolean
+value that indicates whether your app uses encryption."* Then lists when
+documentation is required:
+- Encryption algorithms that are proprietary or not accepted as standard by
+  international standard bodies (IEEE, IETF, ITU, etc.)
+- Standard encryption algorithms instead of, or in addition to, using or
+  accessing the encryption within Apple's operating system
+
+Since `ITSAppUsesNonExemptEncryption = false` is already set in
+`ios/Runner/Info.plist` (done this session) and Moto only uses standard
+HTTPS/StoreKit — neither bullet applies, so there's nothing to upload here.
+The page shows an **Upload** button (*"You can provide your documentation
+before you submit a build"*) — leave it untouched; the `Info.plist` key
+should make App Store Connect skip asking again once a build is processed.
 
 ---
 
 ## 10. App Store Regulations & Permits
 
-- **DSA**: click **Set Up** if selling in the EU — same trader declaration
-  Rachou Corp already did for Wingman (business name, address, phone, email)
-- **Vietnam Game License**: skip
-- **Regulated Medical Devices**: skip
-- **App Store Server Notifications**: skip, unless you later want server-side
-  subscription lifecycle webhooks (not required to launch)
-- **App-Specific Shared Secret**: only needed if you validate subscription
-  receipts server-side. Moto's `iap_service.dart` uses the `in_app_purchase`
-  plugin directly against StoreKit with no server component — skip unless
-  that changes
+Still the same `App Information` page, right after App Encryption
+Documentation. Confirmed sections and exact current copy:
+
+- **Digital Services Act**: already shows *"This developer has identified
+  itself as a trader for this app"* with an **Edit** link and an
+  **Add Labels and Markings** link — the Wingman-era trader declaration
+  already covers Moto (this is account/team-level, not per-app), nothing
+  to newly set up. Only revisit **Add Labels and Markings** if a specific
+  product needs one (Moto doesn't).
+- **Vietnam Game License**: box says *"If your game is available on the App
+  Store in Vietnam, you can add a game license..."* with an **Add**
+  link — skip, Moto isn't a game and isn't specifically targeting Vietnam.
+- **Regulated Medical Devices**: **this is not skippable the way the old
+  guide assumed** — the box explicitly says *"If your app is in the
+  Medical or Health and Fitness categories... you need to declare whether
+  it functions as a regulated medical device to keep distributing on the
+  App Store in certain regions"*, with a **Declare Regulated Medical
+  Device** link. Since Moto's category is Health & Fitness, click through
+  and declare **No, it does not function as a regulated medical device**
+  (a habit tracker makes no medical claims) — but the declaration itself
+  must be made, not skipped.
+- **App Store Server Notifications**: Production/Sandbox Server URL, both
+  **Set Up URL** — skip, no server-side subscription lifecycle webhooks
+  needed
+- **App-Specific Shared Secret**: a **Manage** link — skip, Moto's
+  `iap_service.dart` uses `in_app_purchase` directly against StoreKit with
+  no server component
+
+Below that: an **Additional Information** block (`View on App Store`,
+`Edit User Access`, `Remove App`) — nothing to do here.
 
 ---
 
 ## 11. App Privacy (Distribution tab → sidebar → App Store → Trust & Safety → App Privacy)
 
-Confirmed from the sidebar: its own left-menu item, grouped under
+Confirmed field-by-field from screenshot. Own left-menu item, grouped under
 **App Store → Trust & Safety** alongside `App Accessibility` and
-`Ratings and Reviews` — not nested inside App Information. Fields:
+`Ratings and Reviews`. Top of page has a **Publish** button (separate from
+the version's Save/Add for Review) and its own language selector.
 
-- **Privacy Policy URL** (required): `https://rachoucorp.app/privacy-moto`
-- **User Privacy Choices URL** (optional, newer field): leave blank — this
-  is for apps that offer an in-app privacy/data-deletion self-service flow,
-  which Moto doesn't need since nothing is collected in the first place
-- **Data Types** questionnaire: same as before
+**Privacy Policy** section (with an **Edit** link next to the heading —
+the URLs below aren't directly editable inline, click Edit to set them):
+| Field | Value |
+|---|---|
+| Privacy Policy URL | `https://rachoucorp.app/privacy-moto` (currently empty — shows `—`) |
+| User Privacy Choices URL (Optional) | leave empty — for apps offering in-app data-deletion/opt-out self-service, which Moto doesn't need |
+
+Below that, a **"Get Started"** button (data questionnaire not yet begun),
+with Apple's framing text: *"The App Store is designed to be a safe and
+trusted place... After clicking Get Started, you'll be asked to provide
+some information about your app's data collection practices."* Click
+**Get Started** to reach the actual Data Types questionnaire (same
+substance as before, just gated behind this button first).
 
 Moto has **no AdMob, no Firebase/analytics, no user accounts, and no
 server** — `shared_preferences` (local only) and `in_app_purchase` (StoreKit
@@ -386,27 +447,116 @@ finalizing.
 ## 12. In-App Purchases — 3 Subscriptions + 1 Non-Consumable
 
 Unlike Wingman's single non-consumable, Moto sells access via subscription
-(matches the Play Store setup already live — see `store/guide-playstore.md`):
+(matches the Play Store setup already live — see `store/guide-playstore.md`,
+same 3 product IDs: `moto_pro_yearly`, `moto_pro_monthly`,
+`moto_pro_lifetime`). **Not yet confirmed by screenshot** — the sidebar path
+and field structure below are Apple's current documented flow, but the
+exact on-page layout hasn't been screenshot-verified against App Store
+Connect 2.0 the way sections 3/4/7–11 have. The **product IDs, pricing, and
+localized copy** below, however, are pulled directly from the live app
+(`iap_service.dart`, `lib/l10n/*.arb`) and the historical Play Store price
+points, so treat those as accurate regardless of the UI-layout caveat.
 
 Sidebar path confirmed for the group: **Distribution tab → sidebar →
 App Store → Monetization**, containing (in this exact order, confirmed by
 screenshot): `Pricing and Availability` (section 13), `In-App Purchases`,
 `Subscriptions`.
 
+### Pricing — match the live Play Store price points
+
+Moto's subscriptions have been sold at these EUR price points since launch
+(the app used to hardcode them for display before switching to
+store-fetched dynamic pricing in Feb 2026, commit `9f352db` — same numbers,
+just no longer hardcoded client-side):
+
+| Product | Duration | Reference price (EUR) | Notes |
+|---|---|---|---|
+| `moto_pro_monthly` | 1 month | **€2.99** | |
+| `moto_pro_yearly` | 1 year | **€19.99** | ≈ €1.66/month, ~44% cheaper than paying monthly |
+| `moto_pro_lifetime` | one-time | **€39.99** | non-consumable, not a subscription |
+
+App Store Connect prices subscriptions/IAP via **Apple's price tier system**,
+not a free-text field: you pick a starting price in your primary
+territory's currency (USD, since Primary Language is English (U.S.)) from
+Apple's fixed list of price points, and it auto-generates the equivalent
+price in every other territory/currency (including EUR) using Apple's own
+conversion table — you don't set the EUR price directly. When picking the
+USD starting price for each product, choose the tier whose **EUR-equivalent
+column** (shown in the price-picker UI) lands closest to €2.99 / €19.99 /
+€39.99 respectively, so pricing stays consistent with the Play Store listing
+rather than matching the USD number literally. **Double-check the current
+live Play Console price for all 3 products before doing this** — if pricing
+was ever adjusted since the Feb 2026 launch, `store/guide-playstore.md`
+section 4 or the Play Console itself is the source of truth, not this table.
+
+### Localized copy — Display Name + Description per product per locale
+
+Each product needs its own **App Store Localization** per locale (Display
+Name shown in the system purchase sheet, Description shown on the product
+page) — these are separate from the app's own Name/Subtitle (section 7) and
+from `store/metadata/appstore-*.md`. Suggested copy below reuses the app's
+own `yearly`/`monthly`/`lifetimeOffer` and `proPromoCardSubtitle` strings
+from `lib/l10n/*.arb` for consistency between the purchase sheet and the
+in-app upgrade screen (`pro_screen.dart`). Apple's documented field limits:
+**Display Name 30 chars max, Description 45 chars max** — not yet
+screenshot-confirmed against the 2.0 UI, so re-check the actual limit shown
+on the field before pasting.
+
+**Subscription Group Display Name** (shown in the user's Manage
+Subscriptions screen, one value per locale, same across both subscriptions
+in the group):
+| Locale | Value |
+|---|---|
+| EN | `Moto Pro` |
+| FR | `Moto Pro` |
+| JA | `Moto Pro` |
+
+**`moto_pro_yearly`**:
+| Locale | Display Name | Description |
+|---|---|---|
+| EN | `Pro Yearly` | `Unlimited habits, full history, and more.` |
+| FR | `Pro Annuel` | `Habitudes illimitées, historique complet.` |
+| JA | `Pro 年間` | `無制限の習慣、完全な履歴など。` |
+
+**`moto_pro_monthly`**:
+| Locale | Display Name | Description |
+|---|---|---|
+| EN | `Pro Monthly` | `Unlimited habits, full history, and more.` |
+| FR | `Pro Mensuel` | `Habitudes illimitées, historique complet.` |
+| JA | `Pro 月間` | `無制限の習慣、完全な履歴など。` |
+
+**`moto_pro_lifetime`** (non-consumable):
+| Locale | Display Name | Description |
+|---|---|---|
+| EN | `Pro Lifetime` | `One-time purchase. Unlimited habits, forever.` |
+| FR | `Pro à vie` | `Achat unique. Habitudes illimitées à vie.` |
+| JA | `Pro 永久` | `買い切り。無制限の習慣を、永久に。` |
+
+Full feature list to draw on for Review Notes or longer descriptions if
+needed (`lib/l10n/app_en.arb`, `proFeature1`–`5`): unlimited habits, all
+penalty modes (Zen/Standard/Hardcore), complete history & calendar, custom
+per-habit notifications, future updates & themes.
+
 **Monetization → Subscriptions**:
-1. Create a **Subscription Group** (e.g. "Moto Pro")
+1. Create a **Subscription Group** — reference name e.g. "Moto Pro" (internal
+   only, not shown to users), then set the Subscription Group Display Name
+   per locale from the table above
 2. Add subscription **`moto_pro_yearly`** — must match
-   `lib/services/iap_service.dart`'s `yearlyProductId` exactly
-3. Add subscription **`moto_pro_monthly`** — matches `monthlyProductId`
-4. For each: set duration, price tier, localized display name/description
-   (EN/FR/JA), and a Review Screenshot showing the Pro upsell screen
-   (`pro_screen.dart`)
+   `lib/services/iap_service.dart`'s `yearlyProductId` exactly; Duration
+   1 year; price per the table above; localized Display Name/Description
+   for EN/FR/JA from the table above; Review Screenshot showing the Pro
+   upsell screen (`pro_screen.dart`)
+3. Add subscription **`moto_pro_monthly`** — matches `monthlyProductId`;
+   Duration 1 month; same pattern
 
 **Monetization → In-App Purchases** (same sidebar group, non-consumable, like Wingman's Remove Ads):
-5. Add **`moto_pro_lifetime`** as a **Non-Consumable** — matches
-   `lifetimeProductId`. Same per-field setup as Wingman's Remove Ads IAP
-   (Family Sharing off, Availability, Price Schedule, Localization, Review
-   Screenshot, Review Notes)
+4. Add **`moto_pro_lifetime`** as a **Non-Consumable** — matches
+   `lifetimeProductId`. Same per-field setup as Wingman's Remove Ads IAP:
+   Family Sharing off (Moto's other two products are per-account
+   subscriptions, keep the lifetime unlock consistent with that — don't
+   let one purchase cover a whole Family Sharing group for free), price per
+   the table above, localized Display Name/Description from the table
+   above, Review Screenshot, Review Notes
 
 > Note: `restorePurchases()` is already implemented in `iap_service.dart` and
 > wired to a button in `pro_screen.dart` — Apple guideline 3.1.1 requires
