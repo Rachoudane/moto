@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
@@ -48,6 +49,7 @@ class _BadgesScreenState extends State<BadgesScreen> {
   }
 
   void _openDetail(BadgeType type, AppBadge? unlocked) {
+    HapticFeedback.selectionClick();
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context).extension<MotoTheme>()!;
     final isSecret = secretBadgeTypes.contains(type);

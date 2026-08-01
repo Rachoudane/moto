@@ -1,0 +1,70 @@
+# Uncomment this line to define a global platform for your project
+platform :ios, '13.0'
+
+# CocoaPods analytics sends network stats synchronously affecting Flutter build latency.
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+project 'Runner', {
+  'Debug' => :debug,
+  'Profile' => :release,
+  'Release' => :release,
+}
+
+def flutter_root
+  # 1. Explicit env var — set by our workflow step after subosito/flutter-action
+  return ENV['FLUTTER_ROOT'] if ENV['FLUTTER_ROOT'] && !ENV['FLUTTER_ROOT'].empty?
+
+  # 2. FLUTTER_HOME — set by some CI Flutter setup actions
+  return ENV['FLUTTER_HOME'] if ENV['FLUTTER_HOME'] && !ENV['FLUTTER_HOME'].empty?
+
+  # 3. Derive from flutter on PATH (works on any system with flutter installed)
+  flutter_bin = `which flutter 2>/dev/null`.strip
+  unless flutter_bin.empty?
+    real_bin = `readlink -f "#{flutter_bin}" 2>/dev/null`.strip
+    real_bin = flutter_bin if real_bin.empty?
+    sdk_root = File.dirname(File.dirname(real_bin))
+    podhelper = File.join(sdk_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb')
+    return sdk_root if File.exist?(podhelper)
+  end
+
+  # 4. Local dev fallback — Generated.xcconfig (produced by flutter build / flutter run)
+  xcconfig = File.expand_path('../Flutter/Generated.xcconfig', __FILE__)
+  if File.exist?(xcconfig)
+    File.foreach(xcconfig) do |line|
+      m = line.match(/FLUTTER_ROOT=(.*)/)
+      return m[1].strip if m
+    end
+  end
+
+  raise "Cannot find Flutter SDK root. Ensure flutter is on PATH or set FLUTTER_ROOT."
+end
+
+require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+flutter_ios_podfile_setup
+
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  target 'RunnerTests' do
+    inherit! :search_paths
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+
+    target.build_configurations.each do |config|
+      # permission_handler gates each permission's native code behind a
+      # compile-time macro (off by default under CocoaPods, unlike the SPM
+      # integration path where notifications defaults on) — only enable what
+      # Moto actually uses (notification permission for reminders). See
+      # https://pub.dev/packages/permission_handler#ios
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'PERMISSION_NOTIFICATIONS=1'
+    end
+  end
+end

@@ -29,10 +29,19 @@ class NotificationService {
     tz.setLocalLocation(tz.getLocation(timeZoneInfo.identifier));
 
     const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    // Permission requests are deliberately off here: this runs in main()
+    // before runApp(), so requesting on iOS at this point would pop the
+    // native permission dialog over a blank launch screen, before the user
+    // has any context. iOS only ever shows that system dialog once per
+    // install, so an early accidental dismiss/deny here would silently
+    // break every notification for the rest of the app's life with no way
+    // to re-prompt except via iOS Settings. requestPermission() below is
+    // called contextually instead (settings screen, habit reminder setup),
+    // matching the Android flow.
     const iosSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
     );
     const windowsSettings = WindowsInitializationSettings(
       appName: 'Moto',

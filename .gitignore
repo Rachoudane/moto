@@ -57,4 +57,4 @@ android/app/upload-keystore.jks
 .claude/settings.local.json
 
 # iOS build/install output from builder-windows-amd64.exe (MobAI flow)
-dist/*.ipa
+/dist/

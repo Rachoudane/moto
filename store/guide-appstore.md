@@ -64,12 +64,40 @@ Same method as Wingman — no Mac needed for day-to-day builds:
 
 This produces **dev-signed** builds for your own device only. It cannot be
 used to test the actual App Store submission candidate — Apple blocks
-sideloading of App Store-signed IPAs. For that, use TestFlight (section 12
+sideloading of App Store-signed IPAs. For that, use TestFlight (section 15
 below), which installs the *exact* build that would be submitted.
 
 ---
 
-## 2. Screenshots (Media Manager)
+## 2. Register the app (App ID + App Store Connect record)
+
+Nothing exists yet on Apple's side for Moto — this is the actual first step,
+before Media Manager/metadata/anything else below is even reachable.
+
+1. **developer.apple.com/account/resources/identifiers/list** → **+** →
+   App IDs → App:
+   - Description: `Moto`
+   - Bundle ID: **Explicit** → `com.rachoucorp.moto`
+   - Capabilities: check **In-App Purchase**
+   - Register
+2. **appstoreconnect.apple.com → My Apps → + → New App**:
+   - Platform: iOS
+   - Name: `Moto: Habit Tracker` (must be globally unique across the whole
+     App Store — check availability; fall back to a variant if taken)
+   - Primary Language: English (U.S.)
+   - Bundle ID: select `com.rachoucorp.moto` from the dropdown (populated
+     from step 1 — if it's not there yet, the App ID registration hasn't
+     propagated, wait a minute and refresh)
+   - SKU: `moto-habit-tracker` (internal only, never shown publicly)
+   - User Access: Full Access
+   - Create
+3. This creates the version page where sections 4–9 below all live
+   (Screenshots, Metadata, App Information, Age Ratings, Encryption,
+   Regulations, App Privacy)
+
+---
+
+## 3. Screenshots (Media Manager)
 
 Only the **6.9" Display** slot matters now — Apple auto-generates the rest
 from it, and only the first 3 images show on the app install sheet.
@@ -90,7 +118,7 @@ Ready at:
 
 ---
 
-## 3. Metadata (English) — on the version page
+## 4. Metadata (English) — on the version page
 
 | Field | Value |
 |---|---|
@@ -106,35 +134,32 @@ Ready at:
 
 ---
 
-## 4. French (FR) Localization
+## 5. French (FR) Localization
 
 **+ Add Localization → French**, fill from `store/metadata/appstore-fr.md`:
 Name `Moto : suivi d'habitudes`, Subtitle `Vos habitudes, case par case`,
-plus Promotional Text, Description, Keywords. Screenshots done in section 2.
+plus Promotional Text, Description, Keywords. Screenshots done in section 3.
 
 ---
 
-## 5. Japanese (JA) Localization
+## 6. Japanese (JA) Localization
 
 **+ Add Localization → Japanese**, fill from `store/metadata/appstore-ja.md`:
 Name `Moto - 習慣トラッカー`, Subtitle `習慣を、一マスずつ育てる`, plus
-Promotional Text, Description, Keywords. Screenshots done in section 2.
+Promotional Text, Description, Keywords. Screenshots done in section 3.
 
 > Note: Wingman only shipped EN+FR on the App Store — Moto adds Japanese here
 > since the app itself supports all 3 locales (`lib/l10n/`).
 
 ---
 
-## 6. App Information (left menu, under General)
+## 7. App Information (left menu, under General)
 
 **Localizable Information**
 - Name / Subtitle: per-language, as above
 
 **General Information**
-- Bundle ID: `com.rachoucorp.moto` (register this first at
-  developer.apple.com/account/resources/identifiers/list, with **In-App
-  Purchase** capability enabled, before it appears here)
-- SKU: suggest `moto-habit-tracker` (must be unique, never shown to users)
+- Bundle ID / SKU: already set from section 2, read-only here
 - Content Rights: "No, this app does not contain, show, or access
   third-party content" — Moto is fully original (no licensed IP, unlike
   Wingman's Valorant screenshots)
@@ -146,7 +171,7 @@ Privacy Policy URL goes under **App Privacy** (left menu), not here:
 
 ---
 
-## 7. Age Ratings
+## 8. Age Ratings
 
 Same grouped questionnaire as Wingman, but **simpler — no ads means "None"
 across the board, including Advertising** (Moto has zero third-party SDKs):
@@ -165,7 +190,7 @@ Expected result: **4+**.
 
 ---
 
-## 8. App Encryption Documentation
+## 9. App Encryption Documentation
 
 Already handled: `ITSAppUsesNonExemptEncryption = false` is now in
 `ios/Runner/Info.plist` (done this session). Once a build with this key is
@@ -173,7 +198,7 @@ uploaded, App Store Connect won't ask at submission time.
 
 ---
 
-## 9. App Store Regulations & Permits
+## 10. App Store Regulations & Permits
 
 - **DSA**: click **Set Up** if selling in the EU — same trader declaration
   Rachou Corp already did for Wingman (business name, address, phone, email)
@@ -188,7 +213,7 @@ uploaded, App Store Connect won't ask at submission time.
 
 ---
 
-## 10. App Privacy (left menu → App Privacy)
+## 11. App Privacy (left menu → App Privacy)
 
 Moto has **no AdMob, no Firebase/analytics, no user accounts, and no
 server** — `shared_preferences` (local only) and `in_app_purchase` (StoreKit
@@ -208,7 +233,7 @@ finalizing.
 
 ---
 
-## 11. In-App Purchases — 3 Subscriptions + 1 Non-Consumable
+## 12. In-App Purchases — 3 Subscriptions + 1 Non-Consumable
 
 Unlike Wingman's single non-consumable, Moto sells access via subscription
 (matches the Play Store setup already live — see `store/guide-playstore.md`):
@@ -233,18 +258,18 @@ Unlike Wingman's single non-consumable, Moto sells access via subscription
 > this for any non-consumable/subscription and it's already covered.
 
 None of these can be submitted standalone — they attach to and submit
-together with the first app version (see section 15).
+together with the first app version (see section 17).
 
 ---
 
-## 12. Pricing and Availability
+## 13. Pricing and Availability
 
 - **Price**: Free (app itself; subscriptions/IAP priced separately above)
 - **Availability**: match whatever was chosen for the Play Store listing
 
 ---
 
-## 13. Paid Applications Agreement, Banking & Tax
+## 14. Paid Applications Agreement, Banking & Tax
 
 Required in App Store Connect (**Agreements, Tax, and Banking**) before any
 paid IAP/subscription can go live — fill this in if Wingman's non-consumable
@@ -252,7 +277,7 @@ already triggered it for this account; otherwise it's a one-time setup.
 
 ---
 
-## 14. Build Upload — via Codemagic
+## 15. Build Upload — via Codemagic
 
 Setup mirrors Wingman's working pipeline (`codemagic.yaml` already added to
 this repo):
@@ -283,7 +308,7 @@ this repo):
 
 ---
 
-## 15. App Review Information
+## 16. App Review Information
 
 - **Sign-in required**: No
 - **Notes for reviewer** (draft):
@@ -297,7 +322,7 @@ this repo):
 
 ---
 
-## 16. Submit for Review
+## 17. Submit for Review
 
 1. **App Store Version Release**: Manually release this version
 2. **Add for Review** / **Submit for Review**
@@ -312,5 +337,5 @@ this repo):
 | App Store Connect | https://appstoreconnect.apple.com |
 | Certificates, IDs & Profiles | https://developer.apple.com/account/resources/identifiers/list |
 | App Review Guidelines | https://developer.apple.com/app-store/review/guidelines/ |
-| Privacy Policy | **TBD — see ⚠️ note at top** |
+| Privacy Policy | https://rachoucorp.app/privacy-moto |
 | Play Store listing (live reference) | https://play.google.com/store/apps/details?id=com.rachoucorp.moto |
