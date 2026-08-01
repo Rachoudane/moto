@@ -42,6 +42,19 @@ class NotificationService {
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
+      // Separate from the request* flags above: these control whether a
+      // notification actually shows (banner/sound/badge/list entry) while
+      // the app is in the FOREGROUND. Device logs showed iOS asking the app
+      // "how should I present this?" (willPresentNotification) and getting
+      // "response 0" back - i.e. no options - which is why sendTestNotification
+      // produced no visible banner even with permission granted. These
+      // default to true in the plugin, but setting them explicitly removes
+      // any doubt about whether that default reaches the native side.
+      defaultPresentAlert: true,
+      defaultPresentBadge: true,
+      defaultPresentSound: true,
+      defaultPresentBanner: true,
+      defaultPresentList: true,
     );
     const windowsSettings = WindowsInitializationSettings(
       appName: 'Moto',
