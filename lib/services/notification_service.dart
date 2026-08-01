@@ -60,6 +60,16 @@ class NotificationService {
 
   static Future<bool> requestPermission() async {
     final notifStatus = await Permission.notification.request();
+    // permission_handler and flutter_local_notifications track iOS
+    // notification authorization separately - permission_handler reporting
+    // granted does NOT mean flutter_local_notifications' own Darwin plugin
+    // (the one that actually calls .show()) knows it. Since
+    // DarwinInitializationSettings' auto-request is disabled (see
+    // initialize() above), its README requires calling this explicitly, or
+    // .show() silently no-ops even when the OS-level permission is granted.
+    await _notifications
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(alert: true, badge: true, sound: true);
     return notifStatus.isGranted;
   }
 
