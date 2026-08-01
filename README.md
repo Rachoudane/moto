@@ -60,3 +60,16 @@ The streak/square math (`Habit.squareProgressFor`) is the single source of truth
 ## Name
 
 **Moto** (基) — "the base", "the origin" in Japanese.
+
+---
+
+## Screenshots
+
+<p>
+  <img src="docs/screenshots/01-grow-squares.jpg" width="160" />
+  <img src="docs/screenshots/02-keep-trophies.jpg" width="160" />
+  <img src="docs/screenshots/03-unlock-badges.jpg" width="160" />
+  <img src="docs/screenshots/04-choose-challenge.jpg" width="160" />
+  <img src="docs/screenshots/05-build-break.jpg" width="160" />
+  <img src="docs/screenshots/06-meet-motosan.jpg" width="160" />
+</p>
