@@ -42,7 +42,20 @@ function Assert-Builder {
     }
 }
 
+# Removes every .ipa from dist/ (signed and unsigned) before a new build.
+# Without this, Get-LatestIpa's preference for *-signed.ipa over plain .ipa
+# can silently pick a STALE signed file left over from a previous
+# build/install (e.g. from Resolve-BuildFromGitHub, which downloads an
+# unsigned artifact and never produces a same-run -signed.ipa) even though a
+# newer, correct .ipa exists - reinstalling old code with no error or warning.
+function Clear-DistIpas {
+    if (Test-Path $DistDir) {
+        Get-ChildItem $DistDir -Filter "*.ipa" -ErrorAction SilentlyContinue | Remove-Item -Force
+    }
+}
+
 function Invoke-Build {
+    Clear-DistIpas
     Write-Host "==> Triggering iOS build on GitHub Actions..." -ForegroundColor Cyan
     # NOTE: deliberately NOT redirecting stderr (no `2>&1`) - under
     # $ErrorActionPreference = "Stop", merging a native command's stderr into
@@ -108,34 +121,94 @@ function Resolve-BuildFromGitHub {
     return $false
 }
 
-function Get-LatestIpa {
-    if (-not (Test-Path $DistDir)) {
-        Write-Host "No dist/ directory found - run a build first." -ForegroundColor Red
-        exit 1
-    }
-    # Prefer a signed IPA if one exists among the most recent files.
-    $signed = Get-ChildItem $DistDir -Filter "*-signed.ipa" -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if ($signed) { return $signed }
-
-    $any = Get-ChildItem $DistDir -Filter "*.ipa" -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if (-not $any) {
-        Write-Host "No .ipa file found in $DistDir." -ForegroundColor Red
-        exit 1
-    }
-    return $any
-}
-
+# `builder mobai install` (plain) requires an ALREADY-signed IPA - tested
+# directly against an unsigned build and it fails with
+# "ApplicationVerificationFailed ... No code signature found". Since nothing
+# in this repo runs `builder signing setup` (no local signing profile
+# configured - MobAI's ad-hoc resign is what actually signs), `builder ios
+# build` never produces a pre-signed IPA either. `builder dev flutter --ipa`
+# is the only CLI path today that both signs and installs - it starts a
+# Flutter hot-reload session as a side effect, so we watch its output for
+# "Installed:" and kill it immediately after (the hot-reload session it would
+# move on to next crashes on Windows anyway - `which` is a Unix command - so
+# cutting it off here is the desired behavior, not a hack). Ported from
+# ios-menu.ps1's Invoke-QuickTestInstall, which is the one path proven to
+# work end-to-end for both Wingman and Moto.
 function Invoke-Install {
-    $ipa = Get-LatestIpa
-    Write-Host "==> Installing $($ipa.Name) ($([math]::Round($ipa.Length / 1MB, 1)) MB) via MobAI..." -ForegroundColor Cyan
-    & $Builder mobai install $ipa.FullName
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Install failed (exit $LASTEXITCODE). Is MobAI running and the iPhone connected?" -ForegroundColor Red
-        exit $LASTEXITCODE
+    # --ipa is passed explicitly (instead of letting dev flutter auto-detect)
+    # because auto-detect falls back to an interactive arrow-key picker
+    # whenever dist/ has more than one matching IPA. That picker needs a real
+    # console; under redirected stdio it just hangs until a timeout kills it.
+    #
+    # KNOWN LIMITATION: on the first install of a given IPA (one MobAI hasn't
+    # seen/signed before for this device), `dev flutter --ipa` also shows an
+    # arrow-key "Resign app: Yes/No" confirmation - same problem, no CLI flag
+    # found to skip it (checked --help and the binary's string table). This
+    # only bites when this script is driven non-interactively (e.g. by an
+    # agent/CI, not a human at a real terminal) - in that case it fails fast
+    # with "Error: ^D" rather than hanging. If that happens, sign+install
+    # directly via MobAI's MCP tool (`install_app`, `resign: true`) instead
+    # of this script, or run this script yourself in a real terminal where
+    # you can answer the prompt.
+    $freshIpa = Get-ChildItem $DistDir -Filter "*.ipa" -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -notmatch "-signed\.ipa$" } |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (-not $freshIpa) {
+        Write-Host "No unsigned .ipa found in $DistDir - run a build first." -ForegroundColor Red
+        exit 1
     }
-    Write-Host "==> Installed. Open Moto on the iPhone." -ForegroundColor Green
+
+    Write-Host "==> Signing + installing $($freshIpa.Name) via MobAI (auto-stops once installed)..." -ForegroundColor Cyan
+
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $Builder
+    $psi.Arguments = 'dev flutter --ipa "' + $freshIpa.FullName + '"'
+    $psi.WorkingDirectory = $RepoRoot
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+
+    $proc = New-Object System.Diagnostics.Process
+    $proc.StartInfo = $psi
+
+    $Global:__motoInstalled = $false
+    $printAndWatch = {
+        if ($null -ne $EventArgs.Data) {
+            Write-Host $EventArgs.Data
+            if ($EventArgs.Data -match "Installed:") { $Global:__motoInstalled = $true }
+        }
+    }
+    Register-ObjectEvent -InputObject $proc -EventName OutputDataReceived -Action $printAndWatch | Out-Null
+    Register-ObjectEvent -InputObject $proc -EventName ErrorDataReceived -Action $printAndWatch | Out-Null
+
+    $proc.Start() | Out-Null
+    $proc.BeginOutputReadLine()
+    $proc.BeginErrorReadLine()
+
+    $sw = [Diagnostics.Stopwatch]::StartNew()
+    while (-not $proc.HasExited -and -not $Global:__motoInstalled -and $sw.Elapsed.TotalSeconds -lt 300) {
+        Start-Sleep -Milliseconds 300
+    }
+
+    if ($Global:__motoInstalled) {
+        Start-Sleep -Milliseconds 600  # let the "Installed:" line fully flush
+        if (-not $proc.HasExited) {
+            Write-Host "==> Install confirmed - stopping the hot-reload session automatically." -ForegroundColor Yellow
+            Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+        }
+    } elseif (-not $proc.HasExited) {
+        Write-Host "==> Timed out after 5 minutes - stopping the session." -ForegroundColor Red
+        Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+    }
+    Get-EventSubscriber | Where-Object { $_.SourceObject -eq $proc } | Unregister-Event -ErrorAction SilentlyContinue
+
+    if ($Global:__motoInstalled) {
+        Write-Host "==> Installed. Open Moto on the iPhone." -ForegroundColor Green
+    } else {
+        Write-Host "==> Didn't see a successful install within 5 minutes - check MobAI is open and the iPhone is connected." -ForegroundColor Red
+        exit 1
+    }
 }
 
 function Invoke-Ping {

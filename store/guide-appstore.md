@@ -80,7 +80,7 @@ before Media Manager/metadata/anything else below is even reachable.
    - Bundle ID: **Explicit** → `com.rachoucorp.moto`
    - Capabilities: check **In-App Purchase**
    - Register
-2. **appstoreconnect.apple.com → My Apps → + → New App**:
+2. **appstoreconnect.apple.com → Apps (top nav) → + → New App**:
    - Platform: iOS
    - Name: `Moto: Habit Tracker` (must be globally unique across the whole
      App Store — check availability; fall back to a variant if taken)
@@ -91,13 +91,54 @@ before Media Manager/metadata/anything else below is even reachable.
    - SKU: `moto-habit-tracker` (internal only, never shown publicly)
    - User Access: Full Access
    - Create
-3. This creates the version page where sections 4–9 below all live
-   (Screenshots, Metadata, App Information, Age Ratings, Encryption,
-   Regulations, App Privacy)
+3. This creates the app record, opening on the **Distribution** tab with a
+   first version already scaffolded (shown in the sidebar as
+   `1.0 Prepare for Submission`) — click it to reach the Screenshots/Metadata
+   panel (sections 3–4). App Information, App Privacy, Age Ratings,
+   Encryption, Regulations and Pricing all live in the left sidebar next to
+   it, not on the version panel itself (sections 7–13)
 
 ---
 
-## 3. Screenshots (Media Manager)
+> **Interface note (2026, confirmed from a live screenshot of the Moto app
+> record):** Apple rolled out **App Store Connect 2.0** (Nov 2024) and the
+> flat left-hand version-page menu this guide originally described no
+> longer exists. Actual current layout:
+>
+> - Top tab bar on the app record: **Distribution** (default) | Analytics |
+>   TestFlight | Xcode Cloud
+> - Inside **Distribution**, a left sidebar with three groups (all
+>   confirmed by screenshot):
+>   - **iOS App** — the version itself, shown as e.g. `1.0 Prepare for
+>     Submission` (status dot + label) + an **Add Platform** link. Clicking
+>     the version opens the main panel: Screenshots → Description/Keywords/
+>     Support+Marketing URL/Version/Copyright → App Clip/iMessage App
+>     (collapsed) → Build → In-App Purchases & Subscriptions banner → Game
+>     Center → App Review Information → App Store Version Release (sections
+>     3, 4, 6b, 16, 17)
+>   - **General** — `App Information`, `App Review`, `History`
+>   - **App Store**, split into three subgroups:
+>     - **Trust & Safety** — `App Privacy`, `App Accessibility`,
+>       `Ratings and Reviews`
+>     - **Growth & Marketing** — `In-App Events`, `Custom Product Pages`,
+>       `Product Page Optimization`, `Promo Codes`, `Game Center`
+>     - **Monetization** — `Pricing and Availability`, `In-App Purchases`,
+>       `Subscriptions` (this exact order)
+>     - **Featuring** — `Nominations` (not relevant to Moto)
+> - The version panel itself keeps the **Save** / **Add for Review** buttons
+>   top-right, sticky the whole time you scroll — unchanged from the old flow.
+> - **Name, Subtitle, and Promotional Text are gone from the version panel**
+>   — not per-locale here anymore. Best guess: Name/Subtitle moved to
+>   `App Information`; Promotional Text is likely behind a separate
+>   quick-edit control Apple added since it's now editable without review.
+>   **Not yet confirmed** — see the note at the end of section 4.
+>
+> Sections 3, 4, 6b, 16, 17 below are now confirmed field-by-field from
+> screenshots. Sections 7–9 (App Information / Age Ratings / Encryption)
+> still describe the pre-redesign fields and need one more screenshot pass
+> to confirm — flag it when you get there.
+
+## 3. Screenshots (version panel → Previews and Screenshots)
 
 Only the **6.9" Display** slot matters now — Apple auto-generates the rest
 from it, and only the first 3 images show on the app install sheet.
@@ -107,56 +148,133 @@ Ready at:
 - FR: `screenshots/final/appstore-6.9/fr/`
 - JA: `screenshots/final/appstore-6.9/ja/`
 
-**Steps:**
-1. Media Manager → **iPhone** tab → open the **6.9" Display** box
-2. Upload in order (EN, language selector defaults to English (U.S.)):
-   `01-grow-squares.jpg`, `02-keep-trophies.jpg`, `03-unlock-badges.jpg`,
-   `04-choose-challenge.jpg`, `05-build-break.jpg`, `06-meet-motosan.jpg`
-3. Switch language selector to **French** → repeat with the `fr/` set
-4. **+ Add Localization → Japanese** → repeat with the `ja/` set
-5. Leave every other size box empty
+**Steps (matches the live UI as of this writing):**
+1. Distribution tab → sidebar → click the version (`1.0 Prepare for
+   Submission`) → language selector top-right defaults to **English
+   (U.S.)** → scroll to **Previews and Screenshots**
+2. Under the **iPhone** sub-tab (also has iPad / Apple Watch sub-tabs),
+   there's a single box currently labeled **"iPhone 6.5" Display"** with a
+   smaller **"Using 6.9" Display"** note and an **Edit** link — that Edit
+   link (or the **View All Sizes in Media Manager** link top-right of the
+   Previews and Screenshots section) is where you actually upload
+3. Upload in order: `01-grow-squares.jpg`, `02-keep-trophies.jpg`,
+   `03-unlock-badges.jpg`, `04-choose-challenge.jpg`, `05-build-break.jpg`,
+   `06-meet-motosan.jpg` — the box footer shows a running count, e.g.
+   `6 of 10 Screenshots` (10 is the max Apple allows per size; only 6 are
+   used) and `0 of 3 App Previews` (video previews — Moto has none, leave
+   at 0)
+4. Switch the language selector (top-right) to **French** → repeat with the
+   `fr/` set
+5. **+ Add Localization → Japanese** (from the sidebar version entry, or
+   the language selector's "Add Localization" option) → repeat with the
+   `ja/` set
+6. Leave iPad and Apple Watch sub-tabs empty (Moto is iPhone-only)
 
 ---
 
-## 4. Metadata (English) — on the version page
+## 4. Metadata (English) — same version panel, below Screenshots
+
+Confirmed field-by-field from a live screenshot. Immediately below
+**Previews and Screenshots**, in this exact order:
 
 | Field | Value |
 |---|---|
-| Name (30 max) | `Moto: Habit Tracker` |
-| Subtitle (30 max) | `Grow Habits, Square by Square` |
-| Promotional Text (170 max) | See `store/metadata/appstore-en.md` |
-| Description (4000 max) | Full text in `store/metadata/appstore-en.md` (~2000 chars) — paste as-is |
+| Description (4,000 max) | Full text in `store/metadata/appstore-en.md` (~2000 chars) — paste as-is |
 | Keywords (100 max) | `habit tracker,streak,daily habits,goal,self improvement,routine,motivation,productivity,checklist` |
 | Support URL | `https://rachoucorp.app` or `mailto:rachoucorp@gmail.com` |
-| Marketing URL | `https://rachoucorp.app/moto` (optional — the page already exists per `react-portfolio/src/pages/AppLanding.jsx` with `appId="moto"`) |
-| Copyright | `2026 Rachou Corp` |
-| Version | must match `pubspec.yaml` (currently `1.1.2`) |
+| Marketing URL | `https://rachoucorp.app/moto` (optional) |
+| Version | must match `pubspec.yaml` (currently `1.1.2`) — pre-filled `1.0` right now, needs updating |
+| Copyright (200 max) | `2026 Rachou Corp` |
+| Routing App Coverage File | leave empty — this is for App Clips only, Moto doesn't have one |
+
+Below that, two **collapsed** sections — leave both closed, Moto uses
+neither: **App Clip** and **iMessage App**.
+
+**No "Name" or "Subtitle" fields, and no "Promotional Text" field appear on
+this page anymore** — confirmed absent between the language selector and
+Description in the actual screenshot. Two live changes from Apple in
+2025–2026 explain this:
+- **Name/Subtitle** moved to the `App Information` page (section 7) — they
+  used to be per-version/per-locale here, now they're managed there instead.
+- **Promotional Text** still exists as a field (Apple's own docs still
+  describe it as "the only field editable without review") but isn't on
+  this full edit form anymore — it's very likely behind a lighter-weight
+  quick-edit control (e.g. a pencil icon on the live product page preview,
+  or inside `Product Page Optimization` under Growth & Marketing). Not yet
+  confirmed by screenshot — check both `App Information` and
+  `Product Page Optimization` when you get there and tell me which one has
+  it, plus the exact Name/Subtitle field labels/limits you see on
+  `App Information`, since section 7 below is still describing the *old*
+  fields for that page.
 
 ---
 
 ## 5. French (FR) Localization
 
-**+ Add Localization → French**, fill from `store/metadata/appstore-fr.md`:
-Name `Moto : suivi d'habitudes`, Subtitle `Vos habitudes, case par case`,
-plus Promotional Text, Description, Keywords. Screenshots done in section 3.
+Still on that version panel: switch the language selector to **French**
+(or **+ Add Localization → French** if not yet added), fill Description /
+Keywords from `store/metadata/appstore-fr.md`. Screenshots done in
+section 3. (Name/Subtitle/Promotional Text: see the note at the end of
+section 4 — not on this page, still being tracked down.)
 
 ---
 
 ## 6. Japanese (JA) Localization
 
-**+ Add Localization → Japanese**, fill from `store/metadata/appstore-ja.md`:
-Name `Moto - 習慣トラッカー`, Subtitle `習慣を、一マスずつ育てる`, plus
-Promotional Text, Description, Keywords. Screenshots done in section 3.
+Still on that version panel: **+ Add Localization → Japanese**, fill
+Description / Keywords from `store/metadata/appstore-ja.md`. Screenshots
+done in section 3. (Name/Subtitle/Promotional Text: same caveat as above.)
 
 > Note: Wingman only shipped EN+FR on the App Store — Moto adds Japanese here
 > since the app itself supports all 3 locales (`lib/l10n/`).
 
 ---
 
-## 7. App Information (left menu, under General)
+## 6b. Build, In-App Purchases banner, Game Center — same version page, not per-locale
 
-**Localizable Information**
-- Name / Subtitle: per-language, as above
+Below the localized fields (still scrolling the same version page, applies
+regardless of which language is selected):
+
+**Build**
+- An info banner: *"If your app uses encryption, you're required to upload
+  export compliance documentation. You can submit this documentation before
+  you submit your app for review in the **App Encryption Documentation
+  section**, or by uploading your app below."* — that linked section lives
+  on the `App Information` page (section 7/9), confirmed via Apple's docs:
+  `App Information` → next to **App Encryption Documentation** → **+** to
+  answer questions/upload docs. Since Moto already ships
+  `ITSAppUsesNonExemptEncryption = false` in `Info.plist`, this should
+  resolve automatically once a build is uploaded — verify there's nothing
+  to fill in manually.
+- Below that: an empty box — *"Upload your builds using one of several
+  tools. See Upload Tools"*. This is where the Codemagic-built IPA shows up
+  once processed (section 15).
+
+**In-App Purchases and Subscriptions**
+- Just an info banner here, not the actual management UI: *"In-app
+  purchases and subscriptions can now be submitted for review from the
+  In-App Purchases and Subscriptions sections. Include an app version in
+  your submission to have items reviewed together. Your first in-app
+  purchase and subscription must be submitted with a new app version."*
+- Confirms section 12's plan: actually create/manage the 3 subscriptions +
+  1 non-consumable on their own sidebar pages (`App Store → Monetization →
+  In-App Purchases` / `Subscriptions`, sidebar order confirmed in that
+  order), **not** from this version page — but the first one of each
+  **must** be attached to this first app version's submission to go live
+  together.
+
+**Game Center**
+- A checkbox, but disabled for direct use: *"Game Center components can now
+  be added for review directly from the Game Center section. You can no
+  longer select them from the app version page."* — irrelevant to Moto,
+  leave unchecked.
+
+---
+
+## 7. App Information (Distribution tab → sidebar → General → App Information)
+
+Confirmed from the sidebar: it's a left-menu item under the **General**
+group (alongside `App Review` and `History`), not a top-level tab.
 
 **General Information**
 - Bundle ID / SKU: already set from section 2, read-only here
@@ -166,27 +284,46 @@ Promotional Text, Description, Keywords. Screenshots done in section 3.
 - Primary Language: English (U.S.)
 - Category: Health & Fitness · Secondary (optional): Productivity
 
-Privacy Policy URL goes under **App Privacy** (left menu), not here:
-`https://rachoucorp.app/privacy-moto`.
+Age Ratings and App Encryption Documentation are sub-sections of this same
+`App Information` page (sections 8/9 below). Privacy Policy URL and the
+data-collection questionnaire, however, are on their **own** sidebar item,
+`App Privacy` (section 11) — confirmed separate, not nested here.
 
 ---
 
 ## 8. Age Ratings
 
-Same grouped questionnaire as Wingman, but **simpler — no ads means "None"
-across the board, including Advertising** (Moto has zero third-party SDKs):
+Apple replaced the old grouped questionnaire with a multi-step **"Set Up
+Age Ratings"** dialog, reachable via the `App Information` page from
+section 7 (Distribution tab → sidebar → General → App Information → Age
+Ratings → **Set Up Age Ratings** button) — not yet confirmed by screenshot,
+flag it to me if it's actually somewhere else. Separately, Apple added new
+rating tiers. Apple required
+every app to re-answer the updated questionnaire by **January 31, 2026**,
+which has already passed, so this step is mandatory even for the initial
+submission, not optional boilerplate:
 
-| Group | Answer |
-|---|---|
-| In-App Controls | None |
-| Capabilities (incl. Advertising) | None |
-| Mature Themes | None |
-| Medical or Wellness | None — habit tracking isn't a medical/health claim, but double-check if Apple's questionnaire has a borderline "Health & Wellness Topics" sub-question given the Health & Fitness category; answer accurately either way |
-| Sexuality or Nudity | None |
-| Violence | None |
-| Chance-Based Activities | None |
+**New tiers:** `4+`, `9+`, `13+`, `16+`, `18+` (replacing the old
+4+/9+/12+/17+ scale).
 
-Expected result: **4+**.
+**Dialog flow:**
+1. Step 1 — select any **in-app controls / capabilities** that can restrict
+   content (Moto has none: no chat, no user-generated content, no
+   unrestricted web access)
+2. Steps 2–6 — a series of content-descriptor questions, each answered with
+   **None / Infrequent/Mild / Frequent/Intense** rather than a flat
+   yes/no — for Moto, **None** across every category (Mature Themes,
+   Sexuality, Violence, Chance-Based Activities/Gambling, etc.), same
+   reasoning as before: no ads, no third-party SDKs, no gambling mechanics
+3. Final step — Apple shows a **Calculated Rating**, plus:
+   - **Age Category Override**: leave **Not Applicable** (don't opt into
+     "Made for Kids" — Moto isn't a kids' app)
+   - **Age Suitability URL** (optional): leave blank unless you want a page
+     explaining the rating
+
+Expected calculated result: **4+**. Double-check the Health & Fitness
+category doesn't trigger a borderline "Medical/Treatment Information"
+descriptor — answer accurately either way if it appears.
 
 ---
 
@@ -194,7 +331,10 @@ Expected result: **4+**.
 
 Already handled: `ITSAppUsesNonExemptEncryption = false` is now in
 `ios/Runner/Info.plist` (done this session). Once a build with this key is
-uploaded, App Store Connect won't ask at submission time.
+uploaded, App Store Connect won't ask at submission time. If it does still
+prompt, it's most likely a field on the same `App Information` page from
+section 7 (not yet confirmed by screenshot) or a submission-time question —
+answer "No" to using non-exempt encryption either way.
 
 ---
 
@@ -213,7 +353,17 @@ uploaded, App Store Connect won't ask at submission time.
 
 ---
 
-## 11. App Privacy (left menu → App Privacy)
+## 11. App Privacy (Distribution tab → sidebar → App Store → Trust & Safety → App Privacy)
+
+Confirmed from the sidebar: its own left-menu item, grouped under
+**App Store → Trust & Safety** alongside `App Accessibility` and
+`Ratings and Reviews` — not nested inside App Information. Fields:
+
+- **Privacy Policy URL** (required): `https://rachoucorp.app/privacy-moto`
+- **User Privacy Choices URL** (optional, newer field): leave blank — this
+  is for apps that offer an in-app privacy/data-deletion self-service flow,
+  which Moto doesn't need since nothing is collected in the first place
+- **Data Types** questionnaire: same as before
 
 Moto has **no AdMob, no Firebase/analytics, no user accounts, and no
 server** — `shared_preferences` (local only) and `in_app_purchase` (StoreKit
@@ -238,7 +388,12 @@ finalizing.
 Unlike Wingman's single non-consumable, Moto sells access via subscription
 (matches the Play Store setup already live — see `store/guide-playstore.md`):
 
-**Monetization → Subscriptions** (left menu):
+Sidebar path confirmed for the group: **Distribution tab → sidebar →
+App Store → Monetization**, containing (in this exact order, confirmed by
+screenshot): `Pricing and Availability` (section 13), `In-App Purchases`,
+`Subscriptions`.
+
+**Monetization → Subscriptions**:
 1. Create a **Subscription Group** (e.g. "Moto Pro")
 2. Add subscription **`moto_pro_yearly`** — must match
    `lib/services/iap_service.dart`'s `yearlyProductId` exactly
@@ -247,7 +402,7 @@ Unlike Wingman's single non-consumable, Moto sells access via subscription
    (EN/FR/JA), and a Review Screenshot showing the Pro upsell screen
    (`pro_screen.dart`)
 
-**Monetization → In-App Purchases** (non-consumable, like Wingman's Remove Ads):
+**Monetization → In-App Purchases** (same sidebar group, non-consumable, like Wingman's Remove Ads):
 5. Add **`moto_pro_lifetime`** as a **Non-Consumable** — matches
    `lifetimeProductId`. Same per-field setup as Wingman's Remove Ads IAP
    (Family Sharing off, Availability, Price Schedule, Localization, Review
@@ -262,7 +417,9 @@ together with the first app version (see section 17).
 
 ---
 
-## 13. Pricing and Availability
+## 13. Pricing and Availability (Distribution tab → sidebar → App Store → Monetization → Pricing and Availability)
+
+Confirmed exact sidebar label from the screenshot.
 
 - **Price**: Free (app itself; subscriptions/IAP priced separately above)
 - **Availability**: match whatever was chosen for the Play Store listing
@@ -310,23 +467,60 @@ this repo):
 
 ## 16. App Review Information
 
-- **Sign-in required**: No
-- **Notes for reviewer** (draft):
-  ```
-  This is a habit-tracking app with local data storage only (no server,
-  no accounts). Users track daily habits and build streaks visualized as
-  a growing square grid. Subscriptions (Pro tier) unlock unlimited habits
-  and full history; a free tier (up to 3 habits) is fully functional
-  without payment. No ads, no third-party SDKs.
-  ```
+Confirmed from screenshot: still the **same version page** as sections
+3–4/6b, further down, below Build/IAP-banner/Game Center. Two sub-blocks:
+
+**Sign-In Information**
+- A **"Sign-in required"** checkbox — **on by default, must be manually
+  unchecked** for Moto (no accounts at all). If left checked, the
+  User name / Password fields next to it become required.
+
+**Contact Information** (new — not in the old flat-menu version of this
+guide)
+- First name / Last name / Phone number / Email — fill these in, this is
+  who Apple's reviewer contacts if they have questions. Use your own or
+  `rachoucorp@gmail.com`.
+
+**Notes** (4,000 max) — draft:
+```
+This is a habit-tracking app with local data storage only (no server,
+no accounts). Users track daily habits and build streaks visualized as
+a growing square grid. Subscriptions (Pro tier) unlock unlimited habits
+and full history; a free tier (up to 3 habits) is fully functional
+without payment. No ads, no third-party SDKs.
+```
+
+**Attachment** (optional) — a "Choose File (Optional)" upload, leave empty
+unless you want to attach a demo video/screenshot walkthrough.
 
 ---
 
 ## 17. Submit for Review
 
-1. **App Store Version Release**: Manually release this version
-2. **Add for Review** / **Submit for Review**
-3. Review time: typically 24–72 hours
+Still the same version page, immediately below section 16 — this is the
+literal end of the page (site footer follows). The **"Add for Review"**
+button is not part of this bottom section — it's a separate, sticky button
+top-right of the version panel (next to **Save**), present the whole time
+you scroll.
+
+**App Store Version Release** (bottom of page) — 3 radio options,
+confirmed from screenshot:
+- **Manually release this version** ← pick this one, keeps control over
+  launch timing
+- Automatically release this version (was pre-selected by default —
+  switch away from it)
+- Automatically release this version after App Review, no earlier than
+  *[date/time picker]* — not needed here
+
+**Steps:**
+1. On the version panel (`1.0 Prepare for Submission`), make sure
+   Screenshots, Description/Keywords (sections 3–6), the encryption/build
+   info (6b), App Review Information (16), and **Manually release this
+   version** (above) are all set
+2. Click **Add for Review** (top-right, next to Save)
+3. Track status via the sidebar's **App Review** item (General group,
+   section 7) — also where any App Review clarification messages show up
+4. Review time: typically 24–72 hours
 
 ---
 
@@ -337,5 +531,8 @@ this repo):
 | App Store Connect | https://appstoreconnect.apple.com |
 | Certificates, IDs & Profiles | https://developer.apple.com/account/resources/identifiers/list |
 | App Review Guidelines | https://developer.apple.com/app-store/review/guidelines/ |
+| Age Ratings (current, post-2.0) | https://developer.apple.com/help/app-store-connect/manage-app-information/set-an-app-age-rating |
+| App Privacy (current, post-2.0) | https://developer.apple.com/help/app-store-connect/reference/app-information/app-privacy/ |
+| Submissions to App Review (current) | https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/submit-for-review |
 | Privacy Policy | https://rachoucorp.app/privacy-moto |
 | Play Store listing (live reference) | https://play.google.com/store/apps/details?id=com.rachoucorp.moto |
