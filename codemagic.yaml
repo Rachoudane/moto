@@ -5,8 +5,11 @@ workflows:
     instance_type: mac_mini_m2
     integrations:
       # Needed for the TestFlight/App Store upload step in `publishing` below —
-      # unrelated to signing itself.
-      app_store_connect: moto_asc_api_key
+      # unrelated to signing itself. Reuses Wingman's existing key (same
+      # Apple Developer account/team) rather than re-uploading a duplicate —
+      # Apple only lets you download a given API key's .p8 file once, and
+      # this one no longer had a saved copy handy.
+      app_store_connect: wingman_asc_api_key
     environment:
       flutter: stable
       xcode: latest
