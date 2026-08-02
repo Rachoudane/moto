@@ -8,6 +8,13 @@ import UserNotifications
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    // Required by flutter_local_notifications' own iOS setup docs - without
+    // this, UNUserNotificationCenter has no delegate to ask "how should I
+    // present this?" while the app is in the foreground, so every
+    // presentAlert/presentBanner/presentList/presentSound/presentBadge flag
+    // set on the Dart side is moot: nothing shows, no sound plays, no badge
+    // updates, and it never reaches Notification Center either.
+    UNUserNotificationCenter.current().delegate = self
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
