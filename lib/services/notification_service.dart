@@ -182,9 +182,15 @@ class NotificationService {
           ),
         ),
         iOS: const DarwinNotificationDetails(
+          // presentAlert only applies on iOS 10-14 (deprecated by Apple
+          // since). presentBanner/presentList are what iOS 14+ actually
+          // reads - omitting them left every notification on this device
+          // (iOS 18) with zero foreground presentation options.
           presentAlert: true,
           presentBadge: false,
           presentSound: true,
+          presentBanner: true,
+          presentList: true,
         ),
       ),
       androidScheduleMode: exactAvailable
@@ -295,6 +301,8 @@ class NotificationService {
           presentAlert: true,
           presentBadge: true,
           presentSound: true,
+          presentBanner: true,
+          presentList: true,
         ),
       ),
       androidScheduleMode: exactAvailable
@@ -346,6 +354,8 @@ class NotificationService {
           presentAlert: true,
           presentBadge: true,
           presentSound: true,
+          presentBanner: true,
+          presentList: true,
         ),
       ),
     );
