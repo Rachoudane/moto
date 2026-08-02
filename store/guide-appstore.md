@@ -5,14 +5,17 @@
 > different app specifics (3 subscriptions instead of 1 non-consumable, EN+FR+JA
 > instead of EN+FR, no ads/AdMob at all).
 >
-> Status: technical repo-side prep done in this session (bundle ID, encryption
-> flag, 6.9" screenshots, Codemagic/GitHub Actions/MobAI scaffolding, privacy
-> policy page). Apple Developer account (Rachou Corp) is already active — a
-> first Wingman submission was made and rejected, currently in dialogue with
-> Apple to resubmit it; same account/team will be used for Moto. Nothing has
-> been done yet on Apple's side specifically for Moto (no App Store Connect
-> app record, no certs/profiles, no Codemagic project) — this guide is the
-> walkthrough for that.
+> Status: **SUBMITTED FOR REVIEW** — iOS App 1.1.2 (5), submitted 2026-08-02,
+> "Waiting for Review". Full pipeline built and verified end-to-end this
+> session: App ID + App Store Connect record created, screenshots/metadata/
+> age rating/app privacy/pricing/IAP filled in (sections 3–14), Codemagic
+> wired up reusing Wingman's App Store Connect API key + distribution
+> certificate (new provisioning profile for `com.rachoucorp.moto`), first
+> Codemagic build succeeded and uploaded to TestFlight (build 5, "Ready to
+> Submit" — the red "App Store distribution" post-processing failure was the
+> same known cosmetic issue as Wingman's, not a real blocker), App Review
+> Information filled in, submitted with "Manually release this version".
+> Next: wait for Apple's review, then manually release once approved.
 
 ---
 
