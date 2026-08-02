@@ -15,17 +15,13 @@ workflows:
       xcode: latest
       cocoapods: default
       ios_signing:
-        # Automatic signing (distribution_type + bundle_identifier) failed for
-        # Wingman on this same Apple Developer account/team ("No matching
-        # profiles found", even with an Admin-role key) — root cause was never
-        # identified. Try automatic signing first for a fresh app record; if
-        # it fails the same way, fall back to manual signing like Wingman:
-        # generate a CSR, create an Apple Distribution cert + App Store
-        # provisioning profile for com.rachoucorp.moto manually at
-        # developer.apple.com, then upload both under Codemagic Team settings
-        # -> Code signing identities with the reference names below.
+        # Distribution certificates are reusable across apps on the same
+        # Apple Developer team, so this reuses Wingman's rather than
+        # generating a new one. Provisioning profiles are per-bundle-ID
+        # though - moto_appstore_profile must be created fresh for
+        # com.rachoucorp.moto (Wingman's won't work here).
         certificates:
-          - moto_distribution_cert
+          - wingman_distribution_cert
         provisioning_profiles:
           - moto_appstore_profile
     scripts:
